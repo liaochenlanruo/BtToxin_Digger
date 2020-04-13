@@ -43,7 +43,7 @@ use File::Basename;
 use File::Spec;
 
 
-=head2  BTTCMP
+=head2  BtToxin_Digger
  Title   :
  Usage   :
  Function:
@@ -103,8 +103,8 @@ sub Step1  {
 	my ($output_filename, @files) = @_;
 	my %step1_out;
 	my $dir;
-	my $path = `which bttcmp`;
-	if ($path=~/(.+)\/bttcmp/) {
+	my $path = `which BtToxin_Digger`;
+	if ($path=~/(.+)\/BtToxin_Digger/) {
 		$dir = $1;
 	}
 	my @hmm_models = (
@@ -326,8 +326,8 @@ sub Step2x  {
 	#my %step2x_out;
 	my %domain;#2020/4/8
 	my $dir;
-	my $path = `which bttcmp`;
-	if ($path=~/(.+)\/bttcmp/) {
+	my $path = `which BtToxin_Digger`;
+	if ($path=~/(.+)\/BtToxin_Digger/) {
 		$dir = $1;
 	}
 	my @domain_models = (
@@ -607,8 +607,8 @@ sub Blast_search  {
 	my $evalue;
 	my $program;
 	my $dir;
-	my $path = `which bttcmp`;
-	if ($path=~/(.+)\/bttcmp/) {
+	my $path = `which BtToxin_Digger`;
+	if ($path=~/(.+)\/BtToxin_Digger/) {
 		$dir = $1;
 	}
 	if($step eq 'step1')  {
@@ -710,8 +710,8 @@ sub svm_prediction  {
 #	my $dir = getcwd;
 	my %svm_results;
 	my $dir;
-	my $path = `which bttcmp`;
-		if ($path=~/(.+)\/bttcmp/) {
+	my $path = `which BtToxin_Digger`;
+		if ($path=~/(.+)\/BtToxin_Digger/) {
 		$dir = $1;
 	}
 	#set the parameter 
