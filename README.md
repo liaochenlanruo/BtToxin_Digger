@@ -195,3 +195,4 @@ Please report any issues about usage of the software to the [issues page](https:
 ## Updates
 
 - v1.0.2
+  -Fixed a "Can not find path" error.
