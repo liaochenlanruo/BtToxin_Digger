@@ -21,7 +21,7 @@
 											 "Y88P"   "Y88P"                   
 
 
-<a href="https://www.revolvermaps.com/livestats/5hxdvife1or/"><img src="//rf.revolvermaps.com/h/m/a/6/ff0000/128/0/5hxdvife1or.png" width="256" height="128" alt="Map" style="border:0;"></a>
+<script type="text/javascript" src="//rf.revolvermaps.com/0/0/4.js?i=5uxz5r9q3mx&amp;m=6&amp;h=128&amp;c=ff0000&amp;r=0" async="async"></script>
 
 ## Contents
 
