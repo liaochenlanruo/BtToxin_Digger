@@ -21,7 +21,6 @@
 											 "Y88P"   "Y88P"                   
 
 
-<script type="text/javascript" src="//rf.revolvermaps.com/0/0/4.js?i=5uxz5r9q3mx&amp;m=6&amp;h=128&amp;c=ff0000&amp;r=0" async="async"></script>
 
 ## Contents
 
