@@ -20,7 +20,7 @@
 											Y8b d88P Y8b d88P                  
 											 "Y88P"   "Y88P"                   
 
-<script type="text/javascript" src="//rf.revolvermaps.com/0/0/8.js?i=5cci7i88ie8&amp;m=6&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=33" async="async"></script>
+<a href="https://www.revolvermaps.com/livestats/5f1hbfli49y/"><img src="//rf.revolvermaps.com/h/m/a/6/ff0000/128/0/5f1hbfli49y.png" width="256" height="128" alt="Map" style="border:0;"></a>
 
 ## Contents
 
