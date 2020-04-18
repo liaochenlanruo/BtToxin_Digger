@@ -212,3 +212,6 @@ Please report any issues about usage of the software to the [issues page](https:
 
 - v1.0.2
   -Fixed a "Can not find path" error.
+
+- v1.0.3
+  -Fixed a bug of "get_all_info_nucl.pl", which can not get the gene location and strand information of some toxins.

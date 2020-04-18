@@ -43,6 +43,9 @@ foreach my $gbk (@gbk) {
 			my $Toxin_10;
 			my $Rank = "NA";
 
+			if (/Segment.+?(\d+)\.\.(\d+)/) {
+				$dna_coor = "$1-$2";
+			}
 			if (/protein_id=\"(.+?)\"/) {
 				$protein_id = $1;
 			}
@@ -78,7 +81,7 @@ foreach my $gbk (@gbk) {
 				if ($blast_prediction eq "YES") {
 					if (/blast_detail=\"Query_desc:(\S+)\s+(\S+)/) {
 						$strand = $1;
-						$dna_coor = $2;
+						#$dna_coor = $2;
 					}
 					if (/Query_Start-End:(\S+)\s+Hit_id:(\S+)/) {
 						$aa_coor = $1;
@@ -114,7 +117,7 @@ foreach my $gbk (@gbk) {
 				if ($hmm_prediction eq "YES") {
 					if (/hmm_detail="Hit_desc:(\S+)\s+(\S+)/) {
 						$strand = $1;
-						$dna_coor = $2;
+						#$dna_coor = $2;
 					}
 					if (/Hmm_name:(\S+)\s+Hmm_len:(\d+)\s+E-value:(\S+)\"/) {
 						$Hmm_name = $1;
@@ -122,6 +125,9 @@ foreach my $gbk (@gbk) {
 						$Evalue_Hmm = $3;
 					}
 				}
+			}
+			if (/protein_desc=\"(\S+)/) {
+				$strand = $1;
 			}
 			my $scaf_length = length $scaffold;#2020/4/12
 			my $cds;
