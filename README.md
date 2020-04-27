@@ -8,14 +8,14 @@
 
 
 	
-		______ _ _____         _                 ______ _                       
-		| ___ \ |_   _|       (_)                |  _  (_)                      
-		| |_/ / |_| | _____  ___ _ __            | | | |_  __ _  __ _  ___ _ __ 
-		| ___ \ __| |/ _ \ \/ / | '_ \           | | | | |/ _` |/ _` |/ _ \ '__|
-		| |_/ / |_| | (_) >  <| | | | |  ______  | |/ /| | (_| | (_| |  __/ |   
-		\____/ \__\_/\___/_/\_\_|_| |_| |______| |___/ |_|\__, |\__, |\___|_|   
-								   __/ | __/ |          
-								  |___/ |___/           
+			______    _ _____         _                 ______ _                       
+			| ___ \  | |_   _|       (_)                |  _  (_)                      
+			| |_/ / _| |_| | _____  ___ _ __            | | | |_  __ _  __ _  ___ _ __ 
+			| ___ \|__ __| |/ _ \ \/ / | '_ \           | | | | |/ _` |/ _` |/ _ \ '__|
+			| |_/ /  | |_| | (_) >  <| | | | |  ______  | |/ /| | (_| | (_| |  __/ |   
+			\____/   \___\_/\___/_/\_\_|_| |_| |______| |___/ |_|\__, |\__, |\___|_|   
+									      __/ | __/ |          
+									     |___/ |___/           
 
 
 ## Contents
@@ -182,8 +182,8 @@ BtToxin_Digger --SeqPath <orfs file PATH> --SequenceType orfs --orfs_suffix <suf
 - __Results/Assembles/*:__ Genome assembly results;
 - __Results/Toxins/*.list:__ Toxin list of each strain;
 - __Results/Toxins/*.gbk:__ Toxin sequences in Genbank format of each strain;
-- __Results/Toxins/Bt_all_genes.table:__ A matrix describes Strains vs. Toxins;
-- __Results/Toxins/All_Toxins.txt:__ A table containing all information and sequences of all toxin genes. See table 1 for details.
+- __Results/Toxins/Bt_all_genes.table:__ A matrix describes Strains vs. Toxins. See Table 3 for details;
+- __Results/Toxins/All_Toxins.txt:__ A table containing all information and sequences of all toxin genes. See Table 1 and Table 2 for details.
 
 
 __Contents of \'*.list\':__
