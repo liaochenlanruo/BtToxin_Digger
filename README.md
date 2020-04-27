@@ -185,7 +185,8 @@ BtToxin_Digger --SeqPath <orfs file PATH> --SequenceType orfs --orfs_suffix <suf
 - __Results/Toxins/Bt_all_genes.table:__ A matrix describes Strains vs. Toxins;
 - __Results/Toxins/All_Toxins.txt:__ A table containing all information and sequences of all toxin genes. See table 1 for details.
 
-__Contents of *.list:__
+
+__Contents of \'*.list\':__
 ```
 Overview of prediction 	 Sequence type: nucl
 Name	Cry	Cyt	Vip	Others	Summary
@@ -199,18 +200,18 @@ Summary	11	0	1	1	13
 
 
 Toxin type: Cry protein
-ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
-1	NHPK02000085.1_00018	+2 19034-20206 len=391	391	Rank1	YES	Cry78Aa1	359	97.21	32.66	NO	NO
-2	NHPK02000099.1_00001	-1 5374-7407 len=678	678	Rank4	YES	Cry2Ab35	633	100.00	100.00	NO	YES
-3	NHPK02000115.1_00002	+2 2-1342 len=447	447	Rank4	YES	Cry1Da2	1165	38.37	100.00	NO	YES
-4	NHPK02000115.1_00006	+3 4275-7898 len=1208	1208	Rank4	YES	Cry1Ca15	1189	100.00	100.00	NO	YES
-5	NHPK02000153.1_00001	-1 4176-6365 len=730	730	Rank4	YES	Cry1Ia40	719	100.00	100.00	YES	YES
-6	NHPK02000168.1_00002	-3 1673-5146 len=1158	1158	Rank4	YES	Cry9Ea9	1150	100.00	100.00	YES	YES
-7	NHPK02000196.1_00001	+3 723-2942 len=740	740	Rank4	YES	Cry1Da2	1165	63.43	100.00	NO	YES
-8	NHPK02000240.1_00001	+2 2-1813 len=604	604	Rank4	YES	Cry1Ac16	1178	51.27	100.00	NO	YES
-9	NHPK02000243.1_00001	+2 2-1738 len=579	579	Rank4	YES	Cry1Aa18	1225	47.27	100.00	NO	YES
-10	NHPK02000256.1_00001	+2 2-1294 len=431	431	Rank4	YES	Cry1Ac30	1178	36.59	100.00	NO	YES
-11	NHPK02000386.1_00001	-2 3-530 len=176	176	Rank4	YES	Cry1Ab11	695	25.32	99.43	NO	YES
+ID	Protein_ID		Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+1	NHPK02000085.1_00018	+2 19034-20206 len=391	391	Rank1	YES	Cry78Aa1	359		97.21		32.66		NO	NO
+2	NHPK02000099.1_00001	-1 5374-7407 len=678	678	Rank4	YES	Cry2Ab35	633		100.00		100.00		NO	YES
+3	NHPK02000115.1_00002	+2 2-1342 len=447	447	Rank4	YES	Cry1Da2		1165		38.37		100.00		NO	YES
+4	NHPK02000115.1_00006	+3 4275-7898 len=1208	1208	Rank4	YES	Cry1Ca15	1189		100.00		100.00		NO	YES
+5	NHPK02000153.1_00001	-1 4176-6365 len=730	730	Rank4	YES	Cry1Ia40	719		100.00		100.00		YES	YES
+6	NHPK02000168.1_00002	-3 1673-5146 len=1158	1158	Rank4	YES	Cry9Ea9		1150		100.00		100.00		YES	YES
+7	NHPK02000196.1_00001	+3 723-2942 len=740	740	Rank4	YES	Cry1Da2		1165		63.43		100.00		NO	YES
+8	NHPK02000240.1_00001	+2 2-1813 len=604	604	Rank4	YES	Cry1Ac16	1178		51.27		100.00		NO	YES
+9	NHPK02000243.1_00001	+2 2-1738 len=579	579	Rank4	YES	Cry1Aa18	1225		47.27		100.00		NO	YES
+10	NHPK02000256.1_00001	+2 2-1294 len=431	431	Rank4	YES	Cry1Ac30	1178		36.59		100.00		NO	YES
+11	NHPK02000386.1_00001	-2 3-530 len=176	176	Rank4	YES	Cry1Ab11	695		25.32		99.43		NO	YES
 //
 
 
@@ -220,19 +221,19 @@ ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage
 
 
 Toxin type: Vip protein
-ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
-1	NHPK02000099.1_00004	-3 10013-12397 len=795	795	Rank4	YES	Vip3Aa12	789	100.00	100.00	NO	YES
+ID	Protein_ID		Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+1	NHPK02000099.1_00004	-3 10013-12397 len=795	795	Rank4	YES	Vip3Aa12	789		100.00		100.00		NO	YES
 //
 
 
 Toxin type: Other toxins
-ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
-1	NHPK02000017.1_00027	-3 15272-16258 len=329	329	Rank4	YES	Zwa5B-other	322	100.00	99.07	NO	NA
+ID	Protein_ID		Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+1	NHPK02000017.1_00027	-3 15272-16258 len=329	329	Rank4	YES	Zwa5B-other	322		100.00		99.07		NO	NA
 //
 
 ```
 
-__Contents of *.gbk (Partial):__
+__Contents of \'*.gbk\' (Partial):__
 ```
 LOCUS       NHPK02000017.1_00027        77664 bp    dna     linear   UNK
 ACCESSION   NHPK02000017.1_00027
@@ -309,7 +310,7 @@ __Table 1: Description of \'All_Toxins.txt\'__
 |Protein sequence|Amino acid sequence of the toxin|
 |Scaffold sequence|The scaffold sequence where the toxin gene is located|
 
-__Table 2. The contents of \'All_Toxins.txt\'  (Partial)__
+__Table 2. The contents of \'All_Toxins.txt\' (Partial)__
 
 |Strain|Protein_id|Protein_len|Strand|Gene location on scaffold|SVM|BLAST|HMM|Hit_id|Hit_length|Aln_length|Query start-end|Hit stard-end|Identity|Evalue of blast|Hmm hit|Hmm hit length|Evalue of Hmm|Nomenclature|Endotoxin_N|Endotoxin_M|Endotoxin_C|Endotoxin_mid|Toxin_10|ETX_MTX2|Gene sequence|Protein sequence|Scaffold sequence|
 |:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|:-----:|
