@@ -18,7 +18,7 @@
 									     |___/ |___/           
 
 
-__A web server of BtToxin_Digger can be found at [http://bcam.hzau.edu.cn](http://bcam.hzau.edu.cn).__
+__$\color{red}{A web server of BtToxin_Digger can be found at [http://bcam.hzau.edu.cn/BtToxin_Digger](http://bcam.hzau.edu.cn/BtToxin_Digger).}$__
 
 ## Contents
 
