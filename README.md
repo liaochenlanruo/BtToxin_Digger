@@ -18,6 +18,8 @@
 									     |___/ |___/           
 
 
+__A web server of BtToxin_Digger can be found at [http://bcam.hzau.edu.cn](http://bcam.hzau.edu.cn).__
+
 ## Contents
 
 - [Introduction](#introduction)
@@ -52,26 +54,6 @@
   - The database has been updated, adding support for Cyt, Vip and other virulence factors.
   - BtToxin_Digger generates comprehensive and readable outputs including toxin list and sequence for each input; a matrix of all strains and the virulence factors it contains (behavior strain names, listed as virulence factor names), which can be used as virulence factors contained in the strain Database; and a file writes the information and sequences of all toxins (Table 1) to facilitate centralized processing and downstream analysis and experiment designs.
   - Added multi-thread support, greatly improving the running speed of the pipeline.
-
-
-- **Choose BtToxin_Digger or BtToxin_Digger for analysis?**
-
-  - Choose BtToxin_Digger
-
-    - When you have just several strains to analyze;
-    - You only care about Cry protein;
-    - You don't care about the domain of Cry protein;
-    - You will be patient to manually summarize the mined toxin gene information and sequences into the table one by one;
-
-  - Choose BtToxin_Digger
-
-	  - Errors occurred when using BtToxin_Digger;
-	  - You have large-scale data to analyze;
-	  - You want to mine toxin genes from unassembled reads;
-	  - You care about not only Cry protein, but also Cyt, Vip and other virulence factors;
-	  - You want to know what domains the Cry protein contains;
-	  - You want to build a database of Strains vs. Toxins;
-	  - You have no patience to summarize the results;
 
 
 ## Installation
