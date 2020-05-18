@@ -18,7 +18,7 @@
 									     |___/ |___/           
 
 
-__$\color{red}{A web server of BtToxin_Digger can be found at [http://bcam.hzau.edu.cn/BtToxin_Digger](http://bcam.hzau.edu.cn/BtToxin_Digger).}$__
+__<font color=red>A web server of BtToxin_Digger can be found at [http://bcam.hzau.edu.cn/BtToxin_Digger](http://bcam.hzau.edu.cn/BtToxin_Digger).</font>__
 
 ## Contents
 
