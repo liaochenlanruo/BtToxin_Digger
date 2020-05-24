@@ -319,7 +319,7 @@ Please report any issues about usage of the software to the [issues page](https:
 
 ## Citation
 
-- If you use this software please cite: Hualin Liu, Jinshui Zheng, Weixing Ye, Donghai Peng, Ming Sun. BtToxin_Digger: a comprehensive and high-throughput pipeline for mining toxin protein genes from _Bacillus thuringiensis_. 2020, available at [https://github.com/BMBGenomics/BtToxin_Digger](https://github.com/BMBGenomics/BtToxin_Digger).
+- If you use this software please cite: Hualin Liu, Jinshui Zheng, Yun Yu, Weixing Ye, Donghai Peng, Ming Sun. BtToxin_Digger: a comprehensive and high-throughput pipeline for mining toxin protein genes from _Bacillus thuringiensis_. 2020, available at [https://github.com/BMBGenomics/BtToxin_Digger](https://github.com/BMBGenomics/BtToxin_Digger).
 
 - If you used the genome assembly function, please also cite: Liu H, Xin B, Zheng J, Zhong H, Yu Y, Peng D, Sun M. Build a bioinformatics analysis platform and apply it to routine analysis of microbial genomics and comparative genomics. _Protocol exchange_, 2020. DOI: [10.21203/rs.2.21224/v2](https://dx.doi.org/10.21203/rs.2.21224/v2).
 
