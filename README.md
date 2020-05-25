@@ -18,6 +18,8 @@
 									     |___/ |___/           
 
 
+<font face="STCAIYUN" color=#0099ff size=4>A web server of BtToxin_Digger can be found at [http://bcam.hzau.edu.cn/BtToxin_Digger](http://bcam.hzau.edu.cn/BtToxin_Digger).</font>
+
 ## Contents
 
 - [Introduction](#introduction)
@@ -44,34 +46,14 @@
 
 - **What is BtToxin_Digger?**
 
-    BtToxin_Digger is a high-throughput, automatic gene mining tool that can mine toxin genes, such as Cry, Cyt and Vip, etc, from _Bacillus thuringiensis_. The pipeline accepts multiple forms of input data including Reads, assembled genomes, CDSs, and protein sequences and can output rich and useful results. It is derived from the re-design of the tool [BtToxin_Scanner](http://bcam.hzau.edu.cn/BtToxin_scanner/) we developed previously. Compared with BtToxin_Scanner, BtToxin_Digger has many improvements, as follows:
+    BtToxin_Digger is a high-throughput, automatic gene mining tool that can mine toxin genes, such as Cry, Cyt and Vip, etc, from _Bacillus thuringiensis_. The pipeline accepts multiple forms of input data including Reads, assembled genomes, CDSs, and protein sequences and can output rich and useful results. It is derived from the re-design of the tool [BtToxin_Digger](http://bcam.hzau.edu.cn/BtToxin_Digger/) we developed previously. Compared with BtToxin_Digger, BtToxin_Digger has many improvements, as follows:
   - Can be run in batches, suitable for large-scale genome analysis.
   - Added genome assembly functions, including second-generation short-reads assembly, third-generation long-reads assembly, and hybrid assembly of short-reads and long-reads, to realize the full-automatic mining of genes from Reads to virulence factors. The previous three input files (assembled genomes, ORFs and protein sequences) are still supported, and genome assembly can be used independently.
-  - Fixed a bug where BtToxin_Scanner often reported errors when processing assembled genomes.
+  - Fixed a bug where BtToxin_Digger often reported errors when processing assembled genomes.
   - Added support for CDSs and not limited to ORFs.
   - The database has been updated, adding support for Cyt, Vip and other virulence factors.
   - BtToxin_Digger generates comprehensive and readable outputs including toxin list and sequence for each input; a matrix of all strains and the virulence factors it contains (behavior strain names, listed as virulence factor names), which can be used as virulence factors contained in the strain Database; and a file writes the information and sequences of all toxins (Table 1) to facilitate centralized processing and downstream analysis and experiment designs.
   - Added multi-thread support, greatly improving the running speed of the pipeline.
-
-
-- **Choose BtToxin_Scanner or BtToxin_Digger for analysis?**
-
-  - Choose BtToxin_Scanner
-
-    - When you have just several strains to analyze;
-    - You only care about Cry protein;
-    - You don't care about the domain of Cry protein;
-    - You will be patient to manually summarize the mined toxin gene information and sequences into the table one by one;
-
-  - Choose BtToxin_Digger
-
-	  - Errors occurred when using BtToxin_Scanner;
-	  - You have large-scale data to analyze;
-	  - You want to mine toxin genes from unassembled reads;
-	  - You care about not only Cry protein, but also Cyt, Vip and other virulence factors;
-	  - You want to know what domains the Cry protein contains;
-	  - You want to build a database of Strains vs. Toxins;
-	  - You have no patience to summarize the results;
 
 
 ## Installation
@@ -337,7 +319,7 @@ Please report any issues about usage of the software to the [issues page](https:
 
 ## Citation
 
-- If you use this software please cite: Hualin Liu, Jinshui Zheng, Weixing Ye, Donghai Peng, Ming Sun. BtToxin_Digger: a comprehensive and high-throughput pipeline for mining toxin protein genes from _Bacillus thuringiensis_. 2020, available at [https://github.com/BMBGenomics/BtToxin_Digger](https://github.com/BMBGenomics/BtToxin_Digger).
+- If you use this software please cite: Hualin Liu, Jinshui Zheng, Yun Yu, Weixing Ye, Donghai Peng, Ming Sun. BtToxin_Digger: a comprehensive and high-throughput pipeline for mining toxin protein genes from _Bacillus thuringiensis_. 2020, available at [https://github.com/BMBGenomics/BtToxin_Digger](https://github.com/BMBGenomics/BtToxin_Digger).
 
 - If you used the genome assembly function, please also cite: Liu H, Xin B, Zheng J, Zhong H, Yu Y, Peng D, Sun M. Build a bioinformatics analysis platform and apply it to routine analysis of microbial genomics and comparative genomics. _Protocol exchange_, 2020. DOI: [10.21203/rs.2.21224/v2](https://dx.doi.org/10.21203/rs.2.21224/v2).
 
