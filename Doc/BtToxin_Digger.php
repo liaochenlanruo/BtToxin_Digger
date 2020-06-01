@@ -514,7 +514,7 @@
 			<h3 id="citation">Citation</h3>
 
 			<ul>
-			<li><p>If you use this software please cite: Liu H, Zheng J, Yu Y, Ye W, Peng D, Sun M. BtToxin_Digger: a comprehensive and high-throughput pipeline for mining toxin protein genes from <em>Bacillus thuringiensis</em>. <em>bioRxiv</em>, <a href="https://doi.org/10.1101/2020.05.26.114520">2020: 2020.2005.2026.114520</a>.</p></li>
+			<li><p>If you use this software please cite: Liu H, Zheng J, Yu Y, Ye W, Peng D, Sun M. BtToxin_Digger: a comprehensive and high-throughput pipeline for mining toxin protein genes from <em>Bacillus thuringiensis</em>. <em>bioRxiv</em>, 2020. <a href="https://doi.org/10.1101/2020.05.26.114520">10.1101/2020.05.26.114520</a>.</p></li>
 
 			<li><p>If you used the genome assembly function, please also cite: Liu H, Xin B, Zheng J, Zhong H, Yu Y, Peng D, Sun M. Build a bioinformatics analysis platform and apply it to routine analysis of microbial genomics and comparative genomics. <em>Protocol exchange</em>, 2020. DOI: <a href="https://dx.doi.org/10.21203/rs.2.21224/v2">10.21203/rs.2.21224/v2</a>.</p></li>
 			</ul>
