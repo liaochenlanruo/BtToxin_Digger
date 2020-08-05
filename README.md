@@ -51,7 +51,7 @@
   - Added genome assembly functions, including second-generation short-reads assembly, third-generation long-reads assembly, and hybrid assembly of short-reads and long-reads, to realize the full-automatic mining of genes from Reads to virulence factors. The previous three input files (assembled genomes, ORFs and protein sequences) are still supported, and genome assembly can be used independently.
   - Fixed a bug where BtToxin_Digger often reported errors when processing assembled genomes.
   - Added support for CDSs and not limited to ORFs.
-  - The database has been updated, adding support for Cyt, Vip and other virulence factors.
+  - The database has been updated, adding support for App, Gpp, Mcf, Mpf, Mpp, Mtx, Pra, Prb, Spp, Tpp, Cyt, Vip, Vpa, Vpb, Xpp and other virulence factors.
   - BtToxin_Digger generates comprehensive and readable outputs including toxin list and sequence for each input; a matrix of all strains and the virulence factors it contains (behavior strain names, listed as virulence factor names), which can be used as virulence factors contained in the strain Database; and a file writes the information and sequences of all toxins (Table 1) to facilitate centralized processing and downstream analysis and experiment designs.
   - Added multi-thread support, greatly improving the running speed of the pipeline.
 
@@ -328,7 +328,10 @@ Please report any issues about usage of the software to the [issues page](https:
 ## Updates
 
 - v1.0.2
-  -Fixed a "Can not find path" error.
+  - Fixed a "Can not find path" error.
 
 - v1.0.3
-  -Fixed a bug of "get_all_info_nucl.pl", which can not get the gene location and strand information of some toxins.
+  - Fixed a bug of "get_all_info_nucl.pl", which can not get the gene location and strand information of some toxins.
+
+- v1.0.4
+  - Updated the database and models to support [the latest clasiffication of Bt toxins](https://www.bpprc.org).
