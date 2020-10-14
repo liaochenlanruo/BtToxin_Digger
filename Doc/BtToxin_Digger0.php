@@ -6,7 +6,6 @@
 <title>BtToxin_Digger</title>
 </head>
 -->
-
 <head>
 	<meta http-equiv="content-type" content="text/html;charset=utf-8"/>
 	<link href="css/pageStyle.css" rel="stylesheet" type="text/css" />
@@ -17,29 +16,36 @@
 
 <body class="body">
 
-
               <!--Start top-->             
               <div class="top_head">
                     <div class="top_img"><img src="img/head.jpg" width="900px" height="80px"></div>
                     <div class="top_menu">
                           <ul>
-                                <li><a href="./index.php">Home</a></li>
-								<li><a href="./Database.php">Database</a></li>
-								<li><a href="./Analysis.php">Analysis</a></li>
-								<li><a href="./BioTools.php">BioTools</a></li>
-								<li><a href="./Publication.php">Publication</a></li>
-								<li><a href="./About.php" class="last">About</a></li>
+                                <li><a href="index.php">Home</a></li>
+								<li><a href="BtToxin_Digger.php">Advanced</a></li>
+                                <li><a href="manual.php">Manual</a></li>
+                                <li><a href="License.php">License</a></li>
+                                <!--
+								<li><a href="database.php">Database</a></li>
+                                <li><a href="Blast.php">Bt Toxin Blast</a></li>
+								-->
+                                <li><a href="Supplement.php">Supplement</a></li>
+								<li><a href="weblink.php">Biotools</a></li>
+                                <li><a href="contact.php" class="last">Contact</a></li>
                           </ul>
                     </div>
               </div>
               <!--End top-->
 
-
+<!--
+<?php
+include_once 'top.html';
+?>
+-->
 <div class="page_content">
    <div class="main_content">
        <b class="b1"></b><b class="b2"></b><b class="b3"></b> 
 	   <div class="main_top"><a href="BtToxin_Digger.php">Advanced</a></div>
-
     <div class="Introduction">
          <div class="Introduction">
 
@@ -82,6 +88,37 @@
 
 			<li>Added multi-thread support, greatly improving the running speed of the pipeline.</li></ul></li>
 
+			<li><p><strong>Choose BtToxin_Scanner or BtToxin_Digger for analysis?</strong></p>
+
+			<ul>
+			<li><p>Choose BtToxin_Scanner</p></li>
+
+			<ul>
+
+			<li>When you have just several strains to analyze;</li>
+
+			<li>You only care about Cry protein;</li>
+
+			<li>You don't care about the domain of Cry protein;</li>
+
+			<li>You will be patient to manually summarize the mined toxin gene information and sequences into the table one by one;</li></ul>
+
+			<li><p>Choose BtToxin_Digger</p>
+
+			<ul>
+			<li>Errors occurred when using BtToxin_Scanner;</li>
+
+			<li>You have large-scale data to analyze;</li>
+
+			<li>You want to mine toxin genes from unassembled reads;</li>
+
+			<li>You care about not only Cry protein, but also Cyt, Vip and other virulence factors;</li>
+
+			<li>You want to know what domains the Cry protein contains;</li>
+
+			<li>You want to build a database of Strains vs. Toxins;</li>
+
+			<li>You have no patience to summarize the results;</li></ul></li></ul></li>
 			</ul>
 
 			<h3 id="installation">Installation</h3>
@@ -192,7 +229,7 @@
 
 			<li><strong>Results/Toxins/*.gbk:</strong> Toxin sequences in Genbank format of each strain;</li>
 
-			<li><strong>Results/Toxins/Bt_all_genes.table:</strong> A matrix describes Strains vs. Toxins;</li>
+			<li><strong>Results/Toxins/Bt<em>all</em>genes.table:</strong> A matrix describes Strains vs. Toxins;</li>
 
 			<li><strong>Results/Toxins/All_Toxins.txt:</strong> A table containing all information and sequences of all toxin genes. See table 1 for details.</li>
 			</ul>
@@ -286,7 +323,7 @@
 			</tr>
 			<tr>
 			<td style="text-align:left">Nomenclature</td>
-			<td style="text-align:left"><a href="https://camtech-bpp.ifas.ufl.edu/" target="_blank" rel="noopener">Bt nomenclature</a> containing 4 Ranks</td>
+			<td style="text-align:left"><a href="http://www.lifesci.sussex.ac.uk/home/Neil_Crickmore/Bt/" target="_blank" rel="noopener">Bt nomenclature</a> containing 4 Ranks</td>
 			</tr>
 			<tr>
 			<td style="text-align:left">Endotoxin_N</td>
@@ -515,9 +552,9 @@
 			<h3 id="citation">Citation</h3>
 
 			<ul>
-			<li><p>If you use this software please cite: Liu H, Zheng J, Yu Y, Ye W, Peng D, Sun M. BtToxin_Digger: a comprehensive and high-throughput pipeline for mining toxin protein genes from <em>Bacillus thuringiensis</em>. <em>bioRxiv</em>, 2020. <a href="https://doi.org/10.1101/2020.05.26.114520">10.1101/2020.05.26.114520</a>.</p></li>
+			<li><p>If you use this software please cite: Liu H, Zheng J, Yu Y, Ye W, Peng D, Sun M. BtToxin_Digger: a comprehensive and high-throughput pipeline for mining toxin protein genes from <em>Bacillus thuringiensis</em>. <em>bioRxiv</em>, 2020. DOI: <a href="https://doi.org/10.1101/2020.05.26.114520">10.1101/2020.05.26.114520</a>.</p></li>
 
-			<li><p>If you used the genome assembly function, please also cite: Liu H, Xin B, Zheng J, Zhong H, Yu Y, Peng D, Sun M. Build a bioinformatics analysis platform and apply it to routine analysis of microbial genomics and comparative genomics. <em>Protocol exchange</em>, 2020. DOI: <a href="https://dx.doi.org/10.21203/rs.2.21224/v3">10.21203/rs.2.21224/v3+</a>.</p></li>
+			<li><p>If you used the genome assembly function, please also cite: Liu H, Xin B, Zheng J, Zhong H, Yu Y, Peng D, Sun M. Build a bioinformatics analysis platform and apply it to routine analysis of microbial genomics and comparative genomics. <em>Protocol exchange</em>, 2020. DOI: <a href="https://dx.doi.org/10.21203/rs.2.21224/v2">10.21203/rs.2.21224/v2</a>.</p></li>
 			</ul>
 
 			<h3 id="faqs">FAQs</h3>
@@ -526,17 +563,10 @@
 
 			<ul>
 			<li><p>v1.0.2
-			Fixed a "Can not find path" error.</p></li>
+			-Fixed a "Can not find path" error.</p></li>
 
 			<li><p>v1.0.3
-			Fixed a bug of "get_all_info_nucl.pl", which can not get the gene location and strand information of some toxins.</p></li>
-
-			<li><p>v1.0.4
-			Updated the database and models to support <a href="https://www.bpprc.org">the latest clasiffication of Bt toxins</a>. </p></li>
-
-			<li><p>v1.0.5
-			The name of strains with no toxin found will be outputed into the file "Strains_without_toxins_found.txt".</p></li>
-
+			-Fixed a bug of "get_all_info_nucl.pl", which can not get the gene location and strand information of some toxins.</p></li>
 			</ul>
 
          </div>
