@@ -160,6 +160,8 @@ sub Step1  {
 		my $step1_out = $output_filename . ".step1";
 		my $out = Bio::SeqIO->new(-file => ">$step1_out", -format => "fasta");
 		my $idex1 = $step1_1_file . ".index";#modified
+		my $idex1_dir = $idex1 . ".dir";#2020.10.14
+		my $idex1_pag = $idex1 . ".pag";#2020.10.14
 		#my $idex2 = $step1_1_file . ".index";#modified
 		my %step1_ids;
 		foreach  (sort keys %step1_out)  {
@@ -173,11 +175,15 @@ sub Step1  {
 			}
 		}
 
-		system("rm $step1_1_file $idex1");#modified
+		#system("rm $step1_1_file $idex1 $idex1_dir $idex1_pag");#modified
+		system("rm $step1_1_file $idex1_dir $idex1_pag");#modified
 		return %step1_out;
 	}else  {
 		system("rm $step1_1_file @files");
-		printnoresults($output_filename);
+		open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
+		print OUT $output_filename . "\n";#2020.10.13
+		close OUT;#2020.10.13
+		#printnoresults($output_filename);#2020.10.13
 		#clear the temp files
 	}
 }
@@ -218,7 +224,11 @@ sub Step2  {
 		if($seq_number == 0)  {
 				#Clear the temp files
 				system("rm $step1_in");
-				printnoresults($output_filename);
+				open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
+				print OUT $output_filename . "\n";#2020.10.13
+				close OUT;#2020.10.13
+				exit;
+				#printnoresults($output_filename);#2020.10.13
 		}else  {
 			#Extract Sequence
 			my $db = &Index_maker('normal', $step1_in);
@@ -228,17 +238,23 @@ sub Step2  {
 				$out->write_seq($seq);
 			}
 			my $index1 = $step1_in . ".index";#modified
+			my $index1_dir = $index1 . ".dir";#2020.10.14
+			my $index1_pag = $index1 . ".pag";#2020.10.14
 			#my $index2 = $step1_in . ".index";#modified
 
 			#Clear the temp file
-			system("rm $index1 $step1_in");#modified
+			#system("rm $index1 $step1_in $index1_dir $index1_pag");#modified
+			system("rm $step1_in $index1_dir $index1_pag");#modified
 			return %step2_in;
 		}
 
 	}else  {
 		#clear the temp files
 		system("rm $step1_in");
-		printnoresults($output_filename);
+		open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
+		print OUT $output_filename . "\n";#2020.10.13
+		close OUT;#2020.10.13
+		#printnoresults($output_filename);#2020.10.13
 	}
 }
 
@@ -343,7 +359,10 @@ sub Step2x  {
 		my %domain = &hmm_prediction2($input, @domain_models);
 		return %domain;#2020/4/8
 	}else  {
-		printnoresults($output_filename);
+		open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
+		print OUT $output_filename . "\n";#2020.10.13
+		close OUT;#2020.10.13
+		#printnoresults($output_filename);#2020.10.13
 	}
 }
 
@@ -887,14 +906,16 @@ sub hmm_prediction  {
 
 =cut
 
+=pod
 sub printnoresults  {
 	my $str = @_;#
 	open OUT, ">>Strains_without_toxins_found.txt" || die;#
 	print OUT $str . "\n";#
-	#print "No Bt toxin has been detected.\n";
+	print "No Bt toxin has been detected in $str.\n";
+	close OUT;
 	exit;
 }
-
+=cut
 
 =head2
 
