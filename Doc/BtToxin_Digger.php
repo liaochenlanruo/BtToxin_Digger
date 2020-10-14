@@ -516,7 +516,7 @@
 			<ul>
 			<li><p>If you use this software please cite: Liu H, Zheng J, Yu Y, Ye W, Peng D, Sun M. BtToxin_Digger: a comprehensive and high-throughput pipeline for mining toxin protein genes from <em>Bacillus thuringiensis</em>. <em>bioRxiv</em>, 2020. <a href="https://doi.org/10.1101/2020.05.26.114520">10.1101/2020.05.26.114520</a>.</p></li>
 
-			<li><p>If you used the genome assembly function, please also cite: Liu H, Xin B, Zheng J, Zhong H, Yu Y, Peng D, Sun M. Build a bioinformatics analysis platform and apply it to routine analysis of microbial genomics and comparative genomics. <em>Protocol exchange</em>, 2020. DOI: <a href="https://dx.doi.org/10.21203/rs.2.21224/v3">10.21203/rs.2.21224/v3</a>.</p></li>
+			<li><p>If you used the genome assembly function, please also cite: Liu H, Xin B, Zheng J, Zhong H, Yu Y, Peng D, Sun M. Build a bioinformatics analysis platform and apply it to routine analysis of microbial genomics and comparative genomics. <em>Protocol exchange</em>, 2020. DOI: <a href="https://dx.doi.org/10.21203/rs.2.21224/v3">10.21203/rs.2.21224/v3+</a>.</p></li>
 			</ul>
 
 			<h3 id="faqs">FAQs</h3>
@@ -525,10 +525,17 @@
 
 			<ul>
 			<li><p>v1.0.2
-			-Fixed a "Can not find path" error.</p></li>
+			Fixed a "Can not find path" error.</p></li>
 
 			<li><p>v1.0.3
-			-Fixed a bug of "get_all_info_nucl.pl", which can not get the gene location and strand information of some toxins.</p></li>
+			Fixed a bug of "get_all_info_nucl.pl", which can not get the gene location and strand information of some toxins.</p></li>
+
+			<li><p>v1.0.4
+			Updated the database and models to support [the latest clasiffication of Bt toxins](https://www.bpprc.org). </p></li>
+
+			<li><p>v1.0.5
+			The name of strains with no toxin found will be outputed into the file "Strains_without_toxins_found.txt".</p></li>
+
 			</ul>
 
          </div>

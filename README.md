@@ -335,3 +335,6 @@ Please report any issues about usage of the software to the [issues page](https:
 
 - v1.0.4
   - Updated the database and models to support [the latest clasiffication of Bt toxins](https://www.bpprc.org).
+
+- v1.0.5
+  - The name of strains with no toxin found will be outputed into the file "Strains_without_toxins_found.txt".
