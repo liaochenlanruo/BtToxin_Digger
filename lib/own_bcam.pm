@@ -1,4 +1,4 @@
-#!/usr/bin/env perl
+#!/usr/bin/perl
 use strict;
 use warnings;
 
@@ -108,9 +108,9 @@ sub Step1  {
 		$dir = $1;
 	}
 	my @hmm_models = (
-						$dir . "/BTTCMP_models/hmm_models/cry.hmm",
-						$dir . "/BTTCMP_models/hmm_models/cyt.hmm",
-						$dir . "/BTTCMP_models/hmm_models/vip.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/cry.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/cyt.hmm",
+					        "/usr/local/bin/BTTCMP_models/hmm_models/vip.hmm",
 					);
 
 	#Combine all sequence files into seperate file
@@ -160,8 +160,6 @@ sub Step1  {
 		my $step1_out = $output_filename . ".step1";
 		my $out = Bio::SeqIO->new(-file => ">$step1_out", -format => "fasta");
 		my $idex1 = $step1_1_file . ".index";#modified
-		my $idex1_dir = $idex1 . ".dir";#2020.10.14
-		my $idex1_pag = $idex1 . ".pag";#2020.10.14
 		#my $idex2 = $step1_1_file . ".index";#modified
 		my %step1_ids;
 		foreach  (sort keys %step1_out)  {
@@ -175,15 +173,11 @@ sub Step1  {
 			}
 		}
 
-		#system("rm $step1_1_file $idex1 $idex1_dir $idex1_pag");#modified
-		system("rm $step1_1_file $idex1_dir $idex1_pag");#modified
+		system("rm $step1_1_file $idex1");#modified
 		return %step1_out;
 	}else  {
 		system("rm $step1_1_file @files");
-		open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
-		print OUT $output_filename . "\n";#2020.10.13
-		close OUT;#2020.10.13
-		#printnoresults($output_filename);#2020.10.13
+		printnoresults($output_filename);
 		#clear the temp files
 	}
 }
@@ -224,11 +218,7 @@ sub Step2  {
 		if($seq_number == 0)  {
 				#Clear the temp files
 				system("rm $step1_in");
-				open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
-				print OUT $output_filename . "\n";#2020.10.13
-				close OUT;#2020.10.13
-				exit;
-				#printnoresults($output_filename);#2020.10.13
+				printnoresults($output_filename);
 		}else  {
 			#Extract Sequence
 			my $db = &Index_maker('normal', $step1_in);
@@ -238,23 +228,17 @@ sub Step2  {
 				$out->write_seq($seq);
 			}
 			my $index1 = $step1_in . ".index";#modified
-			my $index1_dir = $index1 . ".dir";#2020.10.14
-			my $index1_pag = $index1 . ".pag";#2020.10.14
 			#my $index2 = $step1_in . ".index";#modified
 
 			#Clear the temp file
-			#system("rm $index1 $step1_in $index1_dir $index1_pag");#modified
-			system("rm $step1_in $index1_dir $index1_pag");#modified
+			system("rm $index1 $step1_in");#modified
 			return %step2_in;
 		}
 
 	}else  {
 		#clear the temp files
 		system("rm $step1_in");
-		open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
-		print OUT $output_filename . "\n";#2020.10.13
-		close OUT;#2020.10.13
-		#printnoresults($output_filename);#2020.10.13
+		printnoresults($output_filename);
 	}
 }
 
@@ -274,7 +258,7 @@ sub hmm_prediction2  {
 		#For each hmm models, implement hmmsearch
 		$hmm=~/.+\/(.+)/;
 		my $hmm_file_out = $seq_file . ".$1";
-		system("hmmsearch -E 1e-10 -o $hmm_file_out $hmm $seq_file");
+		system("/usr/local/bin/hmmsearch -E 1e-10 -o $hmm_file_out $hmm $seq_file");
 
 		#HMM results parsing
 		my $searchio = Bio::SearchIO->new(-file => $hmm_file_out, -format => "hmmer3");
@@ -347,22 +331,19 @@ sub Step2x  {
 		$dir = $1;
 	}
 	my @domain_models = (
-						$dir . "/BTTCMP_models/cry_domains/EndotoxinN.hmm",
-						$dir . "/BTTCMP_models/cry_domains/EndotoxinM.hmm",
-						$dir . "/BTTCMP_models/cry_domains/EndotoxinC.hmm",
-						$dir . "/BTTCMP_models/cry_domains/Endotoxin_mid.hmm",
-						$dir . "/BTTCMP_models/cry_domains/ETXMTX2.hmm",
-						$dir . "/BTTCMP_models/cry_domains/Toxin10.hmm",
+						"/usr/local/bin/BTTCMP_models/cry_domains/EndotoxinN.hmm",
+						"/usr/local/bin/BTTCMP_models/cry_domains/EndotoxinM.hmm",
+						"/usr/local/bin/BTTCMP_models/cry_domains/EndotoxinC.hmm",
+						"/usr/local/bin/BTTCMP_models/cry_domains/Endotoxin_mid.hmm",
+						"/usr/local/bin/BTTCMP_models/cry_domains/ETXMTX2.hmm",
+						"/usr/local/bin/BTTCMP_models/cry_domains/Toxin10.hmm",
 					);
 	my $input = $output_filename . ".step2";
 	if (-s "$input") {
 		my %domain = &hmm_prediction2($input, @domain_models);
 		return %domain;#2020/4/8
 	}else  {
-		open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
-		print OUT $output_filename . "\n";#2020.10.13
-		close OUT;#2020.10.13
-		#printnoresults($output_filename);#2020.10.13
+		printnoresults($output_filename);
 	}
 }
 
@@ -631,16 +612,17 @@ sub Blast_search  {
 		$dir = $1;
 	}
 	if($step eq 'step1')  {
-		$db = $dir . "/BTTCMP_db/bt_toxin/db/bt_toxin";
+		#$db = $dir . "/BTTCMP_db/bt_toxin/db/bt_toxin";
+		$db = "/usr/local/bin/BTTCMP_db/bt_toxin/db/bt_toxin";
 		$evalue = 1e-25;
-		system("blastp -query $input -out $output -db $db -evalue $evalue -num_threads 4");
+		system("/usr/local/bin/blastp -query $input -out $output -db $db -evalue $evalue -num_threads 4");
 		return $output;
 	}
 
 	if($step eq 'step2')  {
-		$db = $dir . "/BTTCMP_db/back/db/back";
+		$db = "/usr/local/bin/BTTCMP_db/back/db/back";
 		$evalue = 1e-30;
-		system("blastp -query $input -out $output -db $db -evalue $evalue -num_threads 4");
+		system("/usr/local/bin/blastp -query $input -out $output -db $db -evalue $evalue -num_threads 4");
 		return $output;
 	}
 }
@@ -734,7 +716,7 @@ sub svm_prediction  {
 		$dir = $1;
 	}
 	#set the parameter 
-	my $svm_model = $dir . "/BTTCMP_models/svm_model/model";
+	my $svm_model = "/usr/local/bin/BTTCMP_models/svm_model/model";
 
 	#set file holding sequence feature
 	my $svm_input = $input . ".feat";
@@ -763,7 +745,7 @@ sub svm_prediction  {
 	}
 
 	#Implement SVM prediction
-	system("svm-predict $svm_input $svm_model $svm_output");
+	system("/usr/local/bin/svm-predict $svm_input $svm_model $svm_output");
 
 	#parse SVM prediction results
 	open(MYHAND, $svm_output) || die "could not open.\n";
@@ -862,7 +844,7 @@ sub hmm_prediction  {
 	foreach my $hmm(@hmm_models)  {
 		#For each hmm models, implement hmmsearch
 		my $hmm_file_out = $seq_file . ".hmmout";
-		system("hmmsearch -E 1e-10 -o $hmm_file_out $hmm $seq_file");
+		system("/usr/local/bin/hmmsearch -E 1e-10 -o $hmm_file_out $hmm $seq_file");
 
 		#HMM results parsing
 		my $searchio = Bio::SearchIO->new(-file => $hmm_file_out, -format => "hmmer3");
@@ -906,16 +888,14 @@ sub hmm_prediction  {
 
 =cut
 
-=pod
 sub printnoresults  {
 	my $str = @_;#
 	open OUT, ">>Strains_without_toxins_found.txt" || die;#
 	print OUT $str . "\n";#
-	print "No Bt toxin has been detected in $str.\n";
-	close OUT;
+	#print "No Bt toxin has been detected.\n";
 	exit;
 }
-=cut
+
 
 =head2
 
