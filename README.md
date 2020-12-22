@@ -2,7 +2,7 @@
 
 ![Platform](https://badgen.net/badge/platform/WSL,Linux,macOS,Docker?list=|)
 ![License](https://badgen.net/github/license/liaochenlanruo/BtToxin_Digger)
-[![GitHubversion](https://badge.fury.io/gh/liaochenlanruo%2FBtToxin_Digger.svg)](https://badge.fury.io/gh/liaochenlanruo%2FBtToxin_Digger)
+[![Version](https://anaconda.org/bioconda/bttoxin_digger/badges/version.svg)](https://anaconda.org/bioconda/bttoxin_digger)
 ![Downloads conda](https://img.shields.io/conda/dn/bioconda/bttoxin_digger.svg?style=flat)
 [![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)](http://bioconda.github.io/recipes/bttoxin_digger/README.html)
 
