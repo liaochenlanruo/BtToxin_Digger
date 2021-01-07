@@ -238,8 +238,10 @@ sub Step2  {
 				$out->write_seq($seq);
 			}
 			my $index1 = $step1_in . ".index";#modified
-			my $index1_dir = $index1 . ".dir";#2020.10.14
-			my $index1_pag = $index1 . ".pag";#2020.10.14
+			#my $index1_dir = $index1 . ".dir";#2020.10.14
+			my $index1_dir = $index1 . ".index";#2021.01.07
+			#my $index1_pag = $index1 . ".pag";#2020.10.14
+			my $index1_pag = $index1 . "_in.index";#2021.01.07
 			#my $index2 = $step1_in . ".index";#modified
 
 			#Clear the temp file

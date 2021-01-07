@@ -270,7 +270,7 @@ $options{'prot_suffix=s'} = \( my $opt_prot_suffix = ".faa" );
 GetOptions(%options) or pod2usage("Try '$0 --help' for more information.");
 
 if($opt_version){
-	print "version: 1.0.5\n";
+	print "version: 1.0.6\n";
 	exit 0;
 }
 
@@ -284,9 +284,9 @@ if ($opt_help) {
 if ($opt_SequenceType eq "nucl") {
 	tee STDOUT, ">>BtToxin_Digger.log";
 	system("pgcgap --ACC --Assess --filter_length 300 --scafPath $opt_SeqPath --Scaf_suffix $opt_Scaf_suffix");
-	my @scaf = glob("$opt_SeqPath/*.filtered.fas");
+	my @scaf = glob("$opt_SeqPath/Filtered/*.filtered.fas");
 	foreach  (@scaf) {
-		$_=~/$opt_SeqPath\/(\S+).filtered.fas/;
+		$_=~/$opt_SeqPath\/Filtered\/(\S+).filtered.fas/;
 		my $out = $1;
 		system("coreprocess.pl $_ $out nucl");
 	}
