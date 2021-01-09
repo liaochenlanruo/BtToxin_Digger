@@ -543,6 +543,9 @@
 			<li><p>v1.0.7
 			To delete the intermediate files.</p></li>
 
+			<li><p>v1.0.8
+			To delete the intermediate files.</p></li>
+
 			</ul>
 
          </div>

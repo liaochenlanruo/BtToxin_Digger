@@ -270,7 +270,7 @@ $options{'prot_suffix=s'} = \( my $opt_prot_suffix = ".faa" );
 GetOptions(%options) or pod2usage("Try '$0 --help' for more information.");
 
 if($opt_version){
-	print "version: 1.0.7\n";
+	print "version: 1.0.8\n";
 	exit 0;
 }
 
