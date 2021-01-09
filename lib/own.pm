@@ -176,7 +176,8 @@ sub Step1  {
 		}
 
 		#system("rm $step1_1_file $idex1 $idex1_dir $idex1_pag");#modified
-		system("rm $step1_1_file $idex1_dir $idex1_pag");#modified
+		##system("rm $step1_1_file $idex1_dir $idex1_pag");#modified
+		system("rm $step1_1_file");#modified
 		return %step1_out;
 	}else  {
 		system("rm $step1_1_file @files");
