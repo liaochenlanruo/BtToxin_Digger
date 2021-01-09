@@ -228,6 +228,9 @@ sub Step2  {
 				open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
 				print OUT $output_filename . "\n";#2020.10.13
 				close OUT;#2020.10.13
+				my $index1 = $step1_in . "_in.index";##
+				system("rm $index1");##
+				#print "line 231\n";
 				exit;
 				#printnoresults($output_filename);#2020.10.13
 		}else  {
