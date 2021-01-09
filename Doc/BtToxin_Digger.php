@@ -540,6 +540,9 @@
 			<li><p>v1.0.6
 			Update to adapt to PGCGAP v1.0.23, and to delete the intermediate files.</p></li>
 
+			<li><p>v1.0.7
+			To delete the intermediate files.</p></li>
+
 			</ul>
 
          </div>
