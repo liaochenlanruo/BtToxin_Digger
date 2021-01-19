@@ -176,7 +176,8 @@ sub Step1  {
 		}
 
 		#system("rm $step1_1_file $idex1 $idex1_dir $idex1_pag");#modified
-		system("rm $step1_1_file $idex1_dir $idex1_pag");#modified
+		##system("rm $step1_1_file $idex1_dir $idex1_pag");#modified
+		system("rm $step1_1_file");#modified
 		return %step1_out;
 	}else  {
 		system("rm $step1_1_file @files");
@@ -227,6 +228,9 @@ sub Step2  {
 				open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
 				print OUT $output_filename . "\n";#2020.10.13
 				close OUT;#2020.10.13
+				my $index1 = $step1_in . "_in.index";##
+				system("rm $index1");##
+				#print "line 231\n";
 				exit;
 				#printnoresults($output_filename);#2020.10.13
 		}else  {
@@ -238,8 +242,10 @@ sub Step2  {
 				$out->write_seq($seq);
 			}
 			my $index1 = $step1_in . ".index";#modified
-			my $index1_dir = $index1 . ".dir";#2020.10.14
-			my $index1_pag = $index1 . ".pag";#2020.10.14
+			#my $index1_dir = $index1 . ".dir";#2020.10.14
+			my $index1_dir = $step1_in . ".index";#2021.01.07
+			#my $index1_pag = $index1 . ".pag";#2020.10.14
+			my $index1_pag = $step1_in . "_in.index";#2021.01.07
 			#my $index2 = $step1_in . ".index";#modified
 
 			#Clear the temp file

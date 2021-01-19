@@ -537,6 +537,15 @@
 			<li><p>v1.0.5
 			The name of strains with no toxin found will be outputed into the file "Strains_without_toxins_found.txt".</p></li>
 
+			<li><p>v1.0.6
+			Update to adapt to PGCGAP v1.0.23, and to delete the intermediate files.</p></li>
+
+			<li><p>v1.0.7
+			To delete the intermediate files.</p></li>
+
+			<li><p>v1.0.8
+			To delete the intermediate files.</p></li>
+
 			</ul>
 
          </div>
