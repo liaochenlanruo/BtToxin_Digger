@@ -85,7 +85,7 @@
 			</ul>
 
 			<h3 id="installation">Installation</h3>
-
+			<p>See <a href=https://github.com/liaochenlanruo/BtToxin_Digger target="black">GitHub</a> for more details.</p>
 			<ul>
 			<li><p>Required dependencies</p>
 
@@ -396,7 +396,7 @@
 			</tr>
 			</tbody>
 			</table></code></pre>
-
+			<strong>Footnote</strong>: BtToxin_Digger simultaneously uses BLAST, HMMER, and LIBSVM to predict insecticidal proteins. These three methods complement each other to discover insecticidal proteins as much as possible. However, due to the differences in algorithms, not all of them can identify a protein sequence as insecticidal protein at the same time. Columns 6, 7, and 8 of Table 2 show which algorithm or algorithms the insecticidal protein was identified by. YES indicates that the insecticidal protein was identified by the algorithm, while NO and NA indicate that the insecticidal protein was not identified by the algorithm. It should be noted that the insecticidal protein predicted by any method should be effective.
 
 			<p><br><strong>Table 3. The contents of "Bt_all_genes.table"</strong></p>
 			<pre style="color:black;background-color:white;line-height: 22px;font-size: 14px;overflow-x:scroll;padding-left: 5px;padding-right: 5px;"><code>
@@ -500,9 +500,9 @@
 			<td style="text-align:center">100.00</td>
 			</tr>
 			</tbody>
-			</table>
-			<p><strong>Footnote:</strong> The float number represent the identity of blast search, and the integer number represent the number of toxins predicted by HMM and SVM.</p>
-			</code></pre>
+			</table></code></pre>
+			<strong>Footnote:</strong> The float number represent the identity of blast search, and the integer number represent the number of toxins predicted by HMM and SVM.
+			
 
 			<h3 id="license">License</h3>
 
@@ -517,7 +517,7 @@
 			<ul>
 			<li><p>If you use this software please cite: Liu H, Zheng J, Yu Y, Ye W, Peng D, Sun M. BtToxin_Digger: a comprehensive and high-throughput pipeline for mining toxin protein genes from <em>Bacillus thuringiensis</em>. <em>bioRxiv</em>, 2020. <a href="https://doi.org/10.1101/2020.05.26.114520">10.1101/2020.05.26.114520</a>.</p></li>
 
-			<li><p>If you used the genome assembly function, please also cite: Liu H, Xin B, Zheng J, Zhong H, Yu Y, Peng D, Sun M. Build a bioinformatics analysis platform and apply it to routine analysis of microbial genomics and comparative genomics. <em>Protocol exchange</em>, 2020. DOI: <a href="https://dx.doi.org/10.21203/rs.2.21224/v3">10.21203/rs.2.21224/v3+</a>.</p></li>
+			<li><p>If you used the genome assembly function, please also cite: Liu H, Xin B, Zheng J, Zhong H, Yu Y, Peng D, Sun M. Build a bioinformatics analysis platform and apply it to routine analysis of microbial genomics and comparative genomics. <em>Protocol exchange</em>, 2020. DOI: <a href="https://dx.doi.org/10.21203/rs.2.21224/v5">10.21203/rs.2.21224/v5</a>.</p></li>
 			</ul>
 
 			<h3 id="faqs">FAQs</h3>
@@ -546,8 +546,8 @@
 			<li><p>v1.0.8
 			To delete the intermediate files.</p></li>
 
-			<li><p>v1.0.9
-			Update the database to keep it consistent with the BPPRC (to 2021-06-07).<br/>
+			<li><p>v1.0.9</p>
+			<p>Update the database to keep it consistent with the BPPRC (to 2021-06-07).<br/>
 			More HMM models are added.<br/>
 			The filter length of amino acid sequence was reduced from 115 to 75.<br/>
 			Solved a problem: BioPerl reported an error when the length of the sequence in the input file was inconsistent.</p></li>
