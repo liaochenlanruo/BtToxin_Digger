@@ -6,7 +6,7 @@ use File::Tee qw(tee);
 use Pod::Usage;
 use Getopt::Long;
 use Cwd;
-
+use Bio::SeqIO;
 
 my $working_dir = getcwd;
 my %options;
@@ -270,7 +270,7 @@ $options{'prot_suffix=s'} = \( my $opt_prot_suffix = ".faa" );
 GetOptions(%options) or pod2usage("Try '$0 --help' for more information.");
 
 if($opt_version){
-	print "version: 1.0.8\n";
+	print "version: 1.0.9\n";
 	exit 0;
 }
 
@@ -298,8 +298,14 @@ if ($opt_SequenceType eq "nucl") {
 	my @orfs = glob("$opt_SeqPath/*$opt_orfs_suffix");
 	foreach  (@orfs) {
 		$_=~/$opt_SeqPath\/(\S+)$opt_orfs_suffix/;
-		my $out = $1;
-		system("coreprocess.pl $_ $out orfs");
+		my $outs = $1;
+		my $str = $1 . ".formated";
+		my $in = Bio::SeqIO->new(-file=>"$_", -format=>"fasta");
+		my $out = Bio::SeqIO->new(-file=>">$str", -format=>"fasta");
+		while ( my $seq = $in->next_seq) {
+			$out->write_seq($seq);
+		}
+		system("coreprocess.pl $str $outs orfs");
 	}
 	chdir "Results/Toxins";
 	system("get_all_info_orfs.pl");
@@ -309,8 +315,14 @@ if ($opt_SequenceType eq "nucl") {
 	my @prot = glob("$opt_SeqPath/*$opt_prot_suffix");
 	foreach  (@prot) {
 		$_=~/$opt_SeqPath\/(\S+)$opt_prot_suffix/;
-		my $out = $1;
-		system("coreprocess.pl $_ $out prot");
+		my $outs = $1;
+		my $str = $1 . ".formated";
+		my $in = Bio::SeqIO->new(-file=>"$_", -format=>"fasta");
+		my $out = Bio::SeqIO->new(-file=>">$str", -format=>"fasta");
+		while ( my $seq = $in->next_seq) {
+			$out->write_seq($seq);
+		}
+		system("coreprocess.pl $str $outs prot");
 	}
 	chdir "Results/Toxins";
 	system("get_all_info_prot.pl");

@@ -546,6 +546,12 @@
 			<li><p>v1.0.8
 			To delete the intermediate files.</p></li>
 
+			<li><p>v1.0.9
+			Update the database to keep it consistent with the BPPRC (to 2021-06-07).<br/>
+			More HMM models are added.<br/>
+			The filter length of amino acid sequence was reduced from 115 to 75.<br/>
+			Solved a problem: BioPerl reported an error when the length of the sequence in the input file was inconsistent.</p></li>
+			
 			</ul>
 
          </div>

@@ -108,22 +108,22 @@ sub Step1  {
 		$dir = $1;
 	}
 	my @hmm_models = (
-						$dir . "/BTTCMP_models/hmm_models/Cry.hmm",
-						$dir . "/BTTCMP_models/hmm_models/Cyt.hmm",
-						$dir . "/BTTCMP_models/hmm_models/Vip.hmm",
-						$dir . "/BTTCMP_models/hmm_models/App.hmm",
-						$dir . "/BTTCMP_models/hmm_models/Gpp.hmm",
-						$dir . "/BTTCMP_models/hmm_models/Mcf.hmm",
-						$dir . "/BTTCMP_models/hmm_models/Mpf.hmm",
-						$dir . "/BTTCMP_models/hmm_models/Mpp.hmm",
-						$dir . "/BTTCMP_models/hmm_models/Mtx.hmm",
-						$dir . "/BTTCMP_models/hmm_models/Pra.hmm",
-						$dir . "/BTTCMP_models/hmm_models/Prb.hmm",
-						$dir . "/BTTCMP_models/hmm_models/Spp.hmm",
-						$dir . "/BTTCMP_models/hmm_models/Tpp.hmm",
-						$dir . "/BTTCMP_models/hmm_models/Vpa.hmm",
-						$dir . "/BTTCMP_models/hmm_models/Vpb.hmm",
-						$dir . "/BTTCMP_models/hmm_models/Xpp.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/cry.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/cyt.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/vip.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/App.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/Gpp.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/Mcf.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/Mpf.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/Mpp.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/Mtx.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/Pra.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/Prb.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/Spp.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/Tpp.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/Vpa.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/Vpb.hmm",
+						"/usr/local/bin/BTTCMP_models/hmm_models/Xpp.hmm",
 					);
 
 	#Combine all sequence files into seperate file
@@ -190,7 +190,10 @@ sub Step1  {
 		return %step1_out;
 	}else  {
 		system("rm $step1_1_file @files");
-		printnoresults($output_filename);
+		#printnoresults($output_filename);
+		open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
+		print OUT $output_filename . "\n";#2020.10.13
+		close OUT;#2020.10.13
 		#clear the temp files
 	}
 }
@@ -204,21 +207,48 @@ sub Step1  {
  Args    : 
 =cut
 
+sub mergeHash {
+    my $param1 = shift;
+    my %hash1 = %$param1;
+    my $param2 = shift;
+    my %hash2 = %$param2;
+    foreach my $ke (keys %hash1){
+        if(exists $hash2{$ke}){
+#            print "coming in here for $hash1->{$key} \n";
+            $hash2{$ke} = $hash1{$ke} . "\t" . $hash2{$ke};
+        }
+        else{
+            $hash2{$ke} = $hash1{$ke};
+        }
+    }
+	return \%hash2;
+#    showHash(\%hash2);
+}
+
+
 sub Step2  {
 	my ($output_filename, %step2_in) = @_;
 	my $step1_in = $output_filename . ".step1";
 	my $step2_out = $output_filename . ".step2";
 
-	#If size is greater than 0, Implement BLAST, SVM and HMM prediction
+	#If size is greater than 0, Implement BLAST
 	if(-s "$step1_in")  {
 		my $Blast_result = &Blast_search('step2', $step1_in);
 		my %step2_out = &Blast_parser1($Blast_result);
 		my $seq_number = 0;
 		my %seq_ids;
-		foreach my $key(sort keys %step2_in)  {
-			my $temp = $step2_in{$key};
-			foreach (sort keys %$temp)  {
-				if((exists $step2_out{$_}) && (!($$temp{$_} =~ /Vip\.hmm|Cyt\.hmm|Cry\.hmm|App\.hmm|Gpp\.hmm|Mcf\.hmm|Mpf\.hmm|Mpp\.hmm|Mtx\.hmm|Pra\.hmm|Prb\.hmm|Spp\.hmm|Tpp\.hmm|Vpa\.hmm|Vpb\.hmm|Xpp\.hmm/i)))  {
+		my @blasthmmsvm = sort keys %step2_in;#$blasthmmsvm[0] = blast, $blasthmmsvm[1] = hmm, $blasthmmsvm[2] = svm
+		my $blast = $step2_in{$blasthmmsvm[0]};# $blast = \%blast_results
+		my $hmm = $step2_in{$blasthmmsvm[1]};# $hmm = \%hmm_results
+		my $svm = $step2_in{$blasthmmsvm[2]};# $svm = \%svm_results
+		my $bh = mergeHash($blast, $hmm);
+		my $bhs = mergeHash($bh, $svm);# $bhs = \%blast_results + \%hmm_results + \%svm_results
+
+		foreach my $key (sort keys %step2_in)  {# key = blast hmm svm
+			my $temp = $step2_in{$key};# $temp = \%blast_results, \%hmm_results, \%svm_results
+			foreach (sort keys %$temp)  {# %$temp = %blast_results, %hmm_results, %svm_results  $_ = sequence ids
+				#if((exists $step2_out{$_}) && (!($$temp{$_} =~ /vip\.hmm|cyt\.hmm|cry\.hmm|App\.hmm|Gpp\.hmm|Mcf\.hmm|Mpf\.hmm|Mpp\.hmm|Mtx\.hmm|Pra\.hmm|Prb\.hmm|Spp\.hmm|Tpp\.hmm|Vpa\.hmm|Vpb\.hmm|Xpp\.hmm/i)))  {
+				if((exists $step2_out{$_}) && (!($$bhs{$_} =~ /vip\.hmm|cyt\.hmm|cry\.hmm|App\.hmm|Gpp\.hmm|Mcf\.hmm|Mpf\.hmm|Mpp\.hmm|Mtx\.hmm|Pra\.hmm|Prb\.hmm|Spp\.hmm|Tpp\.hmm|Vpa\.hmm|Vpb\.hmm|Xpp\.hmm/i)))  {
 					delete $$temp{$_};
 				}else  {
 					if(!(exists $seq_ids{$_}))  {
@@ -229,9 +259,15 @@ sub Step2  {
 			}
 		}
 		if($seq_number == 0)  {
-				#Clear the temp files
-				system("rm $step1_in");
-				printnoresults($output_filename);
+			#Clear the temp files
+			system("rm $step1_in");
+			#printnoresults($output_filename);
+			open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
+			print OUT $output_filename . "\n";#2020.10.13
+			close OUT;#2020.10.13
+			my $index1 = $step1_in . "_in.index";##
+			system("rm $index1");##
+			exit;
 		}else  {
 			#Extract Sequence
 			my $db = &Index_maker('normal', $step1_in);
@@ -251,7 +287,10 @@ sub Step2  {
 	}else  {
 		#clear the temp files
 		system("rm $step1_in");
-		printnoresults($output_filename);
+		#printnoresults($output_filename);
+		open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
+		print OUT $output_filename . "\n";#2020.10.13
+		close OUT;#2020.10.13
 	}
 }
 
@@ -271,7 +310,7 @@ sub hmm_prediction2  {
 		#For each hmm models, implement hmmsearch
 		$hmm=~/.+\/(.+)/;
 		my $hmm_file_out = $seq_file . ".$1";
-		system("hmmsearch -E 1e-10 -o $hmm_file_out $hmm $seq_file");
+		system("/usr/local/bin/hmmsearch -E 1e-10 -o $hmm_file_out $hmm $seq_file");
 
 		#HMM results parsing
 		my $searchio = Bio::SearchIO->new(-file => $hmm_file_out, -format => "hmmer3");
@@ -344,19 +383,22 @@ sub Step2x  {
 		$dir = $1;
 	}
 	my @domain_models = (
-						$dir . "/BTTCMP_models/cry_domains/EndotoxinN.hmm",
-						$dir . "/BTTCMP_models/cry_domains/EndotoxinM.hmm",
-						$dir . "/BTTCMP_models/cry_domains/EndotoxinC.hmm",
-						$dir . "/BTTCMP_models/cry_domains/Endotoxin_mid.hmm",
-						$dir . "/BTTCMP_models/cry_domains/ETXMTX2.hmm",
-						$dir . "/BTTCMP_models/cry_domains/Toxin10.hmm",
+						"/usr/local/bin/BTTCMP_models/cry_domains/EndotoxinN.hmm",
+						"/usr/local/bin/BTTCMP_models/cry_domains/EndotoxinM.hmm",
+						"/usr/local/bin/BTTCMP_models/cry_domains/EndotoxinC.hmm",
+						"/usr/local/bin/BTTCMP_models/cry_domains/Endotoxin_mid.hmm",
+						"/usr/local/bin/BTTCMP_models/cry_domains/ETXMTX2.hmm",
+						"/usr/local/bin/BTTCMP_models/cry_domains/Toxin10.hmm",
 					);
 	my $input = $output_filename . ".step2";
 	if (-s "$input") {
 		my %domain = &hmm_prediction2($input, @domain_models);
 		return %domain;#2020/4/8
 	}else  {
-		printnoresults($output_filename);
+		#printnoresults($output_filename);
+		open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
+		print OUT $output_filename . "\n";#2020.10.13
+		close OUT;#2020.10.13
 	}
 }
 
@@ -377,7 +419,7 @@ sub Step3  {
 =head2 Length_Filter
  Title   : Length_Filter
  Usage   : @prot = &Length_Filter(@inputs)
- Function: Retain those proteins with sequences length greater than 115 amino acid residues
+ Function: Retain those proteins with sequences length greater than 75 amino acid residues
  Returns : An array of files contains multiple fasta format of protein sequences
  Args    : An array of files contains multiple fasta format of protein sequences
 =cut
@@ -394,10 +436,11 @@ sub Length_Filter  {
 		my $in = Bio::SeqIO->new(-file => $inputs, -format => "fasta");
  		my $out = Bio::SeqIO->new(-file => ">$output", -format => "fasta");
 
-		#Pick up those protein sequence with sequence length greater than 115 amino acid residues
+		#Pick up those protein sequence with sequence length greater than 75 amino acid residues
 		while(my $seq = $in->next_seq)  {
 			$seq_count++;
-			if(($seq->length >= 115) && !($seq->seq =~ /[^acdefghiklmnpqrstvwy]/i))  {
+			#if(($seq->length >= 75) && !($seq->seq =~ /[^acdefghiklmnpqrstvwy]/i))  {
+			if($seq->length >= 75)  {
 				$out->write_seq($seq);
 			}
 		}
@@ -439,9 +482,10 @@ sub Batch_translation  {
 
 		while(my $seq = $orf_in->next_seq())  {
 		$seq_count++;
-		#Make sure that the sequences length is between 115 amino acid residues
+		#Make sure that the sequences length is between 75 amino acid residues
 		#Make sure that the sequences is a open reading frames, else return error
-		if(($seq->length >= 348) && !($seq->seq =~ /[^atcg]/i))  {
+		#if(($seq->length >= 225) && !($seq->seq =~ /[^atcg]/i))  {
+		if($seq->length >= 225)  {
 			my $prot = $seq->translate(-complete => 1, -throw => 0, -codontable => $CodonTable);
 			$prot_out->write_seq($prot);
 		}
@@ -492,8 +536,8 @@ sub six_translation  {
 			my $desc = $seq->description;
 			$seq = Bio::Seq->new(-id => $seq_id, -seq => $seqstr, -desc => $desc);
 			my $seq_len = $seq->length;
-
-			if(($seq->length >= 345) && !($seq->seq =~ /[^atcg]/i))  {
+			#if(($seq->length >= 345) && !($seq->seq =~ /[^atcg]/i))  {
+			if($seq->length >= 225)  {
 				my $frame_number = 0;
 				my $id = '';
 				my $pre_length = 0;
@@ -522,7 +566,7 @@ sub six_translation  {
 								$start = $total_len * 3 + $flag;
 								$total_len += $frame_length;
 								$end = $total_len * 3 + $flag - 1;
-								if($frame_length >= 115)  {
+								if($frame_length >= 75)  {
 									$frame_number++;
 									$repeat = $orf_width - length($frame_number);
 									$frame_tag = '0' x$repeat . $frame_number;
@@ -564,7 +608,7 @@ sub six_translation  {
 								$start = $seq_len - $start + 1;
 								$end = $seq_len - $end + 1;
 
-							if($frame_length >= 115)  {
+							if($frame_length >= 75)  {
 								$frame_number++;
 								$repeat = $orf_width - length($frame_number);
 								$frame_tag = '0' x$repeat . $frame_number;
@@ -625,16 +669,16 @@ sub Blast_search  {
 		$dir = $1;
 	}
 	if($step eq 'step1')  {
-		$db = $dir . "/BTTCMP_db/bt_toxin/db/bt_toxin";
+		$db = "/usr/local/bin/BTTCMP_db/bt_toxin/db/bt_toxin";
 		$evalue = 1e-25;
-		system("blastp -query $input -out $output -db $db -evalue $evalue -num_threads 4");
+		system("/usr/local/bin/blastp -query $input -out $output -db $db -evalue $evalue -num_threads 1");
 		return $output;
 	}
 
 	if($step eq 'step2')  {
-		$db = $dir . "/BTTCMP_db/back/db/back";
+		$db = "/usr/local/bin/BTTCMP_db/back/db/back";
 		$evalue = 1e-30;
-		system("blastp -query $input -out $output -db $db -evalue $evalue -num_threads 4");
+		system("/usr/local/bin/blastp -query $input -out $output -db $db -evalue $evalue -num_threads 1");
 		return $output;
 	}
 }
@@ -728,7 +772,7 @@ sub svm_prediction  {
 		$dir = $1;
 	}
 	#set the parameter 
-	my $svm_model = $dir . "/BTTCMP_models/svm_model/model";
+	my $svm_model = "/usr/local/bin/BTTCMP_models/svm_model/model";
 
 	#set file holding sequence feature
 	my $svm_input = $input . ".feat";
@@ -757,7 +801,7 @@ sub svm_prediction  {
 	}
 
 	#Implement SVM prediction
-	system("svm-predict $svm_input $svm_model $svm_output");
+	system("/usr/local/bin/svm-predict $svm_input $svm_model $svm_output");
 
 	#parse SVM prediction results
 	open(MYHAND, $svm_output) || die "could not open.\n";
@@ -856,7 +900,7 @@ sub hmm_prediction  {
 	foreach my $hmm(@hmm_models)  {
 		#For each hmm models, implement hmmsearch
 		my $hmm_file_out = $seq_file . ".hmmout";
-		system("hmmsearch -E 1e-10 -o $hmm_file_out $hmm $seq_file");
+		system("/usr/local/bin/hmmsearch -E 1e-10 -o $hmm_file_out $hmm $seq_file");
 
 		#HMM results parsing
 		my $searchio = Bio::SearchIO->new(-file => $hmm_file_out, -format => "hmmer3");
@@ -900,6 +944,7 @@ sub hmm_prediction  {
 
 =cut
 
+=pod
 sub printnoresults  {
 	my $str = @_;#
 	open OUT, ">>Strains_without_toxins_found.txt" || die;#
@@ -907,7 +952,7 @@ sub printnoresults  {
 	#print "No Bt toxin has been detected.\n";
 	exit;
 }
-
+=cut
 
 =head2
 
@@ -1229,7 +1274,7 @@ sub Writer  {
 		}
 		#=================20200730  end===================================================
 		#process cyt predicted by hmm method
-		if($$hmm{$_} =~ /Cyt.hmm/i)  {
+		if($$hmm{$_} =~ /cyt.hmm/i)  {
 			if(exists $$blast{$_})  {
 				my %temp;
 				my @blast_split = split /\t/, $$blast{$_};
@@ -1250,12 +1295,13 @@ sub Writer  {
 							'Percent_identity'   => $temp{'Percent_identity'},
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
-							'Endotoxin_N'        => 'NA',#2020/4/7
-							'Endotoxin_M'        => 'NA',#2020/4/7
-							'Endotoxin_C'        => 'NA',#2020/4/7
-							'Endotoxin_mid'        => 'NA',#2020/4/8
-							'ETX_MTX2'           => 'NA',#2020/4/7
-							'Toxin_10'           => 'NA',#2020/4/7
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => 'NO',#2020/4/7
+							'Endotoxin_M'        => 'NO',#2020/4/7
+							'Endotoxin_C'        => 'NO',#2020/4/7
+							'Endotoxin_mid'        => 'NO',#2020/4/8
+							'ETX_MTX2'           => 'NO',#2020/4/7
+							'Toxin_10'           => 'NO',#2020/4/7
 							};
 				if(exists $$svm{$_})  {
 					$cyt{$_}->{'svm_prediction'} = 'YES';
@@ -1293,12 +1339,12 @@ sub Writer  {
 							  'e-value'            => 'ND',
 							  'blast_detail'       => 'ND',
 							  'hmm_detail'         => $$hmm{$_},
-							  'Endotoxin_N'        => 'NA',#2020/4/7
-							  'Endotoxin_M'        => 'NA',#2020/4/7
-							  'Endotoxin_C'        => 'NA',#2020/4/7
-							  'Endotoxin_mid'        => 'NA',#2020/4/8
-							  'ETX_MTX2'           => 'NA',#2020/4/7
-							  'Toxin_10'           => 'NA',#2020/4/7
+							  'Endotoxin_N'        => 'NO',#2020/4/7
+							  'Endotoxin_M'        => 'NO',#2020/4/7
+							  'Endotoxin_C'        => 'NO',#2020/4/7
+							  'Endotoxin_mid'        => 'NO',#2020/4/8
+							  'ETX_MTX2'           => 'NO',#2020/4/7
+							  'Toxin_10'           => 'NO',#2020/4/7
 							};
 				if(exists $$svm{$_})  {
 						$cyt{$_}->{'svm_prediction'} = 'YES';
@@ -1310,7 +1356,7 @@ sub Writer  {
 			}
 		}
 		#process vip predicted by hmm method
-		if($$hmm{$_} =~ /Vip.hmm/i)  {
+		if($$hmm{$_} =~ /vip.hmm/i)  {
 			if(!(exists $$blast{$_}))  {
 				$Vip_count++;
 				$vip{$_} = {
@@ -1327,12 +1373,12 @@ sub Writer  {
 							'e-value'            => 'ND',
 							'blast_detail'       => 'ND',
 							'hmm_detail'         => $$hmm{$_},
-							'Endotoxin_N'        => 'NA',#2020/4/7
-							'Endotoxin_M'        => 'NA',#2020/4/7
-							'Endotoxin_C'        => 'NA',#2020/4/7
-							'Endotoxin_mid'        => 'NA',#2020/4/8
-							'ETX_MTX2'           => 'NA',#2020/4/7
-							'Toxin_10'           => 'NA',#2020/4/7
+							'Endotoxin_N'        => 'NO',#2020/4/7
+							'Endotoxin_M'        => 'NO',#2020/4/7
+							'Endotoxin_C'        => 'NO',#2020/4/7
+							'Endotoxin_mid'        => 'NO',#2020/4/8
+							'ETX_MTX2'           => 'NO',#2020/4/7
+							'Toxin_10'           => 'NO',#2020/4/7
 							};
 				if(exists $$svm{$_})  {
 					$vip{$_}->{'svm_prediction'} = 'YES';
@@ -1360,12 +1406,13 @@ sub Writer  {
 							'Percent_identity'   => $temp{'Percent_identity'},
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
-							'Endotoxin_N'        => 'NA',#2020/4/7
-							'Endotoxin_M'        => 'NA',#2020/4/7
-							'Endotoxin_C'        => 'NA',#2020/4/7
-							'Endotoxin_mid'        => 'NA',#2020/4/8
-							'ETX_MTX2'           => 'NA',#2020/4/7
-							'Toxin_10'           => 'NA',#2020/4/7
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => 'NO',#2020/4/7
+							'Endotoxin_M'        => 'NO',#2020/4/7
+							'Endotoxin_C'        => 'NO',#2020/4/7
+							'Endotoxin_mid'        => 'NO',#2020/4/8
+							'ETX_MTX2'           => 'NO',#2020/4/7
+							'Toxin_10'           => 'NO',#2020/4/7
 							};
 				if(exists $$svm{$_})  {
 					$vip{$_}->{'svm_prediction'} = 'YES';
@@ -1441,6 +1488,7 @@ sub Writer  {
 							'Percent_identity'   => $temp{'Percent_identity'},
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
 							'Endotoxin_C'        => $EC,#2020/4/7
@@ -1521,6 +1569,7 @@ sub Writer  {
 							'Percent_identity'   => $temp{'Percent_identity'},
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
 							'Endotoxin_C'        => $EC,#2020/4/7
@@ -1601,6 +1650,7 @@ sub Writer  {
 							'Percent_identity'   => $temp{'Percent_identity'},
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
 							'Endotoxin_C'        => $EC,#2020/4/7
@@ -1681,6 +1731,7 @@ sub Writer  {
 							'Percent_identity'   => $temp{'Percent_identity'},
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
 							'Endotoxin_C'        => $EC,#2020/4/7
@@ -1761,6 +1812,7 @@ sub Writer  {
 							'Percent_identity'   => $temp{'Percent_identity'},
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
 							'Endotoxin_C'        => $EC,#2020/4/7
@@ -1841,6 +1893,7 @@ sub Writer  {
 							'Percent_identity'   => $temp{'Percent_identity'},
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
 							'Endotoxin_C'        => $EC,#2020/4/7
@@ -1866,6 +1919,87 @@ sub Writer  {
 				}else  {
 					$Mpf_count{'Rank1'}++;
 					$mpf{$_}->{'rank'} = "Rank1";
+				}
+				delete $$blast{$_};
+			}
+		}
+		#process Mpp predicted by hmm method
+		if($$hmm{$_} =~ /mpp.hmm/i)  {
+			if(!(exists $$blast{$_}))  {
+				$Mpp_count++;
+				$mpp{$_} = {
+							'protein_id'         => $_,
+							'protein_desc'       => $protein_desc[1],
+							'protein_len'        => $seq_info{$_}->{'seq_length'},
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'blast_prediction'   => 'ND',
+							'best_hit'           => 'ND',
+							'hit_length'         => 'ND',
+							'coverage'           => 'ND',
+							'Percent_identity'   => 'ND',
+							'e-value'            => 'ND',
+							'blast_detail'       => 'ND',
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$mpp{$_}->{'svm_prediction'} = 'YES';
+					$mpp{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$mpp{$_}->{'svm_prediction'} = 'NO';
+				}
+			}else  {
+				my %temp;
+				my @blast_split = split /\t/, $$blast{$_};
+				foreach (@blast_split)  {
+					my ($key, $value) = split /:/, $_;
+					$temp{$key} = ($value eq '') ? "" : $value;
+				}
+				$mpp{$_} = {
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'protein_id'         => $_,
+							'protein_desc'       => $temp{'Query_desc'},
+							'protein_len'        => $temp{'Query_Length'},
+							'blast_prediction'   => 'YES',
+							'best_hit'           => $temp{'Hit_id'},
+							'hit_length'         => $temp{'Hit_length'},
+							'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+							'Percent_identity'   => $temp{'Percent_identity'},
+							'e-value'            => $temp{'E-value'},
+							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$mpp{$_}->{'svm_prediction'} = 'YES';
+					$mpp{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$mpp{$_}->{'svm_prediction'} = 'NO';
+				}
+				if($temp{'Percent_identity'} >= 95)  {
+					$Mpp_count{'Rank4'}++;
+					$mpp{$_}->{'rank'} = "Rank4";
+				}elsif($temp{'Percent_identity'} >= 78)  {
+					$Mpp_count{'Rank3'}++;
+					$mpp{$_}->{'rank'} = "Rank3";
+				}elsif($temp{'Percent_identity'} >= 45)  {
+					$Mpp_count{'Rank2'}++;
+					$mpp{$_}->{'rank'} = "Rank2";
+				}else  {
+					$Mpp_count{'Rank1'}++;
+					$mpp{$_}->{'rank'} = "Rank1";
 				}
 				delete $$blast{$_};
 			}
@@ -1921,6 +2055,7 @@ sub Writer  {
 							'Percent_identity'   => $temp{'Percent_identity'},
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
 							'Endotoxin_C'        => $EC,#2020/4/7
@@ -2001,6 +2136,7 @@ sub Writer  {
 							'Percent_identity'   => $temp{'Percent_identity'},
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
 							'Endotoxin_C'        => $EC,#2020/4/7
@@ -2081,6 +2217,7 @@ sub Writer  {
 							'Percent_identity'   => $temp{'Percent_identity'},
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
 							'Endotoxin_C'        => $EC,#2020/4/7
@@ -2161,6 +2298,7 @@ sub Writer  {
 							'Percent_identity'   => $temp{'Percent_identity'},
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
 							'Endotoxin_C'        => $EC,#2020/4/7
@@ -2241,6 +2379,7 @@ sub Writer  {
 							'Percent_identity'   => $temp{'Percent_identity'},
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
 							'Endotoxin_C'        => $EC,#2020/4/7
@@ -2321,6 +2460,7 @@ sub Writer  {
 							'Percent_identity'   => $temp{'Percent_identity'},
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
 							'Endotoxin_C'        => $EC,#2020/4/7
@@ -2351,171 +2491,7 @@ sub Writer  {
 			}
 		}
 	}
-=pod
-		#process Vpa predicted by hmm method
-		if($$hmm{$_} =~ /Vpa.hmm/i)  {
-			if(!(exists $$blast{$_}))  {
-				$Vpa_count++;
-				$vpa{$_} = {
-							'protein_id'         => $_,
-							'protein_desc'       => $protein_desc[1],
-							'protein_len'        => $seq_info{$_}->{'seq_length'},
-							'rank'               => 'ND',
-							'hmm_prediction'     => 'YES',
-							'blast_prediction'   => 'ND',
-							'best_hit'           => 'ND',
-							'hit_length'         => 'ND',
-							'coverage'           => 'ND',
-							'Percent_identity'   => 'ND',
-							'e-value'            => 'ND',
-							'blast_detail'       => 'ND',
-							'hmm_detail'         => $$hmm{$_},
-							'Endotoxin_N'        => 'NA',#2020/4/7
-							'Endotoxin_M'        => 'NA',#2020/4/7
-							'Endotoxin_C'        => 'NA',#2020/4/7
-							'Endotoxin_mid'        => 'NA',#2020/4/8
-							'ETX_MTX2'           => 'NA',#2020/4/7
-							'Toxin_10'           => 'NA',#2020/4/7
-							};
-				if(exists $$svm{$_})  {
-					$vpa{$_}->{'svm_prediction'} = 'YES';
-					$vpa{$_}->{'svm_detail'} = $$svm{$_};
-				}else  {
-					$vpa{$_}->{'svm_prediction'} = 'NO';
-				}
-			}else  {
-				my %temp;
-				my @blast_split = split /\t/, $$blast{$_};
-				foreach (@blast_split)  {
-					my ($key, $value) = split /:/, $_;
-					$temp{$key} = ($value eq '') ? "" : $value;
-				}
-				$vpa{$_} = {
-							'rank'               => 'ND',
-							'hmm_prediction'     => 'YES',
-							'protein_id'         => $_,
-							'protein_desc'       => $temp{'Query_desc'},
-							'protein_len'        => $temp{'Query_Length'},
-							'blast_prediction'   => 'YES',
-							'best_hit'           => $temp{'Hit_id'},
-							'hit_length'         => $temp{'Hit_length'},
-							'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
-							'Percent_identity'   => $temp{'Percent_identity'},
-							'e-value'            => $temp{'E-value'},
-							'blast_detail'       => $$blast{$_},
-							'Endotoxin_N'        => 'NA',#2020/4/7
-							'Endotoxin_M'        => 'NA',#2020/4/7
-							'Endotoxin_C'        => 'NA',#2020/4/7
-							'Endotoxin_mid'        => 'NA',#2020/4/8
-							'ETX_MTX2'           => 'NA',#2020/4/7
-							'Toxin_10'           => 'NA',#2020/4/7
-							};
-				if(exists $$svm{$_})  {
-					$vpa{$_}->{'svm_prediction'} = 'YES';
-					$vpa{$_}->{'svm_detail'} = $$svm{$_};
-				}else  {
-					$vpa{$_}->{'svm_prediction'} = 'NO';
-				}
-				if($temp{'Percent_identity'} >= 95)  {
-					$Vpa_count{'Rank4'}++;
-					$vpa{$_}->{'rank'} = "Rank4";
-				}elsif($temp{'Percent_identity'} >= 78)  {
-					$Vpa_count{'Rank3'}++;
-					$vpa{$_}->{'rank'} = "Rank3";
-				}elsif($temp{'Percent_identity'} >= 45)  {
-					$Vpa_count{'Rank2'}++;
-					$vpa{$_}->{'rank'} = "Rank2";
-				}else  {
-					$Vpa_count{'Rank1'}++;
-					$vpa{$_}->{'rank'} = "Rank1";
-				}
-				delete $$blast{$_};
-			}
-		}
-	}
 
-		#process Vpb predicted by hmm method
-		if($$hmm{$_} =~ /Vpb.hmm/i)  {
-			if(!(exists $$blast{$_}))  {
-				$Vpb_count++;
-				$vpb{$_} = {
-							'protein_id'         => $_,
-							'protein_desc'       => $protein_desc[1],
-							'protein_len'        => $seq_info{$_}->{'seq_length'},
-							'rank'               => 'ND',
-							'hmm_prediction'     => 'YES',
-							'blast_prediction'   => 'ND',
-							'best_hit'           => 'ND',
-							'hit_length'         => 'ND',
-							'coverage'           => 'ND',
-							'Percent_identity'   => 'ND',
-							'e-value'            => 'ND',
-							'blast_detail'       => 'ND',
-							'hmm_detail'         => $$hmm{$_},
-							'Endotoxin_N'        => 'NA',#2020/4/7
-							'Endotoxin_M'        => 'NA',#2020/4/7
-							'Endotoxin_C'        => 'NA',#2020/4/7
-							'Endotoxin_mid'        => 'NA',#2020/4/8
-							'ETX_MTX2'           => 'NA',#2020/4/7
-							'Toxin_10'           => 'NA',#2020/4/7
-							};
-				if(exists $$svm{$_})  {
-					$vpb{$_}->{'svm_prediction'} = 'YES';
-					$vpb{$_}->{'svm_detail'} = $$svm{$_};
-				}else  {
-					$vpb{$_}->{'svm_prediction'} = 'NO';
-				}
-			}else  {
-				my %temp;
-				my @blast_split = split /\t/, $$blast{$_};
-				foreach (@blast_split)  {
-					my ($key, $value) = split /:/, $_;
-					$temp{$key} = ($value eq '') ? "" : $value;
-				}
-				$vpb{$_} = {
-							'rank'               => 'ND',
-							'hmm_prediction'     => 'YES',
-							'protein_id'         => $_,
-							'protein_desc'       => $temp{'Query_desc'},
-							'protein_len'        => $temp{'Query_Length'},
-							'blast_prediction'   => 'YES',
-							'best_hit'           => $temp{'Hit_id'},
-							'hit_length'         => $temp{'Hit_length'},
-							'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
-							'Percent_identity'   => $temp{'Percent_identity'},
-							'e-value'            => $temp{'E-value'},
-							'blast_detail'       => $$blast{$_},
-							'Endotoxin_N'        => 'NA',#2020/4/7
-							'Endotoxin_M'        => 'NA',#2020/4/7
-							'Endotoxin_C'        => 'NA',#2020/4/7
-							'Endotoxin_mid'        => 'NA',#2020/4/8
-							'ETX_MTX2'           => 'NA',#2020/4/7
-							'Toxin_10'           => 'NA',#2020/4/7
-							};
-				if(exists $$svm{$_})  {
-					$vpb{$_}->{'svm_prediction'} = 'YES';
-					$vpb{$_}->{'svm_detail'} = $$svm{$_};
-				}else  {
-					$vpb{$_}->{'svm_prediction'} = 'NO';
-				}
-				if($temp{'Percent_identity'} >= 95)  {
-					$Vpb_count{'Rank4'}++;
-					$vpb{$_}->{'rank'} = "Rank4";
-				}elsif($temp{'Percent_identity'} >= 78)  {
-					$Vpb_count{'Rank3'}++;
-					$vpb{$_}->{'rank'} = "Rank3";
-				}elsif($temp{'Percent_identity'} >= 45)  {
-					$Vpb_count{'Rank2'}++;
-					$vpb{$_}->{'rank'} = "Rank2";
-				}else  {
-					$Vpb_count{'Rank1'}++;
-					$vpb{$_}->{'rank'} = "Rank1";
-				}
-				delete $$blast{$_};
-			}
-		}
-	}
-=cut
 	#Obtain Cry protein ID
 	foreach (sort keys %seq_info)  {
 		if((!exists $vip{$_}) && !(exists $cyt{$_}) && !(exists $vpa{$_}) && !(exists $vpb{$_}) && !(exists $app{$_}) && !(exists $gpp{$_}) && !(exists $mcf{$_}) && !(exists $mpf{$_}) && !(exists $mpp{$_}) && !(exists $mtx{$_}) && !(exists $pra{$_}) && !(exists $prb{$_}) && !(exists $spp{$_}) && !(exists $tpp{$_}) && !(exists $xpp{$_}))  {
@@ -2549,33 +2525,7 @@ sub Writer  {
 			$TOXIN = "YES";
 		}
 		if(exists $$blast{$_})  {
-=pod
-			if (exists $$hmmem{$_}) {
-				$EM = "YES";
-				#print "EM=YES\n";
-			}
-			
-			if (exists $$hmmen{$_}) {
-				$EN = "YES";
-				#print "EN=YES\n";
-			}
-			if (exists $$hmmec{$_}) {
-				$EC = "YES";
-				#print "EC=YES\n";
-			}
-			if (exists $$hmmemid{$_}) {
-				$EMID = "YES";
-				#print "EC=YES\n";
-			}
-			if (exists $$hmmmtx{$_}) {
-				$MTX = "YES";
-				#print "MTX=YES\n";
-			}
-			if (exists $$hmmtox{$_}) {
-				$TOXIN = "YES";
-				#print "TOXIN=YES\n";
-			}
-=cut
+
 			my %temp;
 			my @blast_split = split /\t/, $$blast{$_};
 				foreach (@blast_split)  {
@@ -2596,12 +2546,12 @@ sub Writer  {
 								'Percent_identity'   => $temp{'Percent_identity'},
 								'e-value'            => $temp{'E-value'},
 								'blast_detail'       => $$blast{$_},
-								'Endotoxin_N'        => 'NA',#2020/4/7
-								'Endotoxin_M'        => 'NA',#2020/4/7
-								'Endotoxin_C'        => 'NA',#2020/4/7
-								'Endotoxin_mid'        => 'NA',#2020/4/8
-								'ETX_MTX2'           => 'NA',#2020/4/7
-								'Toxin_10'           => 'NA',#2020/4/7
+								'Endotoxin_N'        => 'NO',#2020/4/7
+								'Endotoxin_M'        => 'NO',#2020/4/7
+								'Endotoxin_C'        => 'NO',#2020/4/7
+								'Endotoxin_mid'        => 'NO',#2020/4/8
+								'ETX_MTX2'           => 'NO',#2020/4/7
+								'Toxin_10'           => 'NO',#2020/4/7
 								};
 					if(exists $$svm{$_})  {
 						$vip{$_}->{'svm_prediction'} = 'YES';
@@ -2636,12 +2586,12 @@ sub Writer  {
 								'Percent_identity'   => $temp{'Percent_identity'},
 								'e-value'            => $temp{'E-value'},
 								'blast_detail'       => $$blast{$_},
-								'Endotoxin_N'        => 'NA',#2020/4/7
-								'Endotoxin_M'        => 'NA',#2020/4/7
-								'Endotoxin_C'        => 'NA',#2020/4/7
-								'Endotoxin_mid'        => 'NA',#2020/4/8
-								'ETX_MTX2'           => 'NA',#2020/4/7
-								'Toxin_10'           => 'NA',#2020/4/7
+								'Endotoxin_N'        => 'NO',#2020/4/7
+								'Endotoxin_M'        => 'NO',#2020/4/7
+								'Endotoxin_C'        => 'NO',#2020/4/7
+								'Endotoxin_mid'        => 'NO',#2020/4/8
+								'ETX_MTX2'           => 'NO',#2020/4/7
+								'Toxin_10'           => 'NO',#2020/4/7
 								};
 					if(exists $$svm{$_})  {
 						$vpa{$_}->{'svm_prediction'} = 'YES';
@@ -2676,12 +2626,12 @@ sub Writer  {
 								'Percent_identity'   => $temp{'Percent_identity'},
 								'e-value'            => $temp{'E-value'},
 								'blast_detail'       => $$blast{$_},
-								'Endotoxin_N'        => 'NA',#2020/4/7
-								'Endotoxin_M'        => 'NA',#2020/4/7
-								'Endotoxin_C'        => 'NA',#2020/4/7
-								'Endotoxin_mid'        => 'NA',#2020/4/8
-								'ETX_MTX2'           => 'NA',#2020/4/7
-								'Toxin_10'           => 'NA',#2020/4/7
+								'Endotoxin_N'        => 'NO',#2020/4/7
+								'Endotoxin_M'        => 'NO',#2020/4/7
+								'Endotoxin_C'        => 'NO',#2020/4/7
+								'Endotoxin_mid'        => 'NO',#2020/4/8
+								'ETX_MTX2'           => 'NO',#2020/4/7
+								'Toxin_10'           => 'NO',#2020/4/7
 								};
 					if(exists $$svm{$_})  {
 						$vpb{$_}->{'svm_prediction'} = 'YES';
@@ -2716,12 +2666,12 @@ sub Writer  {
 								'Percent_identity'   => $temp{'Percent_identity'},
 								'e-value'            => $temp{'E-value'},
 								'blast_detail'       => $$blast{$_},
-								'Endotoxin_N'        => 'NA',#2020/4/7
-								'Endotoxin_M'        => 'NA',#2020/4/7
-								'Endotoxin_C'        => 'NA',#2020/4/7
-								'Endotoxin_mid'        => 'NA',#2020/4/8
-								'ETX_MTX2'           => 'NA',#2020/4/7
-								'Toxin_10'           => 'NA',#2020/4/7
+								'Endotoxin_N'        => 'NO',#2020/4/7
+								'Endotoxin_M'        => 'NO',#2020/4/7
+								'Endotoxin_C'        => 'NO',#2020/4/7
+								'Endotoxin_mid'        => 'NO',#2020/4/8
+								'ETX_MTX2'           => 'NO',#2020/4/7
+								'Toxin_10'           => 'NO',#2020/4/7
 								};
 					if(exists $$svm{$_})  {
 						$cyt{$_}->{'svm_prediction'} = 'YES';
@@ -3643,8 +3593,8 @@ sub print_toxin2  {
 		print MYHAND $toxin{$_}->{'protein_len'}, "\t";
 		print MYHAND $toxin{$_}->{'rank'}, "\t";
 		print MYHAND $toxin{$_}->{'blast_prediction'}, "\t";
-		print  MYHAND $toxin{$_}->{'best_hit'}, "\t";
-		print  MYHAND $toxin{$_}->{'hit_length'}, "\t";
+		print MYHAND $toxin{$_}->{'best_hit'}, "\t";
+		print MYHAND $toxin{$_}->{'hit_length'}, "\t";
 		printf MYHAND ($toxin{$_}->{'coverage'}=~ /\d+/)? ("%0.2f\t", $toxin{$_}->{'coverage'}) : "$toxin{$_}->{'coverage'}\t";
 		printf MYHAND ($toxin{$_}->{'Percent_identity'} =~ /\d+/)? ("%0.2f\t", $toxin{$_}->{'Percent_identity'}):"$toxin{$_}->{'Percent_identity'}\t";
 		print MYHAND $toxin{$_}->{'svm_prediction'}, "\t";###Use of uninitialized value in print
