@@ -61,7 +61,7 @@
 - Install with the source codes
   
   Not recommended, this method is complex and needs a lot of time to complete.
-  - First, the required dependencies should be installed accoding to their official instructions
+  - First, the required dependencies should be installed accoding to their official instructions. __As long as these software are added to the environment variables, BtToxin_Digger can call them.__
     - [BioPerl](http://metacpan.org/pod/BioPerl)
     - [HMMER](https://www.ebi.ac.uk/Tools/hmmer/)
     - [libsvm](https://github.com/cjlin1/libsvm)
