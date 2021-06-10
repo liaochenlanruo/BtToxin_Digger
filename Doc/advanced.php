@@ -24,11 +24,12 @@
                     <div class="top_menu">
                           <ul>
                                 <li><a href="./index.php">Home</a></li>
-								<li><a href="./Database.php">Database</a></li>
-								<li><a href="./Analysis.php">Analysis</a></li>
-								<li><a href="./BioTools.php">BioTools</a></li>
-								<li><a href="./Publication.php">Publication</a></li>
-								<li><a href="./About.php" class="last">About</a></li>
+								<li><a href="advanced.php">advanced</a></li>
+								<li><a href="manual.php">Manual</a></li>
+                                <li><a href="License.php">License</a></li>
+                                <li><a href="Citation.php">Citation</a></li>
+								<li><a href="weblink.php">Biotools</a></li>
+                                <li><a href="contact.php" class="last">Contact</a></li>
                           </ul>
                     </div>
               </div>

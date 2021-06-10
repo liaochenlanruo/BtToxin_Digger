@@ -1,0 +1,108 @@
+Overview of prediction 	 Sequence type: nucl
+Name	Cry	Cyt	Vip	Others	App	Gpp	Mcf	Mpf	Mpp	Mtx	Pra	Prb	Spp	Tpp	Vpa	Vpb	Xpp	Summary
+Rank1	0	0	0	4	0	0	0	0	0	0	0	0	0	0	0	0	0	4
+Rank2	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	1
+Rank3	0	0	0	4	0	0	0	0	0	0	0	0	1	0	0	0	0	5
+Rank4	0	0	0	2	0	0	0	0	0	0	0	0	0	0	0	0	0	2
+HMM_SVM	0	0	0		0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Summary	0	0	0	11	0	0	0	0	0	0	0	0	1	0	0	0	0	12
+//
+
+
+Toxin type: Cry protein
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+//
+
+
+Toxin type: Cyt protein
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+//
+
+
+Toxin type: Vip protein
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+//
+
+
+Toxin type: Other toxins
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+1	NZ_CP010088.1_01394	-1 1751135-1753546 len=804	804	Rank4	YES	InhA2-other	799	100.00	96.12	NO	NA
+2	NZ_CP010088.1_03882	-3 5229675-5232356 len=894	894	Rank3	YES	Bmp1-other	893	100.00	81.52	NO	NA
+3	NZ_CP010088.1_05132	-3 2029812-2030810 len=333	333	Rank1	YES	Zwa6-other	310	92.58	30.31	NO	NA
+4	NZ_CP010088.1_05457	-3 1167930-1170317 len=796	796	Rank3	YES	InhA1-other	796	100.00	94.85	NO	NA
+5	NZ_CP010088.1_05642	-3 677013-677942 len=310	310	Rank1	YES	Zwa5A-other	325	95.08	29.45	NO	NA
+6	NZ_CP010088.1_07831	+1 5081194-5082990 len=599	599	Rank3	YES	Bmp1-other	893	63.61	79.40	NO	NA
+7	NZ_CP010088.1_09548	+2 4424213-4426438 len=742	742	Rank4	YES	Enhancin-other	742	100.00	95.01	NO	NA
+8	NZ_CP010088.1_10576	+3 2001603-2003705 len=701	701	Rank3	YES	ChitinaseC-other	688	100.00	93.90	NO	NA
+9	NZ_CP010088.1_11147	+3 3499434-3500441 len=336	336	Rank1	YES	Zwa5A-other	325	92.31	29.67	NO	NA
+10	NZ_CP010088.1_11229	+3 3710862-3711821 len=320	320	Rank1	YES	Zwa6-other	310	96.45	34.11	NO	NA
+11	NZ_CP010088.1_11479	+3 4426584-4428290 len=569	569	Rank2	YES	Bmp1-other	893	64.39	60.70	NO	NA
+//
+
+
+Toxin type: App protein
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+//
+
+
+Toxin type: Gpp protein
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+//
+
+
+Toxin type: Mcf protein
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+//
+
+
+Toxin type: Mpf protein
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+//
+
+
+Toxin type: Mpp protein
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+//
+
+
+Toxin type: Mtx protein
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+//
+
+
+Toxin type: Pra protein
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+//
+
+
+Toxin type: Prb protein
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+//
+
+
+Toxin type: Spp protein
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+1	NZ_CP010088.1_09575	+2 4502591-4504138 len=516	516	Rank3	YES	Spp1Aa1	506	99.21	79.28	NO	YES
+//
+
+
+Toxin type: Tpp protein
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+//
+
+
+Toxin type: Vpa protein
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+//
+
+
+Toxin type: Vpb protein
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+//
+
+
+Toxin type: Xpp protein
+ID	Protein_ID	Protein_description	Length	Rank	BLAST	Best_hit	Hit length	Coverage	Identity	SVM	HMM
+//
+
+
