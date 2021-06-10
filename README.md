@@ -435,7 +435,7 @@ __Table 3. The contents of \'Bt_all_genes.table\'__
 |AFS095482||||||||||1||1|||||
 |AK47||||100.00|100.00|100.00|||||1||||100.00|100.00|
 
-__Footnote:__ The float number represent the identity of blast search, and the integer number represent the number of toxins predicted by HMM and SVM.
+__Footnote:__ The float number represent the identity of blast search, and the integer number represent the number of toxins predicted by HMM and SVM. Genes with a blast coverage less than 50% are not shown in this table.
 
 ## License
 
