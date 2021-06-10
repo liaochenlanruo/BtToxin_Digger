@@ -18,11 +18,11 @@
 									     |___/ |___/           
 
 
-<font face="STCAIYUN" color=#0099ff size=4>A web server of BtToxin_Digger can be found at [http://bcam.hzau.edu.cn/BtToxin_Digger](http://bcam.hzau.edu.cn/BtToxin_Digger).</font>
+<font face="STCAIYUN" color=#0099ff size=4>A web server of BtToxin_Digger can be found at [https://bcam.hzau.edu.cn/BtToxin_Digger](https://bcam.hzau.edu.cn/BtToxin_Digger).</font>
 
 ## Contents
 
- [Introduction](#introduction) | [Installation](#installation) | [Usage](#usage) | [Examples](#examples) | [Outputs](#outputs) | [License](#license) | [Feedback](#feedback) | [Citation](#citation) | [FAQs](#faqs) | [Updates](#updates)
+ | [Introduction](#introduction) | [Installation](#installation) | [Usage](#usage) | [Examples](#examples) | [Outputs](#outputs) | [License](#license) | [Feedback](#feedback) | [Citation](#citation) | [FAQs](#faqs) | [Updates](#updates) |
 
 ## Introduction
 
@@ -40,22 +40,100 @@
 
 ## Installation
 
-- Install with the source codes
+- **Install with the source codes**
   
   Not recommended, this method is complex and needs a lot of time to complete.
-  - First, the required dependencies should be installed accoding to their official instructions. __As long as these software are added to the environment variables, BtToxin_Digger can call them.__
+  
+  - Before the installation, create a directory named "tools" in users home directory by executing the following command in the Linux terminal.
+    ```
+	# Create the directory
+	mkdir ~/tools
+	
+	# Add the directory to Linux environment variable
+	echo export PATH="$PATH:$HOME/tools" >> ~/.bashrc
+	source ~/.bashrc
+	
+	# Enter the directory and download the dependency package to the tools directory
+	cd ~/tools
+	```
+  - Next, the required dependencies should be installed accoding to their official instructions. __As long as these software are added to the environment variables, BtToxin_Digger can call them itself.__
     - [BioPerl](http://metacpan.org/pod/BioPerl)
+      ```
+	  # Install cpanminus first
+	  curl -L https://cpanmin.us | perl - --sudo App::cpanminus
+	  
+	  # Install BioPerl with cpanm
+	  cpanm BioPerl
+	  ```
     - [HMMER](https://www.ebi.ac.uk/Tools/hmmer/)
+      ```
+	  # Install HMMER3 with the tar package
+	  
+	  # Download the package
+	  wget http://eddylab.org/software/hmmer/hmmer.tar.gz
+	  
+	  # Decompress the package
+	  tar zxf hmmer.tar.gz
+	  
+	  # change to the package directory, notice the number behind the "hmmer-"
+	  cd hmmer-3.3.2
+	  
+	  # Configure
+	  ./configure --prefix ~/tools
+	  
+	  # Compiling the programs
+	  make
+	  
+	  # Just make a test
+	  make check
+	  
+	  # Install the tools
+	  make install
+	  ```
     - [libsvm](https://github.com/cjlin1/libsvm)
+      ```
+	  # Install LIBSVM with source codes
+	  
+	  # Clone the codes to tools directory
+	  git clone https://github.com/cjlin1/libsvm.git
+	  
+	  # Change directory to libsvm
+	  cd libsvm
+	  
+	  # Compiling the programs
+	  make
+	  
+	  # Add the directory to Linux environment variable
+	  echo export PATH="$PATH:$HOME/tools/libsvm" >> ~/.bashrc
+	  source ~/.bashrc
+	  ```
+	  
     - [NCBI-blast+](https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=Download)
+      ```
+	  # Download the tool
+	  wget https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.11.0+-x64-linux.tar.gz
+	  
+	  # Decompress the file
+	  tar zxvf ncbi-blast-2.11.0+-x64-linux.tar.gz
+	  
+	  # Add the directory to Linux environment variable
+	  echo export PATH="$PATH:$HOME/tools/ncbi-blast-2.11.0+/bin" >> ~/.bashrc
+	  source ~/.bashrc
+	  ```
     - [Perl](http://www.perl.org/get.html)
+      Linux usually comes with Perl and does not need to be installed again.
     - [PGCGAP](https://liaochenlanruo.hzaubmb.org/pgcgap/) >=version 1.0.24
+	```
+	# PGCGAP relies on dozens of software packages, so it is almost impossible to install through the source code. Suppose you have installed CONDA, please execute the following command
+	
+	conda install pgcgap
+	```
     - Perl modules
       - [File::Tee](https://metacpan.org/pod/File::Tee)
       - [Getopt::Long](https://metacpan.org/pod/Getopt::Long)
       - [Pod::Usage](https://metacpan.org/release/MAREKR/Pod-Usage-1.69)
         ```bash
-		# Easy commands to install the perl modules
+		# Easy commands to install the three perl modules
 		cpanm File::Tee
 		cpanm Getopt::Long
 		cpanm Pod::Usage
@@ -70,10 +148,12 @@
 	  mv BtToxin_Digger/BtToxin_Digger.pl BtToxin_Digger/BtToxin_Digger
 	  
 	  mv BtToxin_Digger/Scripts/*.pl BtToxin_Digger/
+	  
+	  chmod +x BtToxin_Digger/*
 	  ```
 	- Add the path to the environment variable 
 	  ```
-	  echo <full path of the main program> >> ~/.bashrc
+	  echo export PATH="$PATH:$HOME/tools/BtToxin_Digger" >> ~/.bashrc
 	  
 	  source ~/.bashrc
 	  ```
@@ -83,7 +163,7 @@
 	  BtToxin_Digger --SeqPath ./ --SequenceType nucl --Scaf_suffix .fna
 	  ```
 	   Users should get six files shown as in the [Result_files](https://github.com/liaochenlanruo/BtToxin_Digger/tree/master/tests/Result_files) directory.
-- Install with Bioconda - OSX/Linux/WSL
+- **Install with Bioconda**
 
   - First, If you don't have [Miniconda](https://docs.conda.io/en/latest/miniconda.html) in your system, please install it.
     ```
@@ -119,7 +199,7 @@
 	BtToxin_Digger --SeqPath ./ --SequenceType nucl --Scaf_suffix .fna
 	```
 	Users should get six files shown as in the [Result_files](https://github.com/liaochenlanruo/BtToxin_Digger/tree/master/tests/Result_files) directory.
-- Install with the docker container
+- **Install with the docker container**
   ```
   docker pull quay.io/biocontainers/bttoxin_digger:<tag>
   ```
