@@ -22,36 +22,18 @@
 
 ## Contents
 
-- [Introduction](#introduction)
-
-- [Installation](#installation)
-
-- [Usage](#usage)
-
-- [Examples](#examples)
-
-- [Outputs](#outputs)
-
-- [License](#license)
-
-- [Feedback](#feedback)
-
-- [Citation](#citation)
-
-- [FAQs](#faqs)
-
-- [Updates](#updates)
+ [Introduction](#introduction) | [Installation](#installation) | [Usage](#usage) | [Examples](#examples) | [Outputs](#outputs) | [License](#license) | [Feedback](#feedback) | [Citation](#citation) | [FAQs](#faqs) | [Updates](#updates)
 
 ## Introduction
 
 - **What is BtToxin_Digger?**
 
-    BtToxin_Digger is a high-throughput, automatic gene mining tool that can mine toxin genes, such as Cry, Cyt and Vip, etc, from _Bacillus thuringiensis_. The pipeline accepts multiple forms of input data including Reads, assembled genomes, CDSs, and protein sequences and can output rich and useful results. It is derived from the re-design of the tool [BtToxin_Digger](http://bcam.hzau.edu.cn/BtToxin_Digger/) we developed previously. Compared with BtToxin_Digger, BtToxin_Digger has many improvements, as follows:
+    BtToxin_Digger is a high-throughput, automatic gene mining tool that can mine toxin genes, such as Cry, Cyt and Vip, etc, from _Bacillus thuringiensis_. The pipeline accepts multiple forms of input data including Reads, assembled genomes, CDSs, and protein sequences and can output rich and useful results. It is derived from the re-design of the tool [BtToxin_Digger](https://bcam.hzau.edu.cn/BtToxin_Digger/) we developed previously. Compared with BtToxin_Digger, BtToxin_Digger has many improvements, as follows:
   - Can be run in batches, suitable for large-scale genome analysis.
   - Added genome assembly functions, including second-generation short-reads assembly, third-generation long-reads assembly, and hybrid assembly of short-reads and long-reads, to realize the full-automatic mining of genes from Reads to virulence factors. The previous three input files (assembled genomes, ORFs and protein sequences) are still supported, and genome assembly can be used independently.
   - Fixed a bug where BtToxin_Digger often reported errors when processing assembled genomes.
   - Added support for CDSs and not limited to ORFs.
-  - The database has been updated, adding support for App, Gpp, Mcf, Mpf, Mpp, Mtx, Pra, Prb, Spp, Tpp, Cyt, Vip, Vpa, Vpb, Xpp and other virulence factors.
+  - The database has been updated, adding support for App, Gpp, Mcf, Mpf, Mpp, Mtx, Pra, Prb, Spp, Tpp, Cyt, Vip, Vpa, Vpb, Xpp and other virulence factors including Sip (Donovan, et al., 2006), Chitinase (Zhang, et al., 2014), InhA (Dalhammar and Steiner, 1984), Bmp1 (Luo, et al., 2013), Bel enhancin (Fang, et al., 2009), ZwA (He, et al., 1994).
   - BtToxin_Digger generates comprehensive and readable outputs including toxin list and sequence for each input; a matrix of all strains and the virulence factors it contains (behavior strain names, listed as virulence factor names), which can be used as virulence factors contained in the strain Database; and a file writes the information and sequences of all toxins (Table 1) to facilitate centralized processing and downstream analysis and experiment designs.
   - Added multi-thread support, greatly improving the running speed of the pipeline.
 
@@ -95,6 +77,12 @@
 	  
 	  source ~/.bashrc
 	  ```
+	- Test the installation
+    Download the test data from the [tests](https://github.com/liaochenlanruo/BtToxin_Digger/tree/master/tests) directory in the GitHub repo  and change to the tests directory in the terminal. Run the following commands:
+	  ```
+	  BtToxin_Digger --SeqPath ./ --SequenceType nucl --Scaf_suffix .fna
+	  ```
+	   Users should get six files shown as in the [Result_files](https://github.com/liaochenlanruo/BtToxin_Digger/tree/master/tests/Result_files) directory.
 - Install with Bioconda - OSX/Linux/WSL
 
   - First, If you don't have [Miniconda](https://docs.conda.io/en/latest/miniconda.html) in your system, please install it.
@@ -124,12 +112,13 @@
     conda install bttoxin_digger
     ```
   - Test the installation
-    Download the test data from GitHub repo (https://github.com/liaochenlanruo/BtToxin_Digger/tree/master/tests) and change to the tests directory in the terminal. Run the following commands:
+    Download the test data from the [tests](https://github.com/liaochenlanruo/BtToxin_Digger/tree/master/tests) directory in the GitHub repo  and change to the tests directory in the terminal. Run the following commands:
 	```
 	conda activate toxin
 	
-	BtToxin_Digger --SeqPath ./ --SequenceType nucl--prot_suffix .fna
+	BtToxin_Digger --SeqPath ./ --SequenceType nucl --Scaf_suffix .fna
 	```
+	Users should get six files shown as in the [Result_files](https://github.com/liaochenlanruo/BtToxin_Digger/tree/master/tests/Result_files) directory.
 - Install with the docker container
   ```
   docker pull quay.io/biocontainers/bttoxin_digger:<tag>
