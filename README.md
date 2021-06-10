@@ -123,7 +123,13 @@
   
     conda install bttoxin_digger
     ```
-
+  - Test the installation
+    Download the test data from GitHub repo (https://github.com/liaochenlanruo/BtToxin_Digger/tree/master/tests) and change to the tests directory in the terminal. Run the following commands:
+	```
+	conda activate toxin
+	
+	BtToxin_Digger --SeqPath ./ --SequenceType nucl--prot_suffix .fna
+	```
 - Install with the docker container
   ```
   docker pull quay.io/biocontainers/bttoxin_digger:<tag>
