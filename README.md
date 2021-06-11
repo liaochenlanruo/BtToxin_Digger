@@ -58,7 +58,8 @@
 	```
 	- Next, the required dependencies should be installed accoding to their official instructions. 
 	  ```diff
-	  + As long as these software are added to the environment variables, BtToxin_Digger can call them itself.
+	  + As long as these software are added to the environment variables,
+	  + BtToxin_Digger can call them itself.
 	  ```
     - [BioPerl](http://metacpan.org/pod/BioPerl)
       ```
