@@ -136,6 +136,9 @@
 	  - [ABySS](https://github.com/bcgsc/abyss) and its [dependencies](https://github.com/bcgsc/abyss#dependencies)
 	  - [Unicycler](https://github.com/rrwick/Unicycler) and its [dependencies](https://github.com/rrwick/Unicycler#requirements)
 	  - [canu](https://github.com/marbl/canu)
+	  - [bwa](https://github.com/lh3/bwa)
+	  - [Racon](https://github.com/lbcb-sci/racon)
+	  - [SPAdes](https://github.com/ablab/spades)
 
     - Perl modules
       - [File::Tee](https://metacpan.org/pod/File::Tee)
