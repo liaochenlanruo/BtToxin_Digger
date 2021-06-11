@@ -283,7 +283,7 @@ if ($opt_help) {
 # toxin prediction
 if ($opt_SequenceType eq "nucl") {
 	tee STDOUT, ">>BtToxin_Digger.log";
-	system("pgcgap --ACC --Assess --filter_length 300 --scafPath $opt_SeqPath --Scaf_suffix $opt_Scaf_suffix");
+	system("pgcgap --ACC --Assess --filter_length 225 --scafPath $opt_SeqPath --Scaf_suffix $opt_Scaf_suffix");
 	my @scaf = glob("$opt_SeqPath/Filtered/*.filtered.fas");
 	foreach  (@scaf) {
 		$_=~/$opt_SeqPath\/Filtered\/(\S+).filtered.fas/;

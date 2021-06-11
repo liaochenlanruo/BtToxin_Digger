@@ -123,20 +123,21 @@
     - [Perl](http://www.perl.org/get.html)
       Linux usually comes with Perl and does not need to be installed again.
     - [PGCGAP](https://liaochenlanruo.hzaubmb.org/pgcgap/) >=version 1.0.24
-	```
-	# PGCGAP relies on dozens of software packages, so it is almost impossible to install through the source code. Suppose you have installed CONDA, please execute the following command
-	
-	conda install pgcgap
-	```
+	A light version of PGCGAP v1.0.29 was added in the GitHub repo of BtToxin_Digger now. So users just need to install a few dependencies of PGCGAP.
+	  - [fastp](https://github.com/OpenGene/fastp#get-fastp)
+	  - [ABySS](https://github.com/bcgsc/abyss) and its [dependencies](https://github.com/bcgsc/abyss#dependencies)
+	  - [Unicycler](https://github.com/rrwick/Unicycler) and its [dependencies](https://github.com/rrwick/Unicycler#requirements)
+	  - [canu](https://github.com/marbl/canu)
+
     - Perl modules
       - [File::Tee](https://metacpan.org/pod/File::Tee)
-      - [Getopt::Long](https://metacpan.org/pod/Getopt::Long)
       - [Pod::Usage](https://metacpan.org/release/MAREKR/Pod-Usage-1.69)
+      - [List::Util](https://metacpan.org/pod/List::Util)
         ```bash
 		# Easy commands to install the three perl modules
 		cpanm File::Tee
-		cpanm Getopt::Long
 		cpanm Pod::Usage
+		cpanm List::Util
 		```
   - Then, install BtToxin_Digger
     - Download the source codes
@@ -148,6 +149,8 @@
 	  mv BtToxin_Digger/BtToxin_Digger.pl BtToxin_Digger/BtToxin_Digger
 	  
 	  mv BtToxin_Digger/Scripts/*.pl BtToxin_Digger/
+	  
+	  mv pgcgap/* BtToxin_Digger
 	  
 	  chmod +x BtToxin_Digger/*
 	  ```
