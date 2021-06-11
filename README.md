@@ -125,9 +125,13 @@
 	  source ~/.bashrc
 	  ```
     - [Perl](http://www.perl.org/get.html)
-      Linux usually comes with Perl and does not need to be installed again.
+      
+	  Linux usually comes with Perl and does not need to be installed again.
+	  
     - [PGCGAP](https://liaochenlanruo.hzaubmb.org/pgcgap/) >=version 1.0.24
+     
 	A light version of PGCGAP v1.0.29 was added in the GitHub repo of BtToxin_Digger now. So users just need to install a few dependencies of PGCGAP.
+	
 	  - [fastp](https://github.com/OpenGene/fastp#get-fastp)
 	  - [ABySS](https://github.com/bcgsc/abyss) and its [dependencies](https://github.com/bcgsc/abyss#dependencies)
 	  - [Unicycler](https://github.com/rrwick/Unicycler) and its [dependencies](https://github.com/rrwick/Unicycler#requirements)
