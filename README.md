@@ -45,7 +45,7 @@
   Not recommended, this method is complex and needs a lot of time to complete.
   
   - Before the installation, create a directory named "tools" in users home directory by executing the following command in the Linux terminal.
-    ```
+    ```bash
 	# Create the directory
 	mkdir ~/tools
 	
@@ -56,13 +56,13 @@
 	# Enter the directory and download the dependency package to the tools directory
 	cd ~/tools
 	```
-	- Next, the required dependencies should be installed accoding to their official instructions. 
+  - Next, the required dependencies should be installed accoding to their official instructions. 
 	  ```diff
 	  + As long as these software are added to the environment variables,
 	  + BtToxin_Digger can call them itself.
 	  ```
     - [BioPerl](http://metacpan.org/pod/BioPerl)
-      ```
+      ```bash
 	  # Install cpanminus first
 	  curl -L https://cpanmin.us | perl - --sudo App::cpanminus
 	  
@@ -70,7 +70,7 @@
 	  cpanm BioPerl
 	  ```
     - [HMMER](https://www.ebi.ac.uk/Tools/hmmer/)
-      ```
+      ```bash
 	  # Install HMMER3 with the tar package
 	  
 	  # Download the package
@@ -95,7 +95,7 @@
 	  make install
 	  ```
     - [libsvm](https://github.com/cjlin1/libsvm)
-      ```
+      ```bash
 	  # Install LIBSVM with source codes
 	  
 	  # Clone the codes to tools directory
@@ -113,7 +113,7 @@
 	  ```
 	  
     - [NCBI-blast+](https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=BlastDocs&DOC_TYPE=Download)
-      ```
+      ```bash
 	  # Download the tool
 	  wget https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/ncbi-blast-2.11.0+-x64-linux.tar.gz
 	  
@@ -130,7 +130,7 @@
 	  
     - [PGCGAP](https://liaochenlanruo.hzaubmb.org/pgcgap/) >=version 1.0.24
      
-	A light version of PGCGAP v1.0.29 was added in the GitHub repo of BtToxin_Digger now. So users just need to install a few dependencies of PGCGAP.
+	  A light version of PGCGAP v1.0.29 was added in the GitHub repo of BtToxin_Digger now. So users just need to install a few dependencies of PGCGAP.
 	
 	  - [fastp](https://github.com/OpenGene/fastp#get-fastp)
 	  - [ABySS](https://github.com/bcgsc/abyss) and its [dependencies](https://github.com/bcgsc/abyss#dependencies)
@@ -149,35 +149,35 @@
 		```
   - Then, install BtToxin_Digger
     - Download the source codes
-	  ```
+	  ```bash
 	  git clone https://github.com/liaochenlanruo/BtToxin_Digger.git
 	  ```
     - Rename the main program and move affiliate scripts to the path of the main program
-      ```
+      ```bash
 	  mv BtToxin_Digger/BtToxin_Digger.pl BtToxin_Digger/BtToxin_Digger
 	  
 	  mv BtToxin_Digger/Scripts/*.pl BtToxin_Digger/
 	  
-	  mv pgcgap/* BtToxin_Digger
+	  mv BtToxin_Digger/pgcgap/* BtToxin_Digger/
 	  
 	  chmod +x BtToxin_Digger/*
 	  ```
 	- Add the path to the environment variable 
-	  ```
+	  ```bash
 	  echo export PATH="$PATH:$HOME/tools/BtToxin_Digger" >> ~/.bashrc
 	  
 	  source ~/.bashrc
 	  ```
 	- Test the installation
     Download the test data from the [tests](https://github.com/liaochenlanruo/BtToxin_Digger/tree/master/tests) directory in the GitHub repo  and change to the tests directory in the terminal. Run the following commands:
-	  ```
+	  ```bash
 	  BtToxin_Digger --SeqPath ./ --SequenceType nucl --Scaf_suffix .fna
 	  ```
 	   Users should get six files shown as in the [Result_files](https://github.com/liaochenlanruo/BtToxin_Digger/tree/master/tests/Result_files) directory.
 - **Install with Bioconda**
 
   - First, If you don't have [Miniconda](https://docs.conda.io/en/latest/miniconda.html) in your system, please install it.
-    ```
+    ```bash
 	# Assume Linux system
 	wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 	
@@ -187,7 +187,7 @@
 	```
 	
   - Then, config the bioconda channels
-	  ```
+	  ```bash
 	  conda config --add channels defaults
 
       conda config --add channels bioconda
@@ -195,7 +195,7 @@
       conda config --add channels conda-forge
 	  ```
   - Now, install BtToxin_Digger with conda
-    ```
+    ```bash
     conda create -n toxin python=3
   
     conda activate toxin
@@ -204,20 +204,20 @@
     ```
   - Test the installation
     Download the test data from the [tests](https://github.com/liaochenlanruo/BtToxin_Digger/tree/master/tests) directory in the GitHub repo  and change to the tests directory in the terminal. Run the following commands:
-	```
+	```bash
 	conda activate toxin
 	
 	BtToxin_Digger --SeqPath ./ --SequenceType nucl --Scaf_suffix .fna
 	```
 	Users should get six files shown as in the [Result_files](https://github.com/liaochenlanruo/BtToxin_Digger/tree/master/tests/Result_files) directory.
 - **Install with the docker container**
-  ```
+  ```bash
   docker pull quay.io/biocontainers/bttoxin_digger:<tag>
   ```
   (See [bttoxin_digger/tags](https://quay.io/repository/biocontainers/bttoxin_digger?tab=tags) for valid values for \<tag\>)
 
 ## Usage
-```
+```bash
 BtToxin_Digger [Options]
 ```
 
@@ -262,39 +262,39 @@ Options:
 ## Examples
 
 - Processing Illumina paired-end Reads
-```
-BtToxin_Digger --SeqPath <Illumina Reads PATH> --SequenceType reads --platform illumina --reads1 <suffix name of reads 1> -reads2 <suffix name of reads 2> --threads <INT> --suffix_len <INT>
-```
+  ```bash
+  BtToxin_Digger --SeqPath <Illumina Reads PATH> --SequenceType reads --platform illumina --reads1 <suffix name of reads 1> -reads2 <suffix name of reads 2> --threads <INT> --suffix_len <INT>
+  ```
 
 - Processing PacBio long Reads
-```
-BtToxin_Digger --SeqPath <PacBio Reads PATH> --SequenceType reads --platform pacbio --reads1 <suffix name of PacBio reads> --threads <INT> --suffix_len <INT>
-```
+  ```bash
+  BtToxin_Digger --SeqPath <PacBio Reads PATH> --SequenceType reads --platform pacbio --reads1 <suffix name of PacBio reads> --threads <INT> --suffix_len <INT>
+  ```
 
 - Processing Oxford long Reads
-```
-BtToxin_Digger --SeqPath <Oxford Reads PATH> --SequenceType reads --platform oxford --reads1 <suffix name of Oxford reads> --threads <INT> --suffix_len <INT>
-```
+  ```bash
+  BtToxin_Digger --SeqPath <Oxford Reads PATH> --SequenceType reads --platform oxford --reads1 <suffix name of Oxford reads> --threads <INT> --suffix_len <INT>
+  ```
 
 - Processing Hybrid Reads (Long reads + illumina short reads)
-```
-BtToxin_Digger --SeqPath <Reads PATH> --SequenceType reads --platform hybrid --short1 <short reads 1> --short2 <short reads 2> --long <long reads> --threads <INT>
-```
+  ```bash
+  BtToxin_Digger --SeqPath <Reads PATH> --SequenceType reads --platform hybrid --short1 <short reads 1> --short2 <short reads 2> --long <long reads> --threads <INT>
+  ```
 
 - Processing assembled genomes
-```
-BtToxin_Digger --SeqPath <Assembled genome PATH> --SequenceType nucl --Scaf_suffix <suffix of genomes> --threads <INT>
-```
+  ```bash
+  BtToxin_Digger --SeqPath <Assembled genome PATH> --SequenceType nucl --Scaf_suffix <suffix of genomes> --threads <INT>
+  ```
 
 - Processing protein sequences
-```
-BtToxin_Digger --SeqPath <Protein file PATH> --SequenceType prot --prot_suffix <suffix of protein files> --threads <INT>
-```
+  ```bash
+  BtToxin_Digger --SeqPath <Protein file PATH> --SequenceType prot --prot_suffix <suffix of protein files> --threads <INT>
+  ```
 
 - Processing orfs sequences
-```
-BtToxin_Digger --SeqPath <orfs file PATH> --SequenceType orfs --orfs_suffix <suffix of orfs files> --threads <INT>
-```
+  ```bash
+  BtToxin_Digger --SeqPath <orfs file PATH> --SequenceType orfs --orfs_suffix <suffix of orfs files> --threads <INT>
+  ```
 
 ## Outputs
 
