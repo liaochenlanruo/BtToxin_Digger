@@ -56,7 +56,7 @@
 	# Enter the directory and download the dependency package to the tools directory
 	cd ~/tools
 	```
-  - Next, the required dependencies should be installed accoding to their official instructions. __As long as these software are added to the environment variables, BtToxin_Digger can call them itself.__
+	- Next, the required dependencies should be installed accoding to their official instructions. <font color=#FF0000 >__As long as these software are added to the environment variables, BtToxin_Digger can call them itself.__</font>
     - [BioPerl](http://metacpan.org/pod/BioPerl)
       ```
 	  # Install cpanminus first
