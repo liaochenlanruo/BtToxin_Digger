@@ -111,6 +111,19 @@ sub Step1  {
 						$dir . "/BTTCMP_models/hmm_models/cry.hmm",
 						$dir . "/BTTCMP_models/hmm_models/cyt.hmm",
 						$dir . "/BTTCMP_models/hmm_models/vip.hmm",
+						$dir . "/BTTCMP_models/hmm_models/App.hmm",
+						$dir . "/BTTCMP_models/hmm_models/Gpp.hmm",
+						$dir . "/BTTCMP_models/hmm_models/Mcf.hmm",
+						$dir . "/BTTCMP_models/hmm_models/Mpf.hmm",
+						$dir . "/BTTCMP_models/hmm_models/Mpp.hmm",
+						$dir . "/BTTCMP_models/hmm_models/Mtx.hmm",
+						$dir . "/BTTCMP_models/hmm_models/Pra.hmm",
+						$dir . "/BTTCMP_models/hmm_models/Prb.hmm",
+						$dir . "/BTTCMP_models/hmm_models/Spp.hmm",
+						$dir . "/BTTCMP_models/hmm_models/Tpp.hmm",
+						$dir . "/BTTCMP_models/hmm_models/Vpa.hmm",
+						$dir . "/BTTCMP_models/hmm_models/Vpb.hmm",
+						$dir . "/BTTCMP_models/hmm_models/Xpp.hmm",
 					);
 
 	#Combine all sequence files into seperate file
@@ -160,8 +173,6 @@ sub Step1  {
 		my $step1_out = $output_filename . ".step1";
 		my $out = Bio::SeqIO->new(-file => ">$step1_out", -format => "fasta");
 		my $idex1 = $step1_1_file . ".index";#modified
-		my $idex1_dir = $idex1 . ".dir";#2020.10.14
-		my $idex1_pag = $idex1 . ".pag";#2020.10.14
 		#my $idex2 = $step1_1_file . ".index";#modified
 		my %step1_ids;
 		foreach  (sort keys %step1_out)  {
@@ -175,16 +186,14 @@ sub Step1  {
 			}
 		}
 
-		#system("rm $step1_1_file $idex1 $idex1_dir $idex1_pag");#modified
-		##system("rm $step1_1_file $idex1_dir $idex1_pag");#modified
-		system("rm $step1_1_file");#modified
+		system("rm $step1_1_file $idex1");#modified
 		return %step1_out;
 	}else  {
 		system("rm $step1_1_file @files");
+		#printnoresults($output_filename);
 		open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
 		print OUT $output_filename . "\n";#2020.10.13
 		close OUT;#2020.10.13
-		#printnoresults($output_filename);#2020.10.13
 		#clear the temp files
 	}
 }
@@ -198,21 +207,48 @@ sub Step1  {
  Args    : 
 =cut
 
+sub mergeHash {
+    my $param1 = shift;
+    my %hash1 = %$param1;
+    my $param2 = shift;
+    my %hash2 = %$param2;
+    foreach my $ke (keys %hash1){
+        if(exists $hash2{$ke}){
+#            print "coming in here for $hash1->{$key} \n";
+            $hash2{$ke} = $hash1{$ke} . "\t" . $hash2{$ke};
+        }
+        else{
+            $hash2{$ke} = $hash1{$ke};
+        }
+    }
+	return \%hash2;
+#    showHash(\%hash2);
+}
+
+
 sub Step2  {
 	my ($output_filename, %step2_in) = @_;
 	my $step1_in = $output_filename . ".step1";
 	my $step2_out = $output_filename . ".step2";
 
-	#If size is greater than 0, Implement BLAST, SVM and HMM prediction
+	#If size is greater than 0, Implement BLAST
 	if(-s "$step1_in")  {
 		my $Blast_result = &Blast_search('step2', $step1_in);
 		my %step2_out = &Blast_parser1($Blast_result);
 		my $seq_number = 0;
 		my %seq_ids;
-		foreach my $key(sort keys %step2_in)  {
-			my $temp = $step2_in{$key};
-			foreach (sort keys %$temp)  {
-				if((exists $step2_out{$_}) && (!($$temp{$_} =~ /vip\.hmm|cyt\.hmm|cry\.hmm/i)))  {
+		my @blasthmmsvm = sort keys %step2_in;#$blasthmmsvm[0] = blast, $blasthmmsvm[1] = hmm, $blasthmmsvm[2] = svm
+		my $blast = $step2_in{$blasthmmsvm[0]};# $blast = \%blast_results
+		my $hmm = $step2_in{$blasthmmsvm[1]};# $hmm = \%hmm_results
+		my $svm = $step2_in{$blasthmmsvm[2]};# $svm = \%svm_results
+		my $bh = mergeHash($blast, $hmm);
+		my $bhs = mergeHash($bh, $svm);# $bhs = \%blast_results + \%hmm_results + \%svm_results
+
+		foreach my $key (sort keys %step2_in)  {# key = blast hmm svm
+			my $temp = $step2_in{$key};# $temp = \%blast_results, \%hmm_results, \%svm_results
+			foreach (sort keys %$temp)  {# %$temp = %blast_results, %hmm_results, %svm_results  $_ = sequence ids
+				#if((exists $step2_out{$_}) && (!($$temp{$_} =~ /vip\.hmm|cyt\.hmm|cry\.hmm|App\.hmm|Gpp\.hmm|Mcf\.hmm|Mpf\.hmm|Mpp\.hmm|Mtx\.hmm|Pra\.hmm|Prb\.hmm|Spp\.hmm|Tpp\.hmm|Vpa\.hmm|Vpb\.hmm|Xpp\.hmm/i)))  {
+				if((exists $step2_out{$_}) && (!($$bhs{$_} =~ /vip\.hmm|cyt\.hmm|cry\.hmm|App\.hmm|Gpp\.hmm|Mcf\.hmm|Mpf\.hmm|Mpp\.hmm|Mtx\.hmm|Pra\.hmm|Prb\.hmm|Spp\.hmm|Tpp\.hmm|Vpa\.hmm|Vpb\.hmm|Xpp\.hmm/i)))  {
 					delete $$temp{$_};
 				}else  {
 					if(!(exists $seq_ids{$_}))  {
@@ -223,16 +259,15 @@ sub Step2  {
 			}
 		}
 		if($seq_number == 0)  {
-				#Clear the temp files
-				system("rm $step1_in");
-				open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
-				print OUT $output_filename . "\n";#2020.10.13
-				close OUT;#2020.10.13
-				my $index1 = $step1_in . "_in.index";##
-				system("rm $index1");##
-				#print "line 231\n";
-				exit;
-				#printnoresults($output_filename);#2020.10.13
+			#Clear the temp files
+			system("rm $step1_in");
+			#printnoresults($output_filename);
+			open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
+			print OUT $output_filename . "\n";#2020.10.13
+			close OUT;#2020.10.13
+			my $index1 = $step1_in . "_in.index";##
+			system("rm $index1");##
+			exit;
 		}else  {
 			#Extract Sequence
 			my $db = &Index_maker('normal', $step1_in);
@@ -242,25 +277,20 @@ sub Step2  {
 				$out->write_seq($seq);
 			}
 			my $index1 = $step1_in . ".index";#modified
-			#my $index1_dir = $index1 . ".dir";#2020.10.14
-			my $index1_dir = $step1_in . ".index";#2021.01.07
-			#my $index1_pag = $index1 . ".pag";#2020.10.14
-			my $index1_pag = $step1_in . "_in.index";#2021.01.07
 			#my $index2 = $step1_in . ".index";#modified
 
 			#Clear the temp file
-			#system("rm $index1 $step1_in $index1_dir $index1_pag");#modified
-			system("rm $step1_in $index1_dir $index1_pag");#modified
+			system("rm $index1 $step1_in");#modified
 			return %step2_in;
 		}
 
 	}else  {
 		#clear the temp files
 		system("rm $step1_in");
+		#printnoresults($output_filename);
 		open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
 		print OUT $output_filename . "\n";#2020.10.13
 		close OUT;#2020.10.13
-		#printnoresults($output_filename);#2020.10.13
 	}
 }
 
@@ -365,10 +395,10 @@ sub Step2x  {
 		my %domain = &hmm_prediction2($input, @domain_models);
 		return %domain;#2020/4/8
 	}else  {
+		#printnoresults($output_filename);
 		open OUT, ">>Results/Toxins/Strains_without_toxins_found.txt" || die;#2020.10.13
 		print OUT $output_filename . "\n";#2020.10.13
 		close OUT;#2020.10.13
-		#printnoresults($output_filename);#2020.10.13
 	}
 }
 
@@ -389,7 +419,7 @@ sub Step3  {
 =head2 Length_Filter
  Title   : Length_Filter
  Usage   : @prot = &Length_Filter(@inputs)
- Function: Retain those proteins with sequences length greater than 115 amino acid residues
+ Function: Retain those proteins with sequences length greater than 75 amino acid residues
  Returns : An array of files contains multiple fasta format of protein sequences
  Args    : An array of files contains multiple fasta format of protein sequences
 =cut
@@ -406,10 +436,11 @@ sub Length_Filter  {
 		my $in = Bio::SeqIO->new(-file => $inputs, -format => "fasta");
  		my $out = Bio::SeqIO->new(-file => ">$output", -format => "fasta");
 
-		#Pick up those protein sequence with sequence length greater than 115 amino acid residues
+		#Pick up those protein sequence with sequence length greater than 75 amino acid residues
 		while(my $seq = $in->next_seq)  {
 			$seq_count++;
-			if(($seq->length >= 115) && !($seq->seq =~ /[^acdefghiklmnpqrstvwy]/i))  {
+			#if(($seq->length >= 75) && !($seq->seq =~ /[^acdefghiklmnpqrstvwy]/i))  {
+			if($seq->length >= 75)  {
 				$out->write_seq($seq);
 			}
 		}
@@ -451,9 +482,10 @@ sub Batch_translation  {
 
 		while(my $seq = $orf_in->next_seq())  {
 		$seq_count++;
-		#Make sure that the sequences length is between 115 amino acid residues
+		#Make sure that the sequences length is between 75 amino acid residues
 		#Make sure that the sequences is a open reading frames, else return error
-		if(($seq->length >= 348) && !($seq->seq =~ /[^atcg]/i))  {
+		#if(($seq->length >= 225) && !($seq->seq =~ /[^atcg]/i))  {
+		if($seq->length >= 225)  {
 			my $prot = $seq->translate(-complete => 1, -throw => 0, -codontable => $CodonTable);
 			$prot_out->write_seq($prot);
 		}
@@ -504,8 +536,8 @@ sub six_translation  {
 			my $desc = $seq->description;
 			$seq = Bio::Seq->new(-id => $seq_id, -seq => $seqstr, -desc => $desc);
 			my $seq_len = $seq->length;
-
-			if(($seq->length >= 345) && !($seq->seq =~ /[^atcg]/i))  {
+			#if(($seq->length >= 345) && !($seq->seq =~ /[^atcg]/i))  {
+			if($seq->length >= 225)  {
 				my $frame_number = 0;
 				my $id = '';
 				my $pre_length = 0;
@@ -534,7 +566,7 @@ sub six_translation  {
 								$start = $total_len * 3 + $flag;
 								$total_len += $frame_length;
 								$end = $total_len * 3 + $flag - 1;
-								if($frame_length >= 115)  {
+								if($frame_length >= 75)  {
 									$frame_number++;
 									$repeat = $orf_width - length($frame_number);
 									$frame_tag = '0' x$repeat . $frame_number;
@@ -576,7 +608,7 @@ sub six_translation  {
 								$start = $seq_len - $start + 1;
 								$end = $seq_len - $end + 1;
 
-							if($frame_length >= 115)  {
+							if($frame_length >= 75)  {
 								$frame_number++;
 								$repeat = $orf_width - length($frame_number);
 								$frame_tag = '0' x$repeat . $frame_number;
@@ -917,8 +949,7 @@ sub printnoresults  {
 	my $str = @_;#
 	open OUT, ">>Strains_without_toxins_found.txt" || die;#
 	print OUT $str . "\n";#
-	print "No Bt toxin has been detected in $str.\n";
-	close OUT;
+	#print "No Bt toxin has been detected.\n";
 	exit;
 }
 =cut
@@ -1030,6 +1061,19 @@ sub Writer  {
 	my %cyt;
 	my %vip;
 	my %others;
+	my %app;
+	my %gpp;
+	my %mcf;
+	my %mpf;
+	my %mpp;
+	my %mtx;
+	my %pra;
+	my %prb;
+	my %spp;
+	my %tpp;
+	my %vpa;
+	my %vpb;
+	my %xpp;
 
 	my %Cry_count =  (
 						'Rank1' => 0,
@@ -1058,15 +1102,134 @@ sub Writer  {
 						'Rank3' => 0,
 						'Rank4' => 0,
 					);
+
+	my %App_count =  (
+						'Rank1' => 0,
+						'Rank2' => 0,
+						'Rank3' => 0,
+						'Rank4' => 0,
+					);
+
+	my %Gpp_count =  (
+						'Rank1' => 0,
+						'Rank2' => 0,
+						'Rank3' => 0,
+						'Rank4' => 0,
+					);
+
+	my %Mcf_count =  (
+						'Rank1' => 0,
+						'Rank2' => 0,
+						'Rank3' => 0,
+						'Rank4' => 0,
+					);
+
+	my %Mpf_count =  (
+						'Rank1' => 0,
+						'Rank2' => 0,
+						'Rank3' => 0,
+						'Rank4' => 0,
+					);
+
+	my %Mpp_count =  (
+						'Rank1' => 0,
+						'Rank2' => 0,
+						'Rank3' => 0,
+						'Rank4' => 0,
+					);
+
+	my %Mtx_count =  (
+						'Rank1' => 0,
+						'Rank2' => 0,
+						'Rank3' => 0,
+						'Rank4' => 0,
+					);
+
+	my %Pra_count =  (
+						'Rank1' => 0,
+						'Rank2' => 0,
+						'Rank3' => 0,
+						'Rank4' => 0,
+					);
+
+	my %Prb_count =  (
+						'Rank1' => 0,
+						'Rank2' => 0,
+						'Rank3' => 0,
+						'Rank4' => 0,
+					);
+
+	my %Spp_count =  (
+						'Rank1' => 0,
+						'Rank2' => 0,
+						'Rank3' => 0,
+						'Rank4' => 0,
+					);
+
+	my %Tpp_count =  (
+						'Rank1' => 0,
+						'Rank2' => 0,
+						'Rank3' => 0,
+						'Rank4' => 0,
+					);
+
+	my %Vpa_count =  (
+						'Rank1' => 0,
+						'Rank2' => 0,
+						'Rank3' => 0,
+						'Rank4' => 0,
+					);
+
+	my %Vpb_count =  (
+						'Rank1' => 0,
+						'Rank2' => 0,
+						'Rank3' => 0,
+						'Rank4' => 0,
+					);
+
+	my %Xpp_count =  (
+						'Rank1' => 0,
+						'Rank2' => 0,
+						'Rank3' => 0,
+						'Rank4' => 0,
+					);
+
 	my $Cyt_count = 0;
 	my $Vip_count = 0;
 	my $others_count = 0;
+	my $App_count = 0;
+	my $Gpp_count = 0;
+	my $Mcf_count = 0;
+	my $Mpf_count = 0;
+	my $Mpp_count = 0;
+	my $Mtx_count = 0;
+	my $Pra_count = 0;
+	my $Prb_count = 0;
+	my $Spp_count = 0;
+	my $Tpp_count = 0;
+	my $Vpa_count = 0;
+	my $Vpb_count = 0;
+	my $Xpp_count = 0;
+
 	my %Summary_count =  (
 							'Cry'     => 0,
 							'Cyt'     => 0,
 							'Vip'     => 0,
 							'Summary' => 0,
 							'others'  => 0,
+							'App'     => 0,
+							'Gpp'     => 0,
+							'Mcf'     => 0,
+							'Mpf'     => 0,
+							'Mpp'     => 0,
+							'Mtx'     => 0,
+							'Pra'     => 0,
+							'Prb'     => 0,
+							'Spp'     => 0,
+							'Tpp'     => 0,
+							'Vpa'     => 0,
+							'Vpb'     => 0,
+							'Xpp'     => 0,
 						);
 
 	my $blast = $step3_in{'blast'};
@@ -1080,10 +1243,36 @@ sub Writer  {
 	my $hmmtox = $step3_in{'tox'};#added
 #	print "\nblast: $blast\nhmm: $hmm\nsvm: $svm\nhmmem: $hmmem\nhmmen: $hmmen\nhmmec: $hmmec\nhmmmtx: $hmmmtx\nhmmtox: $hmmtox\n";#2020/4/8
 
-	#After that, Proteins in $blast variable contains only Cry proteins
+	#After that, Proteins in $blast variable contains only Cry proteins (not true!)
 	foreach (sort keys %$hmm)  {
 		my @hmm_split = split /\t/, $$hmm{$_};
 		my @protein_desc = split /:/, $hmm_split[0];
+		#=================20200730  start=================================================
+		my $EN = "NO";
+		my $EM = "NO";
+		my $EC = "NO";
+		my $EMID = "NO";
+		my $MTX = "NO";
+		my $TOXIN = "NO";
+		if (exists $$hmmem{$_}) {
+			$EM = "YES";
+		}
+		if (exists $$hmmen{$_}) {
+			$EN = "YES";
+		}
+		if (exists $$hmmec{$_}) {
+			$EC = "YES";
+		}
+		if (exists $$hmmemid{$_}) {
+			$EMID = "YES";
+		}
+		if (exists $$hmmmtx{$_}) {
+			$MTX = "YES";
+		}
+		if (exists $$hmmtox{$_}) {
+			$TOXIN = "YES";
+		}
+		#=================20200730  end===================================================
 		#process cyt predicted by hmm method
 		if($$hmm{$_} =~ /cyt.hmm/i)  {
 			if(exists $$blast{$_})  {
@@ -1106,12 +1295,13 @@ sub Writer  {
 							'Percent_identity'   => $temp{'Percent_identity'},
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
-							'Endotoxin_N'        => 'NA',#2020/4/7
-							'Endotoxin_M'        => 'NA',#2020/4/7
-							'Endotoxin_C'        => 'NA',#2020/4/7
-							'Endotoxin_mid'        => 'NA',#2020/4/8
-							'ETX_MTX2'           => 'NA',#2020/4/7
-							'Toxin_10'           => 'NA',#2020/4/7
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => 'NO',#2020/4/7
+							'Endotoxin_M'        => 'NO',#2020/4/7
+							'Endotoxin_C'        => 'NO',#2020/4/7
+							'Endotoxin_mid'        => 'NO',#2020/4/8
+							'ETX_MTX2'           => 'NO',#2020/4/7
+							'Toxin_10'           => 'NO',#2020/4/7
 							};
 				if(exists $$svm{$_})  {
 					$cyt{$_}->{'svm_prediction'} = 'YES';
@@ -1149,12 +1339,12 @@ sub Writer  {
 							  'e-value'            => 'ND',
 							  'blast_detail'       => 'ND',
 							  'hmm_detail'         => $$hmm{$_},
-							  'Endotoxin_N'        => 'NA',#2020/4/7
-							  'Endotoxin_M'        => 'NA',#2020/4/7
-							  'Endotoxin_C'        => 'NA',#2020/4/7
-							  'Endotoxin_mid'        => 'NA',#2020/4/8
-							  'ETX_MTX2'           => 'NA',#2020/4/7
-							  'Toxin_10'           => 'NA',#2020/4/7
+							  'Endotoxin_N'        => 'NO',#2020/4/7
+							  'Endotoxin_M'        => 'NO',#2020/4/7
+							  'Endotoxin_C'        => 'NO',#2020/4/7
+							  'Endotoxin_mid'        => 'NO',#2020/4/8
+							  'ETX_MTX2'           => 'NO',#2020/4/7
+							  'Toxin_10'           => 'NO',#2020/4/7
 							};
 				if(exists $$svm{$_})  {
 						$cyt{$_}->{'svm_prediction'} = 'YES';
@@ -1183,12 +1373,12 @@ sub Writer  {
 							'e-value'            => 'ND',
 							'blast_detail'       => 'ND',
 							'hmm_detail'         => $$hmm{$_},
-							'Endotoxin_N'        => 'NA',#2020/4/7
-							'Endotoxin_M'        => 'NA',#2020/4/7
-							'Endotoxin_C'        => 'NA',#2020/4/7
-							'Endotoxin_mid'        => 'NA',#2020/4/8
-							'ETX_MTX2'           => 'NA',#2020/4/7
-							'Toxin_10'           => 'NA',#2020/4/7
+							'Endotoxin_N'        => 'NO',#2020/4/7
+							'Endotoxin_M'        => 'NO',#2020/4/7
+							'Endotoxin_C'        => 'NO',#2020/4/7
+							'Endotoxin_mid'        => 'NO',#2020/4/8
+							'ETX_MTX2'           => 'NO',#2020/4/7
+							'Toxin_10'           => 'NO',#2020/4/7
 							};
 				if(exists $$svm{$_})  {
 					$vip{$_}->{'svm_prediction'} = 'YES';
@@ -1216,12 +1406,13 @@ sub Writer  {
 							'Percent_identity'   => $temp{'Percent_identity'},
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
-							'Endotoxin_N'        => 'NA',#2020/4/7
-							'Endotoxin_M'        => 'NA',#2020/4/7
-							'Endotoxin_C'        => 'NA',#2020/4/7
-							'Endotoxin_mid'        => 'NA',#2020/4/8
-							'ETX_MTX2'           => 'NA',#2020/4/7
-							'Toxin_10'           => 'NA',#2020/4/7
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => 'NO',#2020/4/7
+							'Endotoxin_M'        => 'NO',#2020/4/7
+							'Endotoxin_C'        => 'NO',#2020/4/7
+							'Endotoxin_mid'        => 'NO',#2020/4/8
+							'ETX_MTX2'           => 'NO',#2020/4/7
+							'Toxin_10'           => 'NO',#2020/4/7
 							};
 				if(exists $$svm{$_})  {
 					$vip{$_}->{'svm_prediction'} = 'YES';
@@ -1245,11 +1436,1065 @@ sub Writer  {
 				delete $$blast{$_};
 			}
 		}
+
+		#process Vpa predicted by hmm method
+		if($$hmm{$_} =~ /vpa.hmm/i)  {
+			if(!(exists $$blast{$_}))  {
+				$Vpa_count++;
+				$vpa{$_} = {
+							'protein_id'         => $_,
+							'protein_desc'       => $protein_desc[1],
+							'protein_len'        => $seq_info{$_}->{'seq_length'},
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'blast_prediction'   => 'ND',
+							'best_hit'           => 'ND',
+							'hit_length'         => 'ND',
+							'coverage'           => 'ND',
+							'Percent_identity'   => 'ND',
+							'e-value'            => 'ND',
+							'blast_detail'       => 'ND',
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$vpa{$_}->{'svm_prediction'} = 'YES';
+					$vpa{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$vpa{$_}->{'svm_prediction'} = 'NO';
+				}
+			}else  {
+				my %temp;
+				my @blast_split = split /\t/, $$blast{$_};
+				foreach (@blast_split)  {
+					my ($key, $value) = split /:/, $_;
+					$temp{$key} = ($value eq '') ? "" : $value;
+				}
+				$vpa{$_} = {
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'protein_id'         => $_,
+							'protein_desc'       => $temp{'Query_desc'},
+							'protein_len'        => $temp{'Query_Length'},
+							'blast_prediction'   => 'YES',
+							'best_hit'           => $temp{'Hit_id'},
+							'hit_length'         => $temp{'Hit_length'},
+							'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+							'Percent_identity'   => $temp{'Percent_identity'},
+							'e-value'            => $temp{'E-value'},
+							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$vpa{$_}->{'svm_prediction'} = 'YES';
+					$vpa{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$vpa{$_}->{'svm_prediction'} = 'NO';
+				}
+				if($temp{'Percent_identity'} >= 95)  {
+					$Vpa_count{'Rank4'}++;
+					$vpa{$_}->{'rank'} = "Rank4";
+				}elsif($temp{'Percent_identity'} >= 78)  {
+					$Vpa_count{'Rank3'}++;
+					$vpa{$_}->{'rank'} = "Rank3";
+				}elsif($temp{'Percent_identity'} >= 45)  {
+					$Vpa_count{'Rank2'}++;
+					$vpa{$_}->{'rank'} = "Rank2";
+				}else  {
+					$Vpa_count{'Rank1'}++;
+					$vpa{$_}->{'rank'} = "Rank1";
+				}
+				delete $$blast{$_};
+			}
+		}
+		#process Vpb predicted by hmm method
+		if($$hmm{$_} =~ /vpb.hmm/i)  {
+			if(!(exists $$blast{$_}))  {
+				$Vpb_count++;
+				$vpb{$_} = {
+							'protein_id'         => $_,
+							'protein_desc'       => $protein_desc[1],
+							'protein_len'        => $seq_info{$_}->{'seq_length'},
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'blast_prediction'   => 'ND',
+							'best_hit'           => 'ND',
+							'hit_length'         => 'ND',
+							'coverage'           => 'ND',
+							'Percent_identity'   => 'ND',
+							'e-value'            => 'ND',
+							'blast_detail'       => 'ND',
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$vpb{$_}->{'svm_prediction'} = 'YES';
+					$vpb{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$vpb{$_}->{'svm_prediction'} = 'NO';
+				}
+			}else  {
+				my %temp;
+				my @blast_split = split /\t/, $$blast{$_};
+				foreach (@blast_split)  {
+					my ($key, $value) = split /:/, $_;
+					$temp{$key} = ($value eq '') ? "" : $value;
+				}
+				$vpb{$_} = {
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'protein_id'         => $_,
+							'protein_desc'       => $temp{'Query_desc'},
+							'protein_len'        => $temp{'Query_Length'},
+							'blast_prediction'   => 'YES',
+							'best_hit'           => $temp{'Hit_id'},
+							'hit_length'         => $temp{'Hit_length'},
+							'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+							'Percent_identity'   => $temp{'Percent_identity'},
+							'e-value'            => $temp{'E-value'},
+							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$vpb{$_}->{'svm_prediction'} = 'YES';
+					$vpb{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$vpb{$_}->{'svm_prediction'} = 'NO';
+				}
+				if($temp{'Percent_identity'} >= 95)  {
+					$Vpb_count{'Rank4'}++;
+					$vpb{$_}->{'rank'} = "Rank4";
+				}elsif($temp{'Percent_identity'} >= 78)  {
+					$Vpb_count{'Rank3'}++;
+					$vpb{$_}->{'rank'} = "Rank3";
+				}elsif($temp{'Percent_identity'} >= 45)  {
+					$Vpb_count{'Rank2'}++;
+					$vpb{$_}->{'rank'} = "Rank2";
+				}else  {
+					$Vpb_count{'Rank1'}++;
+					$vpb{$_}->{'rank'} = "Rank1";
+				}
+				delete $$blast{$_};
+			}
+		}
+		#process App predicted by hmm method
+		if($$hmm{$_} =~ /app.hmm/i)  {
+			if(!(exists $$blast{$_}))  {
+				$App_count++;
+				$app{$_} = {
+							'protein_id'         => $_,
+							'protein_desc'       => $protein_desc[1],
+							'protein_len'        => $seq_info{$_}->{'seq_length'},
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'blast_prediction'   => 'ND',
+							'best_hit'           => 'ND',
+							'hit_length'         => 'ND',
+							'coverage'           => 'ND',
+							'Percent_identity'   => 'ND',
+							'e-value'            => 'ND',
+							'blast_detail'       => 'ND',
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$app{$_}->{'svm_prediction'} = 'YES';
+					$app{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$app{$_}->{'svm_prediction'} = 'NO';
+				}
+			}else  {
+				my %temp;
+				my @blast_split = split /\t/, $$blast{$_};
+				foreach (@blast_split)  {
+					my ($key, $value) = split /:/, $_;
+					$temp{$key} = ($value eq '') ? "" : $value;
+				}
+				$app{$_} = {
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'protein_id'         => $_,
+							'protein_desc'       => $temp{'Query_desc'},
+							'protein_len'        => $temp{'Query_Length'},
+							'blast_prediction'   => 'YES',
+							'best_hit'           => $temp{'Hit_id'},
+							'hit_length'         => $temp{'Hit_length'},
+							'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+							'Percent_identity'   => $temp{'Percent_identity'},
+							'e-value'            => $temp{'E-value'},
+							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$app{$_}->{'svm_prediction'} = 'YES';
+					$app{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$app{$_}->{'svm_prediction'} = 'NO';
+				}
+				if($temp{'Percent_identity'} >= 95)  {
+					$App_count{'Rank4'}++;
+					$app{$_}->{'rank'} = "Rank4";
+				}elsif($temp{'Percent_identity'} >= 78)  {
+					$App_count{'Rank3'}++;
+					$app{$_}->{'rank'} = "Rank3";
+				}elsif($temp{'Percent_identity'} >= 45)  {
+					$App_count{'Rank2'}++;
+					$app{$_}->{'rank'} = "Rank2";
+				}else  {
+					$App_count{'Rank1'}++;
+					$app{$_}->{'rank'} = "Rank1";
+				}
+				delete $$blast{$_};
+			}
+		}
+		#process Gpp predicted by hmm method
+		if($$hmm{$_} =~ /gpp.hmm/i)  {
+			if(!(exists $$blast{$_}))  {
+				$Gpp_count++;
+				$gpp{$_} = {
+							'protein_id'         => $_,
+							'protein_desc'       => $protein_desc[1],
+							'protein_len'        => $seq_info{$_}->{'seq_length'},
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'blast_prediction'   => 'ND',
+							'best_hit'           => 'ND',
+							'hit_length'         => 'ND',
+							'coverage'           => 'ND',
+							'Percent_identity'   => 'ND',
+							'e-value'            => 'ND',
+							'blast_detail'       => 'ND',
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$gpp{$_}->{'svm_prediction'} = 'YES';
+					$gpp{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$gpp{$_}->{'svm_prediction'} = 'NO';
+				}
+			}else  {
+				my %temp;
+				my @blast_split = split /\t/, $$blast{$_};
+				foreach (@blast_split)  {
+					my ($key, $value) = split /:/, $_;
+					$temp{$key} = ($value eq '') ? "" : $value;
+				}
+				$gpp{$_} = {
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'protein_id'         => $_,
+							'protein_desc'       => $temp{'Query_desc'},
+							'protein_len'        => $temp{'Query_Length'},
+							'blast_prediction'   => 'YES',
+							'best_hit'           => $temp{'Hit_id'},
+							'hit_length'         => $temp{'Hit_length'},
+							'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+							'Percent_identity'   => $temp{'Percent_identity'},
+							'e-value'            => $temp{'E-value'},
+							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$gpp{$_}->{'svm_prediction'} = 'YES';
+					$gpp{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$gpp{$_}->{'svm_prediction'} = 'NO';
+				}
+				if($temp{'Percent_identity'} >= 95)  {
+					$Gpp_count{'Rank4'}++;
+					$gpp{$_}->{'rank'} = "Rank4";
+				}elsif($temp{'Percent_identity'} >= 78)  {
+					$Gpp_count{'Rank3'}++;
+					$gpp{$_}->{'rank'} = "Rank3";
+				}elsif($temp{'Percent_identity'} >= 45)  {
+					$Gpp_count{'Rank2'}++;
+					$gpp{$_}->{'rank'} = "Rank2";
+				}else  {
+					$Gpp_count{'Rank1'}++;
+					$gpp{$_}->{'rank'} = "Rank1";
+				}
+				delete $$blast{$_};
+			}
+		}
+		#process Mcf predicted by hmm method
+		if($$hmm{$_} =~ /mcf.hmm/i)  {
+			if(!(exists $$blast{$_}))  {
+				$Mcf_count++;
+				$mcf{$_} = {
+							'protein_id'         => $_,
+							'protein_desc'       => $protein_desc[1],
+							'protein_len'        => $seq_info{$_}->{'seq_length'},
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'blast_prediction'   => 'ND',
+							'best_hit'           => 'ND',
+							'hit_length'         => 'ND',
+							'coverage'           => 'ND',
+							'Percent_identity'   => 'ND',
+							'e-value'            => 'ND',
+							'blast_detail'       => 'ND',
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$mcf{$_}->{'svm_prediction'} = 'YES';
+					$mcf{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$mcf{$_}->{'svm_prediction'} = 'NO';
+				}
+			}else  {
+				my %temp;
+				my @blast_split = split /\t/, $$blast{$_};
+				foreach (@blast_split)  {
+					my ($key, $value) = split /:/, $_;
+					$temp{$key} = ($value eq '') ? "" : $value;
+				}
+				$mcf{$_} = {
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'protein_id'         => $_,
+							'protein_desc'       => $temp{'Query_desc'},
+							'protein_len'        => $temp{'Query_Length'},
+							'blast_prediction'   => 'YES',
+							'best_hit'           => $temp{'Hit_id'},
+							'hit_length'         => $temp{'Hit_length'},
+							'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+							'Percent_identity'   => $temp{'Percent_identity'},
+							'e-value'            => $temp{'E-value'},
+							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$mcf{$_}->{'svm_prediction'} = 'YES';
+					$mcf{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$mcf{$_}->{'svm_prediction'} = 'NO';
+				}
+				if($temp{'Percent_identity'} >= 95)  {
+					$Mcf_count{'Rank4'}++;
+					$mcf{$_}->{'rank'} = "Rank4";
+				}elsif($temp{'Percent_identity'} >= 78)  {
+					$Mcf_count{'Rank3'}++;
+					$mcf{$_}->{'rank'} = "Rank3";
+				}elsif($temp{'Percent_identity'} >= 45)  {
+					$Mcf_count{'Rank2'}++;
+					$mcf{$_}->{'rank'} = "Rank2";
+				}else  {
+					$Mcf_count{'Rank1'}++;
+					$mcf{$_}->{'rank'} = "Rank1";
+				}
+				delete $$blast{$_};
+			}
+		}
+		#process Mpf predicted by hmm method
+		if($$hmm{$_} =~ /mpf.hmm/i)  {
+			if(!(exists $$blast{$_}))  {
+				$Mpf_count++;
+				$mpf{$_} = {
+							'protein_id'         => $_,
+							'protein_desc'       => $protein_desc[1],
+							'protein_len'        => $seq_info{$_}->{'seq_length'},
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'blast_prediction'   => 'ND',
+							'best_hit'           => 'ND',
+							'hit_length'         => 'ND',
+							'coverage'           => 'ND',
+							'Percent_identity'   => 'ND',
+							'e-value'            => 'ND',
+							'blast_detail'       => 'ND',
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$mpf{$_}->{'svm_prediction'} = 'YES';
+					$mpf{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$mpf{$_}->{'svm_prediction'} = 'NO';
+				}
+			}else  {
+				my %temp;
+				my @blast_split = split /\t/, $$blast{$_};
+				foreach (@blast_split)  {
+					my ($key, $value) = split /:/, $_;
+					$temp{$key} = ($value eq '') ? "" : $value;
+				}
+				$mpf{$_} = {
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'protein_id'         => $_,
+							'protein_desc'       => $temp{'Query_desc'},
+							'protein_len'        => $temp{'Query_Length'},
+							'blast_prediction'   => 'YES',
+							'best_hit'           => $temp{'Hit_id'},
+							'hit_length'         => $temp{'Hit_length'},
+							'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+							'Percent_identity'   => $temp{'Percent_identity'},
+							'e-value'            => $temp{'E-value'},
+							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$mpf{$_}->{'svm_prediction'} = 'YES';
+					$mpf{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$mpf{$_}->{'svm_prediction'} = 'NO';
+				}
+				if($temp{'Percent_identity'} >= 95)  {
+					$Mpf_count{'Rank4'}++;
+					$mpf{$_}->{'rank'} = "Rank4";
+				}elsif($temp{'Percent_identity'} >= 78)  {
+					$Mpf_count{'Rank3'}++;
+					$mpf{$_}->{'rank'} = "Rank3";
+				}elsif($temp{'Percent_identity'} >= 45)  {
+					$Mpf_count{'Rank2'}++;
+					$mpf{$_}->{'rank'} = "Rank2";
+				}else  {
+					$Mpf_count{'Rank1'}++;
+					$mpf{$_}->{'rank'} = "Rank1";
+				}
+				delete $$blast{$_};
+			}
+		}
+		#process Mpp predicted by hmm method
+		if($$hmm{$_} =~ /mpp.hmm/i)  {
+			if(!(exists $$blast{$_}))  {
+				$Mpp_count++;
+				$mpp{$_} = {
+							'protein_id'         => $_,
+							'protein_desc'       => $protein_desc[1],
+							'protein_len'        => $seq_info{$_}->{'seq_length'},
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'blast_prediction'   => 'ND',
+							'best_hit'           => 'ND',
+							'hit_length'         => 'ND',
+							'coverage'           => 'ND',
+							'Percent_identity'   => 'ND',
+							'e-value'            => 'ND',
+							'blast_detail'       => 'ND',
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$mpp{$_}->{'svm_prediction'} = 'YES';
+					$mpp{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$mpp{$_}->{'svm_prediction'} = 'NO';
+				}
+			}else  {
+				my %temp;
+				my @blast_split = split /\t/, $$blast{$_};
+				foreach (@blast_split)  {
+					my ($key, $value) = split /:/, $_;
+					$temp{$key} = ($value eq '') ? "" : $value;
+				}
+				$mpp{$_} = {
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'protein_id'         => $_,
+							'protein_desc'       => $temp{'Query_desc'},
+							'protein_len'        => $temp{'Query_Length'},
+							'blast_prediction'   => 'YES',
+							'best_hit'           => $temp{'Hit_id'},
+							'hit_length'         => $temp{'Hit_length'},
+							'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+							'Percent_identity'   => $temp{'Percent_identity'},
+							'e-value'            => $temp{'E-value'},
+							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$mpp{$_}->{'svm_prediction'} = 'YES';
+					$mpp{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$mpp{$_}->{'svm_prediction'} = 'NO';
+				}
+				if($temp{'Percent_identity'} >= 95)  {
+					$Mpp_count{'Rank4'}++;
+					$mpp{$_}->{'rank'} = "Rank4";
+				}elsif($temp{'Percent_identity'} >= 78)  {
+					$Mpp_count{'Rank3'}++;
+					$mpp{$_}->{'rank'} = "Rank3";
+				}elsif($temp{'Percent_identity'} >= 45)  {
+					$Mpp_count{'Rank2'}++;
+					$mpp{$_}->{'rank'} = "Rank2";
+				}else  {
+					$Mpp_count{'Rank1'}++;
+					$mpp{$_}->{'rank'} = "Rank1";
+				}
+				delete $$blast{$_};
+			}
+		}
+		#process Mtx predicted by hmm method
+		if($$hmm{$_} =~ /mtx.hmm/i)  {
+			if(!(exists $$blast{$_}))  {
+				$Mtx_count++;
+				$mtx{$_} = {
+							'protein_id'         => $_,
+							'protein_desc'       => $protein_desc[1],
+							'protein_len'        => $seq_info{$_}->{'seq_length'},
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'blast_prediction'   => 'ND',
+							'best_hit'           => 'ND',
+							'hit_length'         => 'ND',
+							'coverage'           => 'ND',
+							'Percent_identity'   => 'ND',
+							'e-value'            => 'ND',
+							'blast_detail'       => 'ND',
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$mtx{$_}->{'svm_prediction'} = 'YES';
+					$mtx{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$mtx{$_}->{'svm_prediction'} = 'NO';
+				}
+			}else  {
+				my %temp;
+				my @blast_split = split /\t/, $$blast{$_};
+				foreach (@blast_split)  {
+					my ($key, $value) = split /:/, $_;
+					$temp{$key} = ($value eq '') ? "" : $value;
+				}
+				$mtx{$_} = {
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'protein_id'         => $_,
+							'protein_desc'       => $temp{'Query_desc'},
+							'protein_len'        => $temp{'Query_Length'},
+							'blast_prediction'   => 'YES',
+							'best_hit'           => $temp{'Hit_id'},
+							'hit_length'         => $temp{'Hit_length'},
+							'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+							'Percent_identity'   => $temp{'Percent_identity'},
+							'e-value'            => $temp{'E-value'},
+							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$mtx{$_}->{'svm_prediction'} = 'YES';
+					$mtx{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$mtx{$_}->{'svm_prediction'} = 'NO';
+				}
+				if($temp{'Percent_identity'} >= 95)  {
+					$Mtx_count{'Rank4'}++;
+					$mtx{$_}->{'rank'} = "Rank4";
+				}elsif($temp{'Percent_identity'} >= 78)  {
+					$Mtx_count{'Rank3'}++;
+					$mtx{$_}->{'rank'} = "Rank3";
+				}elsif($temp{'Percent_identity'} >= 45)  {
+					$Mtx_count{'Rank2'}++;
+					$mtx{$_}->{'rank'} = "Rank2";
+				}else  {
+					$Mtx_count{'Rank1'}++;
+					$mtx{$_}->{'rank'} = "Rank1";
+				}
+				delete $$blast{$_};
+			}
+		}
+		#process Pra predicted by hmm method
+		if($$hmm{$_} =~ /pra.hmm/i)  {
+			if(!(exists $$blast{$_}))  {
+				$Pra_count++;
+				$pra{$_} = {
+							'protein_id'         => $_,
+							'protein_desc'       => $protein_desc[1],
+							'protein_len'        => $seq_info{$_}->{'seq_length'},
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'blast_prediction'   => 'ND',
+							'best_hit'           => 'ND',
+							'hit_length'         => 'ND',
+							'coverage'           => 'ND',
+							'Percent_identity'   => 'ND',
+							'e-value'            => 'ND',
+							'blast_detail'       => 'ND',
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$pra{$_}->{'svm_prediction'} = 'YES';
+					$pra{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$pra{$_}->{'svm_prediction'} = 'NO';
+				}
+			}else  {
+				my %temp;
+				my @blast_split = split /\t/, $$blast{$_};
+				foreach (@blast_split)  {
+					my ($key, $value) = split /:/, $_;
+					$temp{$key} = ($value eq '') ? "" : $value;
+				}
+				$pra{$_} = {
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'protein_id'         => $_,
+							'protein_desc'       => $temp{'Query_desc'},
+							'protein_len'        => $temp{'Query_Length'},
+							'blast_prediction'   => 'YES',
+							'best_hit'           => $temp{'Hit_id'},
+							'hit_length'         => $temp{'Hit_length'},
+							'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+							'Percent_identity'   => $temp{'Percent_identity'},
+							'e-value'            => $temp{'E-value'},
+							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$pra{$_}->{'svm_prediction'} = 'YES';
+					$pra{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$pra{$_}->{'svm_prediction'} = 'NO';
+				}
+				if($temp{'Percent_identity'} >= 95)  {
+					$Pra_count{'Rank4'}++;
+					$pra{$_}->{'rank'} = "Rank4";
+				}elsif($temp{'Percent_identity'} >= 78)  {
+					$Pra_count{'Rank3'}++;
+					$pra{$_}->{'rank'} = "Rank3";
+				}elsif($temp{'Percent_identity'} >= 45)  {
+					$Pra_count{'Rank2'}++;
+					$pra{$_}->{'rank'} = "Rank2";
+				}else  {
+					$Pra_count{'Rank1'}++;
+					$pra{$_}->{'rank'} = "Rank1";
+				}
+				delete $$blast{$_};
+			}
+		}
+		#process Prb predicted by hmm method
+		if($$hmm{$_} =~ /prb.hmm/i)  {
+			if(!(exists $$blast{$_}))  {
+				$Prb_count++;
+				$prb{$_} = {
+							'protein_id'         => $_,
+							'protein_desc'       => $protein_desc[1],
+							'protein_len'        => $seq_info{$_}->{'seq_length'},
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'blast_prediction'   => 'ND',
+							'best_hit'           => 'ND',
+							'hit_length'         => 'ND',
+							'coverage'           => 'ND',
+							'Percent_identity'   => 'ND',
+							'e-value'            => 'ND',
+							'blast_detail'       => 'ND',
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$prb{$_}->{'svm_prediction'} = 'YES';
+					$prb{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$prb{$_}->{'svm_prediction'} = 'NO';
+				}
+			}else  {
+				my %temp;
+				my @blast_split = split /\t/, $$blast{$_};
+				foreach (@blast_split)  {
+					my ($key, $value) = split /:/, $_;
+					$temp{$key} = ($value eq '') ? "" : $value;
+				}
+				$prb{$_} = {
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'protein_id'         => $_,
+							'protein_desc'       => $temp{'Query_desc'},
+							'protein_len'        => $temp{'Query_Length'},
+							'blast_prediction'   => 'YES',
+							'best_hit'           => $temp{'Hit_id'},
+							'hit_length'         => $temp{'Hit_length'},
+							'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+							'Percent_identity'   => $temp{'Percent_identity'},
+							'e-value'            => $temp{'E-value'},
+							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$prb{$_}->{'svm_prediction'} = 'YES';
+					$prb{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$prb{$_}->{'svm_prediction'} = 'NO';
+				}
+				if($temp{'Percent_identity'} >= 95)  {
+					$Prb_count{'Rank4'}++;
+					$prb{$_}->{'rank'} = "Rank4";
+				}elsif($temp{'Percent_identity'} >= 78)  {
+					$Prb_count{'Rank3'}++;
+					$prb{$_}->{'rank'} = "Rank3";
+				}elsif($temp{'Percent_identity'} >= 45)  {
+					$Prb_count{'Rank2'}++;
+					$prb{$_}->{'rank'} = "Rank2";
+				}else  {
+					$Prb_count{'Rank1'}++;
+					$prb{$_}->{'rank'} = "Rank1";
+				}
+				delete $$blast{$_};
+			}
+		}
+		#process Spp predicted by hmm method
+		if($$hmm{$_} =~ /spp.hmm/i)  {
+			if(!(exists $$blast{$_}))  {
+				$Spp_count++;
+				$spp{$_} = {
+							'protein_id'         => $_,
+							'protein_desc'       => $protein_desc[1],
+							'protein_len'        => $seq_info{$_}->{'seq_length'},
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'blast_prediction'   => 'ND',
+							'best_hit'           => 'ND',
+							'hit_length'         => 'ND',
+							'coverage'           => 'ND',
+							'Percent_identity'   => 'ND',
+							'e-value'            => 'ND',
+							'blast_detail'       => 'ND',
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$spp{$_}->{'svm_prediction'} = 'YES';
+					$spp{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$spp{$_}->{'svm_prediction'} = 'NO';
+				}
+			}else  {
+				my %temp;
+				my @blast_split = split /\t/, $$blast{$_};
+				foreach (@blast_split)  {
+					my ($key, $value) = split /:/, $_;
+					$temp{$key} = ($value eq '') ? "" : $value;
+				}
+				$spp{$_} = {
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'protein_id'         => $_,
+							'protein_desc'       => $temp{'Query_desc'},
+							'protein_len'        => $temp{'Query_Length'},
+							'blast_prediction'   => 'YES',
+							'best_hit'           => $temp{'Hit_id'},
+							'hit_length'         => $temp{'Hit_length'},
+							'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+							'Percent_identity'   => $temp{'Percent_identity'},
+							'e-value'            => $temp{'E-value'},
+							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$spp{$_}->{'svm_prediction'} = 'YES';
+					$spp{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$spp{$_}->{'svm_prediction'} = 'NO';
+				}
+				if($temp{'Percent_identity'} >= 95)  {
+					$Spp_count{'Rank4'}++;
+					$spp{$_}->{'rank'} = "Rank4";
+				}elsif($temp{'Percent_identity'} >= 78)  {
+					$Spp_count{'Rank3'}++;
+					$spp{$_}->{'rank'} = "Rank3";
+				}elsif($temp{'Percent_identity'} >= 45)  {
+					$Spp_count{'Rank2'}++;
+					$spp{$_}->{'rank'} = "Rank2";
+				}else  {
+					$Spp_count{'Rank1'}++;
+					$spp{$_}->{'rank'} = "Rank1";
+				}
+				delete $$blast{$_};
+			}
+		}
+		#process Tpp predicted by hmm method
+		if($$hmm{$_} =~ /tpp.hmm/i)  {
+			if(!(exists $$blast{$_}))  {
+				$Tpp_count++;
+				$tpp{$_} = {
+							'protein_id'         => $_,
+							'protein_desc'       => $protein_desc[1],
+							'protein_len'        => $seq_info{$_}->{'seq_length'},
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'blast_prediction'   => 'ND',
+							'best_hit'           => 'ND',
+							'hit_length'         => 'ND',
+							'coverage'           => 'ND',
+							'Percent_identity'   => 'ND',
+							'e-value'            => 'ND',
+							'blast_detail'       => 'ND',
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$tpp{$_}->{'svm_prediction'} = 'YES';
+					$tpp{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$tpp{$_}->{'svm_prediction'} = 'NO';
+				}
+			}else  {
+				my %temp;
+				my @blast_split = split /\t/, $$blast{$_};
+				foreach (@blast_split)  {
+					my ($key, $value) = split /:/, $_;
+					$temp{$key} = ($value eq '') ? "" : $value;
+				}
+				$tpp{$_} = {
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'protein_id'         => $_,
+							'protein_desc'       => $temp{'Query_desc'},
+							'protein_len'        => $temp{'Query_Length'},
+							'blast_prediction'   => 'YES',
+							'best_hit'           => $temp{'Hit_id'},
+							'hit_length'         => $temp{'Hit_length'},
+							'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+							'Percent_identity'   => $temp{'Percent_identity'},
+							'e-value'            => $temp{'E-value'},
+							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$tpp{$_}->{'svm_prediction'} = 'YES';
+					$tpp{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$tpp{$_}->{'svm_prediction'} = 'NO';
+				}
+				if($temp{'Percent_identity'} >= 95)  {
+					$Tpp_count{'Rank4'}++;
+					$tpp{$_}->{'rank'} = "Rank4";
+				}elsif($temp{'Percent_identity'} >= 78)  {
+					$Tpp_count{'Rank3'}++;
+					$tpp{$_}->{'rank'} = "Rank3";
+				}elsif($temp{'Percent_identity'} >= 45)  {
+					$Tpp_count{'Rank2'}++;
+					$tpp{$_}->{'rank'} = "Rank2";
+				}else  {
+					$Tpp_count{'Rank1'}++;
+					$tpp{$_}->{'rank'} = "Rank1";
+				}
+				delete $$blast{$_};
+			}
+		}
+		#process Xpp predicted by hmm method
+		if($$hmm{$_} =~ /xpp.hmm/i)  {
+			if(!(exists $$blast{$_}))  {
+				$Xpp_count++;
+				$xpp{$_} = {
+							'protein_id'         => $_,
+							'protein_desc'       => $protein_desc[1],
+							'protein_len'        => $seq_info{$_}->{'seq_length'},
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'blast_prediction'   => 'ND',
+							'best_hit'           => 'ND',
+							'hit_length'         => 'ND',
+							'coverage'           => 'ND',
+							'Percent_identity'   => 'ND',
+							'e-value'            => 'ND',
+							'blast_detail'       => 'ND',
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$xpp{$_}->{'svm_prediction'} = 'YES';
+					$xpp{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$xpp{$_}->{'svm_prediction'} = 'NO';
+				}
+			}else  {
+				my %temp;
+				my @blast_split = split /\t/, $$blast{$_};
+				foreach (@blast_split)  {
+					my ($key, $value) = split /:/, $_;
+					$temp{$key} = ($value eq '') ? "" : $value;
+				}
+				$xpp{$_} = {
+							'rank'               => 'ND',
+							'hmm_prediction'     => 'YES',
+							'protein_id'         => $_,
+							'protein_desc'       => $temp{'Query_desc'},
+							'protein_len'        => $temp{'Query_Length'},
+							'blast_prediction'   => 'YES',
+							'best_hit'           => $temp{'Hit_id'},
+							'hit_length'         => $temp{'Hit_length'},
+							'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+							'Percent_identity'   => $temp{'Percent_identity'},
+							'e-value'            => $temp{'E-value'},
+							'blast_detail'       => $$blast{$_},
+							'hmm_detail'         => $$hmm{$_},
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
+							};
+				if(exists $$svm{$_})  {
+					$xpp{$_}->{'svm_prediction'} = 'YES';
+					$xpp{$_}->{'svm_detail'} = $$svm{$_};
+				}else  {
+					$xpp{$_}->{'svm_prediction'} = 'NO';
+				}
+				if($temp{'Percent_identity'} >= 95)  {
+					$Xpp_count{'Rank4'}++;
+					$xpp{$_}->{'rank'} = "Rank4";
+				}elsif($temp{'Percent_identity'} >= 78)  {
+					$Xpp_count{'Rank3'}++;
+					$xpp{$_}->{'rank'} = "Rank3";
+				}elsif($temp{'Percent_identity'} >= 45)  {
+					$Xpp_count{'Rank2'}++;
+					$xpp{$_}->{'rank'} = "Rank2";
+				}else  {
+					$Xpp_count{'Rank1'}++;
+					$xpp{$_}->{'rank'} = "Rank1";
+				}
+				delete $$blast{$_};
+			}
+		}
 	}
 
 	#Obtain Cry protein ID
 	foreach (sort keys %seq_info)  {
-		if((!exists $vip{$_}) && !(exists $cyt{$_}))  {
+		if((!exists $vip{$_}) && !(exists $cyt{$_}) && !(exists $vpa{$_}) && !(exists $vpb{$_}) && !(exists $app{$_}) && !(exists $gpp{$_}) && !(exists $mcf{$_}) && !(exists $mpf{$_}) && !(exists $mpp{$_}) && !(exists $mtx{$_}) && !(exists $pra{$_}) && !(exists $prb{$_}) && !(exists $spp{$_}) && !(exists $tpp{$_}) && !(exists $xpp{$_}))  {
 			$cry{$_} = '';#sequences ids contain crys(blast and hmm and svm) and (vip and cyt predicted only by blast)
 		}
 	}
@@ -1280,33 +2525,7 @@ sub Writer  {
 			$TOXIN = "YES";
 		}
 		if(exists $$blast{$_})  {
-=pod
-			if (exists $$hmmem{$_}) {
-				$EM = "YES";
-				#print "EM=YES\n";
-			}
-			
-			if (exists $$hmmen{$_}) {
-				$EN = "YES";
-				#print "EN=YES\n";
-			}
-			if (exists $$hmmec{$_}) {
-				$EC = "YES";
-				#print "EC=YES\n";
-			}
-			if (exists $$hmmemid{$_}) {
-				$EMID = "YES";
-				#print "EC=YES\n";
-			}
-			if (exists $$hmmmtx{$_}) {
-				$MTX = "YES";
-				#print "MTX=YES\n";
-			}
-			if (exists $$hmmtox{$_}) {
-				$TOXIN = "YES";
-				#print "TOXIN=YES\n";
-			}
-=cut
+
 			my %temp;
 			my @blast_split = split /\t/, $$blast{$_};
 				foreach (@blast_split)  {
@@ -1327,12 +2546,12 @@ sub Writer  {
 								'Percent_identity'   => $temp{'Percent_identity'},
 								'e-value'            => $temp{'E-value'},
 								'blast_detail'       => $$blast{$_},
-								'Endotoxin_N'        => 'NA',#2020/4/7
-								'Endotoxin_M'        => 'NA',#2020/4/7
-								'Endotoxin_C'        => 'NA',#2020/4/7
-								'Endotoxin_mid'        => 'NA',#2020/4/8
-								'ETX_MTX2'           => 'NA',#2020/4/7
-								'Toxin_10'           => 'NA',#2020/4/7
+								'Endotoxin_N'        => 'NO',#2020/4/7
+								'Endotoxin_M'        => 'NO',#2020/4/7
+								'Endotoxin_C'        => 'NO',#2020/4/7
+								'Endotoxin_mid'        => 'NO',#2020/4/8
+								'ETX_MTX2'           => 'NO',#2020/4/7
+								'Toxin_10'           => 'NO',#2020/4/7
 								};
 					if(exists $$svm{$_})  {
 						$vip{$_}->{'svm_prediction'} = 'YES';
@@ -1354,6 +2573,86 @@ sub Writer  {
 						$vip{$_}->{'rank'} = "Rank1";
 					}
 					delete $cry{$_};
+				}elsif ($temp{'Hit_id'} =~ /vpa/i) {
+					$vpa{$_} = {
+								'hmm_prediction'     => 'NO',
+								'protein_id'         => $_,
+								'protein_desc'       => $temp{'Query_desc'},
+								'protein_len'        => $temp{'Query_Length'},
+								'blast_prediction'   => 'YES',
+								'best_hit'           => $temp{'Hit_id'},
+								'hit_length'         => $temp{'Hit_length'},
+								'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+								'Percent_identity'   => $temp{'Percent_identity'},
+								'e-value'            => $temp{'E-value'},
+								'blast_detail'       => $$blast{$_},
+								'Endotoxin_N'        => 'NO',#2020/4/7
+								'Endotoxin_M'        => 'NO',#2020/4/7
+								'Endotoxin_C'        => 'NO',#2020/4/7
+								'Endotoxin_mid'        => 'NO',#2020/4/8
+								'ETX_MTX2'           => 'NO',#2020/4/7
+								'Toxin_10'           => 'NO',#2020/4/7
+								};
+					if(exists $$svm{$_})  {
+						$vpa{$_}->{'svm_prediction'} = 'YES';
+						$vpa{$_}->{'svm_detail'} = $$svm{$_};
+					}else  {
+						$vpa{$_}->{'svm_prediction'} = 'NO';
+					}
+					if($temp{'Percent_identity'} >= 95)  {
+						$Vpa_count{'Rank4'}++;
+						$vpa{$_}->{'rank'} = "Rank4";
+					}elsif($temp{'Percent_identity'} >= 78)  {
+						$Vpa_count{'Rank3'}++;
+						$vpa{$_}->{'rank'} = "Rank3";
+					}elsif($temp{'Percent_identity'} >= 45)  {
+						$Vpa_count{'Rank2'}++;
+						$vpa{$_}->{'rank'} = "Rank2";
+					}else  {
+						$Vpa_count{'Rank1'}++;
+						$vpa{$_}->{'rank'} = "Rank1";
+					}
+					delete $cry{$_};
+				}elsif ($temp{'Hit_id'} =~ /vpb/i) {
+					$vpb{$_} = {
+								'hmm_prediction'     => 'NO',
+								'protein_id'         => $_,
+								'protein_desc'       => $temp{'Query_desc'},
+								'protein_len'        => $temp{'Query_Length'},
+								'blast_prediction'   => 'YES',
+								'best_hit'           => $temp{'Hit_id'},
+								'hit_length'         => $temp{'Hit_length'},
+								'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+								'Percent_identity'   => $temp{'Percent_identity'},
+								'e-value'            => $temp{'E-value'},
+								'blast_detail'       => $$blast{$_},
+								'Endotoxin_N'        => 'NO',#2020/4/7
+								'Endotoxin_M'        => 'NO',#2020/4/7
+								'Endotoxin_C'        => 'NO',#2020/4/7
+								'Endotoxin_mid'        => 'NO',#2020/4/8
+								'ETX_MTX2'           => 'NO',#2020/4/7
+								'Toxin_10'           => 'NO',#2020/4/7
+								};
+					if(exists $$svm{$_})  {
+						$vpb{$_}->{'svm_prediction'} = 'YES';
+						$vpb{$_}->{'svm_detail'} = $$svm{$_};
+					}else  {
+						$vpb{$_}->{'svm_prediction'} = 'NO';
+					}
+					if($temp{'Percent_identity'} >= 95)  {
+						$Vpb_count{'Rank4'}++;
+						$vpb{$_}->{'rank'} = "Rank4";
+					}elsif($temp{'Percent_identity'} >= 78)  {
+						$Vpb_count{'Rank3'}++;
+						$vpb{$_}->{'rank'} = "Rank3";
+					}elsif($temp{'Percent_identity'} >= 45)  {
+						$Vpb_count{'Rank2'}++;
+						$vpb{$_}->{'rank'} = "Rank2";
+					}else  {
+						$Vpb_count{'Rank1'}++;
+						$vpb{$_}->{'rank'} = "Rank1";
+					}
+					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /cyt/i) {
 					$cyt{$_} = {
 								'hmm_prediction'     => 'NO',
@@ -1367,12 +2666,12 @@ sub Writer  {
 								'Percent_identity'   => $temp{'Percent_identity'},
 								'e-value'            => $temp{'E-value'},
 								'blast_detail'       => $$blast{$_},
-								'Endotoxin_N'        => 'NA',#2020/4/7
-								'Endotoxin_M'        => 'NA',#2020/4/7
-								'Endotoxin_C'        => 'NA',#2020/4/7
-								'Endotoxin_mid'        => 'NA',#2020/4/8
-								'ETX_MTX2'           => 'NA',#2020/4/7
-								'Toxin_10'           => 'NA',#2020/4/7
+								'Endotoxin_N'        => 'NO',#2020/4/7
+								'Endotoxin_M'        => 'NO',#2020/4/7
+								'Endotoxin_C'        => 'NO',#2020/4/7
+								'Endotoxin_mid'        => 'NO',#2020/4/8
+								'ETX_MTX2'           => 'NO',#2020/4/7
+								'Toxin_10'           => 'NO',#2020/4/7
 								};
 					if(exists $$svm{$_})  {
 						$cyt{$_}->{'svm_prediction'} = 'YES';
@@ -1432,6 +2731,446 @@ sub Writer  {
 					}else  {
 						$others_count{'Rank1'}++;
 						$others{$_}->{'rank'} = "Rank1";
+					}
+					delete $cry{$_};
+				}elsif ($temp{'Hit_id'} =~ /app/i) {
+					$app{$_} = {
+								'hmm_prediction'     => 'NA',
+								'protein_id'         => $_,
+								'protein_desc'       => $temp{'Query_desc'},
+								'protein_len'        => $temp{'Query_Length'},
+								'blast_prediction'   => 'YES',
+								'best_hit'           => $temp{'Hit_id'},
+								'hit_length'         => $temp{'Hit_length'},
+								'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+								'Percent_identity'   => $temp{'Percent_identity'},
+								'e-value'            => $temp{'E-value'},
+								'blast_detail'       => $$blast{$_},
+								'Endotoxin_N'        => $EN,#2020/4/7
+								'Endotoxin_M'        => $EM,#2020/4/7
+								'Endotoxin_C'        => $EC,#2020/4/7
+								'Endotoxin_mid'        => $EMID,#2020/4/8
+								'ETX_MTX2'           => $MTX,#2020/4/7
+								'Toxin_10'           => $TOXIN,#2020/4/7
+								};
+					if(exists $$svm{$_})  {
+						$app{$_}->{'svm_prediction'} = 'YES';
+						$app{$_}->{'svm_detail'} = $$svm{$_};
+					}else  {
+						$app{$_}->{'svm_prediction'} = 'NO';
+					}
+					if($temp{'Percent_identity'} >= 95)  {
+						$App_count{'Rank4'}++;
+						$app{$_}->{'rank'} = "Rank4";
+					}elsif($temp{'Percent_identity'} >= 78)  {
+						$App_count{'Rank3'}++;
+						$app{$_}->{'rank'} = "Rank3";
+					}elsif($temp{'Percent_identity'} >= 45)  {
+						$App_count{'Rank2'}++;
+						$app{$_}->{'rank'} = "Rank2";
+					}else  {
+						$App_count{'Rank1'}++;
+						$app{$_}->{'rank'} = "Rank1";
+					}
+					delete $cry{$_};
+				}elsif ($temp{'Hit_id'} =~ /gpp/i) {
+					$gpp{$_} = {
+								'hmm_prediction'     => 'NA',
+								'protein_id'         => $_,
+								'protein_desc'       => $temp{'Query_desc'},
+								'protein_len'        => $temp{'Query_Length'},
+								'blast_prediction'   => 'YES',
+								'best_hit'           => $temp{'Hit_id'},
+								'hit_length'         => $temp{'Hit_length'},
+								'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+								'Percent_identity'   => $temp{'Percent_identity'},
+								'e-value'            => $temp{'E-value'},
+								'blast_detail'       => $$blast{$_},
+								'Endotoxin_N'        => $EN,#2020/4/7
+								'Endotoxin_M'        => $EM,#2020/4/7
+								'Endotoxin_C'        => $EC,#2020/4/7
+								'Endotoxin_mid'        => $EMID,#2020/4/8
+								'ETX_MTX2'           => $MTX,#2020/4/7
+								'Toxin_10'           => $TOXIN,#2020/4/7
+								};
+					if(exists $$svm{$_})  {
+						$gpp{$_}->{'svm_prediction'} = 'YES';
+						$gpp{$_}->{'svm_detail'} = $$svm{$_};
+					}else  {
+						$gpp{$_}->{'svm_prediction'} = 'NO';
+					}
+					if($temp{'Percent_identity'} >= 95)  {
+						$Gpp_count{'Rank4'}++;
+						$gpp{$_}->{'rank'} = "Rank4";
+					}elsif($temp{'Percent_identity'} >= 78)  {
+						$Gpp_count{'Rank3'}++;
+						$gpp{$_}->{'rank'} = "Rank3";
+					}elsif($temp{'Percent_identity'} >= 45)  {
+						$Gpp_count{'Rank2'}++;
+						$gpp{$_}->{'rank'} = "Rank2";
+					}else  {
+						$Gpp_count{'Rank1'}++;
+						$gpp{$_}->{'rank'} = "Rank1";
+					}
+					delete $cry{$_};
+				}elsif ($temp{'Hit_id'} =~ /mcf/i) {
+					$mcf{$_} = {
+								'hmm_prediction'     => 'NA',
+								'protein_id'         => $_,
+								'protein_desc'       => $temp{'Query_desc'},
+								'protein_len'        => $temp{'Query_Length'},
+								'blast_prediction'   => 'YES',
+								'best_hit'           => $temp{'Hit_id'},
+								'hit_length'         => $temp{'Hit_length'},
+								'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+								'Percent_identity'   => $temp{'Percent_identity'},
+								'e-value'            => $temp{'E-value'},
+								'blast_detail'       => $$blast{$_},
+								'Endotoxin_N'        => $EN,#2020/4/7
+								'Endotoxin_M'        => $EM,#2020/4/7
+								'Endotoxin_C'        => $EC,#2020/4/7
+								'Endotoxin_mid'        => $EMID,#2020/4/8
+								'ETX_MTX2'           => $MTX,#2020/4/7
+								'Toxin_10'           => $TOXIN,#2020/4/7
+								};
+					if(exists $$svm{$_})  {
+						$mcf{$_}->{'svm_prediction'} = 'YES';
+						$mcf{$_}->{'svm_detail'} = $$svm{$_};
+					}else  {
+						$mcf{$_}->{'svm_prediction'} = 'NO';
+					}
+					if($temp{'Percent_identity'} >= 95)  {
+						$Mcf_count{'Rank4'}++;
+						$mcf{$_}->{'rank'} = "Rank4";
+					}elsif($temp{'Percent_identity'} >= 78)  {
+						$Mcf_count{'Rank3'}++;
+						$mcf{$_}->{'rank'} = "Rank3";
+					}elsif($temp{'Percent_identity'} >= 45)  {
+						$Mcf_count{'Rank2'}++;
+						$mcf{$_}->{'rank'} = "Rank2";
+					}else  {
+						$Mcf_count{'Rank1'}++;
+						$mcf{$_}->{'rank'} = "Rank1";
+					}
+					delete $cry{$_};
+				}elsif ($temp{'Hit_id'} =~ /mpf/i) {
+					$mpf{$_} = {
+								'hmm_prediction'     => 'NA',
+								'protein_id'         => $_,
+								'protein_desc'       => $temp{'Query_desc'},
+								'protein_len'        => $temp{'Query_Length'},
+								'blast_prediction'   => 'YES',
+								'best_hit'           => $temp{'Hit_id'},
+								'hit_length'         => $temp{'Hit_length'},
+								'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+								'Percent_identity'   => $temp{'Percent_identity'},
+								'e-value'            => $temp{'E-value'},
+								'blast_detail'       => $$blast{$_},
+								'Endotoxin_N'        => $EN,#2020/4/7
+								'Endotoxin_M'        => $EM,#2020/4/7
+								'Endotoxin_C'        => $EC,#2020/4/7
+								'Endotoxin_mid'        => $EMID,#2020/4/8
+								'ETX_MTX2'           => $MTX,#2020/4/7
+								'Toxin_10'           => $TOXIN,#2020/4/7
+								};
+					if(exists $$svm{$_})  {
+						$mpf{$_}->{'svm_prediction'} = 'YES';
+						$mpf{$_}->{'svm_detail'} = $$svm{$_};
+					}else  {
+						$mpf{$_}->{'svm_prediction'} = 'NO';
+					}
+					if($temp{'Percent_identity'} >= 95)  {
+						$Mpf_count{'Rank4'}++;
+						$mpf{$_}->{'rank'} = "Rank4";
+					}elsif($temp{'Percent_identity'} >= 78)  {
+						$Mpf_count{'Rank3'}++;
+						$mpf{$_}->{'rank'} = "Rank3";
+					}elsif($temp{'Percent_identity'} >= 45)  {
+						$Mpf_count{'Rank2'}++;
+						$mpf{$_}->{'rank'} = "Rank2";
+					}else  {
+						$Mpf_count{'Rank1'}++;
+						$mpf{$_}->{'rank'} = "Rank1";
+					}
+					delete $cry{$_};
+				}elsif ($temp{'Hit_id'} =~ /mpp/i) {
+					$mpp{$_} = {
+								'hmm_prediction'     => 'NA',
+								'protein_id'         => $_,
+								'protein_desc'       => $temp{'Query_desc'},
+								'protein_len'        => $temp{'Query_Length'},
+								'blast_prediction'   => 'YES',
+								'best_hit'           => $temp{'Hit_id'},
+								'hit_length'         => $temp{'Hit_length'},
+								'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+								'Percent_identity'   => $temp{'Percent_identity'},
+								'e-value'            => $temp{'E-value'},
+								'blast_detail'       => $$blast{$_},
+								'Endotoxin_N'        => $EN,#2020/4/7
+								'Endotoxin_M'        => $EM,#2020/4/7
+								'Endotoxin_C'        => $EC,#2020/4/7
+								'Endotoxin_mid'        => $EMID,#2020/4/8
+								'ETX_MTX2'           => $MTX,#2020/4/7
+								'Toxin_10'           => $TOXIN,#2020/4/7
+								};
+					if(exists $$svm{$_})  {
+						$mpp{$_}->{'svm_prediction'} = 'YES';
+						$mpp{$_}->{'svm_detail'} = $$svm{$_};
+					}else  {
+						$mpp{$_}->{'svm_prediction'} = 'NO';
+					}
+					if($temp{'Percent_identity'} >= 95)  {
+						$Mpp_count{'Rank4'}++;
+						$mpp{$_}->{'rank'} = "Rank4";
+					}elsif($temp{'Percent_identity'} >= 78)  {
+						$Mpp_count{'Rank3'}++;
+						$mpp{$_}->{'rank'} = "Rank3";
+					}elsif($temp{'Percent_identity'} >= 45)  {
+						$Mpp_count{'Rank2'}++;
+						$mpp{$_}->{'rank'} = "Rank2";
+					}else  {
+						$Mpp_count{'Rank1'}++;
+						$mpp{$_}->{'rank'} = "Rank1";
+					}
+					delete $cry{$_};
+				}elsif ($temp{'Hit_id'} =~ /mtx/i) {
+					$mtx{$_} = {
+								'hmm_prediction'     => 'NA',
+								'protein_id'         => $_,
+								'protein_desc'       => $temp{'Query_desc'},
+								'protein_len'        => $temp{'Query_Length'},
+								'blast_prediction'   => 'YES',
+								'best_hit'           => $temp{'Hit_id'},
+								'hit_length'         => $temp{'Hit_length'},
+								'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+								'Percent_identity'   => $temp{'Percent_identity'},
+								'e-value'            => $temp{'E-value'},
+								'blast_detail'       => $$blast{$_},
+								'Endotoxin_N'        => $EN,#2020/4/7
+								'Endotoxin_M'        => $EM,#2020/4/7
+								'Endotoxin_C'        => $EC,#2020/4/7
+								'Endotoxin_mid'        => $EMID,#2020/4/8
+								'ETX_MTX2'           => $MTX,#2020/4/7
+								'Toxin_10'           => $TOXIN,#2020/4/7
+								};
+					if(exists $$svm{$_})  {
+						$mtx{$_}->{'svm_prediction'} = 'YES';
+						$mtx{$_}->{'svm_detail'} = $$svm{$_};
+					}else  {
+						$mtx{$_}->{'svm_prediction'} = 'NO';
+					}
+					if($temp{'Percent_identity'} >= 95)  {
+						$Mtx_count{'Rank4'}++;
+						$mtx{$_}->{'rank'} = "Rank4";
+					}elsif($temp{'Percent_identity'} >= 78)  {
+						$Mtx_count{'Rank3'}++;
+						$mtx{$_}->{'rank'} = "Rank3";
+					}elsif($temp{'Percent_identity'} >= 45)  {
+						$Mtx_count{'Rank2'}++;
+						$mtx{$_}->{'rank'} = "Rank2";
+					}else  {
+						$Mtx_count{'Rank1'}++;
+						$mtx{$_}->{'rank'} = "Rank1";
+					}
+					delete $cry{$_};
+				}elsif ($temp{'Hit_id'} =~ /pra/i) {
+					$pra{$_} = {
+								'hmm_prediction'     => 'NA',
+								'protein_id'         => $_,
+								'protein_desc'       => $temp{'Query_desc'},
+								'protein_len'        => $temp{'Query_Length'},
+								'blast_prediction'   => 'YES',
+								'best_hit'           => $temp{'Hit_id'},
+								'hit_length'         => $temp{'Hit_length'},
+								'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+								'Percent_identity'   => $temp{'Percent_identity'},
+								'e-value'            => $temp{'E-value'},
+								'blast_detail'       => $$blast{$_},
+								'Endotoxin_N'        => $EN,#2020/4/7
+								'Endotoxin_M'        => $EM,#2020/4/7
+								'Endotoxin_C'        => $EC,#2020/4/7
+								'Endotoxin_mid'        => $EMID,#2020/4/8
+								'ETX_MTX2'           => $MTX,#2020/4/7
+								'Toxin_10'           => $TOXIN,#2020/4/7
+								};
+					if(exists $$svm{$_})  {
+						$pra{$_}->{'svm_prediction'} = 'YES';
+						$pra{$_}->{'svm_detail'} = $$svm{$_};
+					}else  {
+						$pra{$_}->{'svm_prediction'} = 'NO';
+					}
+					if($temp{'Percent_identity'} >= 95)  {
+						$Pra_count{'Rank4'}++;
+						$pra{$_}->{'rank'} = "Rank4";
+					}elsif($temp{'Percent_identity'} >= 78)  {
+						$Pra_count{'Rank3'}++;
+						$pra{$_}->{'rank'} = "Rank3";
+					}elsif($temp{'Percent_identity'} >= 45)  {
+						$Pra_count{'Rank2'}++;
+						$pra{$_}->{'rank'} = "Rank2";
+					}else  {
+						$Pra_count{'Rank1'}++;
+						$pra{$_}->{'rank'} = "Rank1";
+					}
+					delete $cry{$_};
+				}elsif ($temp{'Hit_id'} =~ /prb/i) {
+					$prb{$_} = {
+								'hmm_prediction'     => 'NA',
+								'protein_id'         => $_,
+								'protein_desc'       => $temp{'Query_desc'},
+								'protein_len'        => $temp{'Query_Length'},
+								'blast_prediction'   => 'YES',
+								'best_hit'           => $temp{'Hit_id'},
+								'hit_length'         => $temp{'Hit_length'},
+								'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+								'Percent_identity'   => $temp{'Percent_identity'},
+								'e-value'            => $temp{'E-value'},
+								'blast_detail'       => $$blast{$_},
+								'Endotoxin_N'        => $EN,#2020/4/7
+								'Endotoxin_M'        => $EM,#2020/4/7
+								'Endotoxin_C'        => $EC,#2020/4/7
+								'Endotoxin_mid'        => $EMID,#2020/4/8
+								'ETX_MTX2'           => $MTX,#2020/4/7
+								'Toxin_10'           => $TOXIN,#2020/4/7
+								};
+					if(exists $$svm{$_})  {
+						$prb{$_}->{'svm_prediction'} = 'YES';
+						$prb{$_}->{'svm_detail'} = $$svm{$_};
+					}else  {
+						$prb{$_}->{'svm_prediction'} = 'NO';
+					}
+					if($temp{'Percent_identity'} >= 95)  {
+						$Prb_count{'Rank4'}++;
+						$prb{$_}->{'rank'} = "Rank4";
+					}elsif($temp{'Percent_identity'} >= 78)  {
+						$Prb_count{'Rank3'}++;
+						$prb{$_}->{'rank'} = "Rank3";
+					}elsif($temp{'Percent_identity'} >= 45)  {
+						$Prb_count{'Rank2'}++;
+						$prb{$_}->{'rank'} = "Rank2";
+					}else  {
+						$Prb_count{'Rank1'}++;
+						$prb{$_}->{'rank'} = "Rank1";
+					}
+					delete $cry{$_};
+				}elsif ($temp{'Hit_id'} =~ /spp/i) {
+					$spp{$_} = {
+								'hmm_prediction'     => 'NA',
+								'protein_id'         => $_,
+								'protein_desc'       => $temp{'Query_desc'},
+								'protein_len'        => $temp{'Query_Length'},
+								'blast_prediction'   => 'YES',
+								'best_hit'           => $temp{'Hit_id'},
+								'hit_length'         => $temp{'Hit_length'},
+								'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+								'Percent_identity'   => $temp{'Percent_identity'},
+								'e-value'            => $temp{'E-value'},
+								'blast_detail'       => $$blast{$_},
+								'Endotoxin_N'        => $EN,#2020/4/7
+								'Endotoxin_M'        => $EM,#2020/4/7
+								'Endotoxin_C'        => $EC,#2020/4/7
+								'Endotoxin_mid'        => $EMID,#2020/4/8
+								'ETX_MTX2'           => $MTX,#2020/4/7
+								'Toxin_10'           => $TOXIN,#2020/4/7
+								};
+					if(exists $$svm{$_})  {
+						$spp{$_}->{'svm_prediction'} = 'YES';
+						$spp{$_}->{'svm_detail'} = $$svm{$_};
+					}else  {
+						$spp{$_}->{'svm_prediction'} = 'NO';
+					}
+					if($temp{'Percent_identity'} >= 95)  {
+						$Spp_count{'Rank4'}++;
+						$spp{$_}->{'rank'} = "Rank4";
+					}elsif($temp{'Percent_identity'} >= 78)  {
+						$Spp_count{'Rank3'}++;
+						$spp{$_}->{'rank'} = "Rank3";
+					}elsif($temp{'Percent_identity'} >= 45)  {
+						$Spp_count{'Rank2'}++;
+						$spp{$_}->{'rank'} = "Rank2";
+					}else  {
+						$Spp_count{'Rank1'}++;
+						$spp{$_}->{'rank'} = "Rank1";
+					}
+					delete $cry{$_};
+				}elsif ($temp{'Hit_id'} =~ /tpp/i) {
+					$tpp{$_} = {
+								'hmm_prediction'     => 'NA',
+								'protein_id'         => $_,
+								'protein_desc'       => $temp{'Query_desc'},
+								'protein_len'        => $temp{'Query_Length'},
+								'blast_prediction'   => 'YES',
+								'best_hit'           => $temp{'Hit_id'},
+								'hit_length'         => $temp{'Hit_length'},
+								'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+								'Percent_identity'   => $temp{'Percent_identity'},
+								'e-value'            => $temp{'E-value'},
+								'blast_detail'       => $$blast{$_},
+								'Endotoxin_N'        => $EN,#2020/4/7
+								'Endotoxin_M'        => $EM,#2020/4/7
+								'Endotoxin_C'        => $EC,#2020/4/7
+								'Endotoxin_mid'        => $EMID,#2020/4/8
+								'ETX_MTX2'           => $MTX,#2020/4/7
+								'Toxin_10'           => $TOXIN,#2020/4/7
+								};
+					if(exists $$svm{$_})  {
+						$tpp{$_}->{'svm_prediction'} = 'YES';
+						$tpp{$_}->{'svm_detail'} = $$svm{$_};
+					}else  {
+						$tpp{$_}->{'svm_prediction'} = 'NO';
+					}
+					if($temp{'Percent_identity'} >= 95)  {
+						$Tpp_count{'Rank4'}++;
+						$tpp{$_}->{'rank'} = "Rank4";
+					}elsif($temp{'Percent_identity'} >= 78)  {
+						$Tpp_count{'Rank3'}++;
+						$tpp{$_}->{'rank'} = "Rank3";
+					}elsif($temp{'Percent_identity'} >= 45)  {
+						$Tpp_count{'Rank2'}++;
+						$tpp{$_}->{'rank'} = "Rank2";
+					}else  {
+						$Tpp_count{'Rank1'}++;
+						$tpp{$_}->{'rank'} = "Rank1";
+					}
+					delete $cry{$_};
+				}elsif ($temp{'Hit_id'} =~ /xpp/i) {
+					$xpp{$_} = {
+								'hmm_prediction'     => 'NA',
+								'protein_id'         => $_,
+								'protein_desc'       => $temp{'Query_desc'},
+								'protein_len'        => $temp{'Query_Length'},
+								'blast_prediction'   => 'YES',
+								'best_hit'           => $temp{'Hit_id'},
+								'hit_length'         => $temp{'Hit_length'},
+								'coverage'           => $temp{'Aln_length'}/$temp{'Hit_length'}*100,
+								'Percent_identity'   => $temp{'Percent_identity'},
+								'e-value'            => $temp{'E-value'},
+								'blast_detail'       => $$blast{$_},
+								'Endotoxin_N'        => $EN,#2020/4/7
+								'Endotoxin_M'        => $EM,#2020/4/7
+								'Endotoxin_C'        => $EC,#2020/4/7
+								'Endotoxin_mid'        => $EMID,#2020/4/8
+								'ETX_MTX2'           => $MTX,#2020/4/7
+								'Toxin_10'           => $TOXIN,#2020/4/7
+								};
+					if(exists $$svm{$_})  {
+						$xpp{$_}->{'svm_prediction'} = 'YES';
+						$xpp{$_}->{'svm_detail'} = $$svm{$_};
+					}else  {
+						$xpp{$_}->{'svm_prediction'} = 'NO';
+					}
+					if($temp{'Percent_identity'} >= 95)  {
+						$Xpp_count{'Rank4'}++;
+						$xpp{$_}->{'rank'} = "Rank4";
+					}elsif($temp{'Percent_identity'} >= 78)  {
+						$Xpp_count{'Rank3'}++;
+						$xpp{$_}->{'rank'} = "Rank3";
+					}elsif($temp{'Percent_identity'} >= 45)  {
+						$Xpp_count{'Rank2'}++;
+						$xpp{$_}->{'rank'} = "Rank2";
+					}else  {
+						$Xpp_count{'Rank1'}++;
+						$xpp{$_}->{'rank'} = "Rank1";
 					}
 					delete $cry{$_};
 				}else {
@@ -1534,22 +3273,36 @@ sub Writer  {
 	$Summary_count{'Cyt'}     = $Cyt_count{'Rank1'} + $Cyt_count{'Rank2'} + $Cyt_count{'Rank3'} + $Cyt_count{'Rank4'} + $Cyt_count;
 	$Summary_count{'Vip'}     = $Vip_count{'Rank1'} + $Vip_count{'Rank2'} + $Vip_count{'Rank3'} + $Vip_count{'Rank4'} + $Vip_count;
 	$Summary_count{'others'}  = $others_count{'Rank1'} + $others_count{'Rank2'} + $others_count{'Rank3'} + $others_count{'Rank4'} + $others_count;
-	my $Summary_count_R1      = $Cry_count{'Rank1'} + $Cyt_count{'Rank1'} + $Vip_count{'Rank1'} + $others_count{'Rank1'};
-	my $Summary_count_R2      = $Cry_count{'Rank2'} + $Cyt_count{'Rank2'} + $Vip_count{'Rank2'} + $others_count{'Rank2'};
-	my $Summary_count_R3      = $Cry_count{'Rank3'} + $Cyt_count{'Rank3'} + $Vip_count{'Rank3'} + $others_count{'Rank3'};
-	my $Summary_count_R4      = $Cry_count{'Rank4'} + $Cyt_count{'Rank4'} + $Vip_count{'Rank4'} + $others_count{'Rank4'};
-	my $Summary_count_HMMSVM  = $Cyt_count + $Vip_count;
-	$Summary_count{'Summary'} = $Summary_count{'Cry'} + $Summary_count{'Cyt'} + $Summary_count{'Vip'} + $Summary_count{'others'};
+	$Summary_count{'App'}     = $App_count{'Rank1'} + $App_count{'Rank2'} + $App_count{'Rank3'} + $App_count{'Rank4'} + $App_count;
+	$Summary_count{'Gpp'}     = $Gpp_count{'Rank1'} + $Gpp_count{'Rank2'} + $Gpp_count{'Rank3'} + $Gpp_count{'Rank4'} + $Gpp_count;
+	$Summary_count{'Mcf'}     = $Mcf_count{'Rank1'} + $Mcf_count{'Rank2'} + $Mcf_count{'Rank3'} + $Mcf_count{'Rank4'} + $Mcf_count;
+	$Summary_count{'Mpf'}     = $Mpf_count{'Rank1'} + $Mpf_count{'Rank2'} + $Mpf_count{'Rank3'} + $Mpf_count{'Rank4'} + $Mpf_count;
+	$Summary_count{'Mpp'}     = $Mpp_count{'Rank1'} + $Mpp_count{'Rank2'} + $Mpp_count{'Rank3'} + $Mpp_count{'Rank4'} + $Mpp_count;
+	$Summary_count{'Mtx'}     = $Mtx_count{'Rank1'} + $Mtx_count{'Rank2'} + $Mtx_count{'Rank3'} + $Mtx_count{'Rank4'} + $Mtx_count;
+	$Summary_count{'Pra'}     = $Pra_count{'Rank1'} + $Pra_count{'Rank2'} + $Pra_count{'Rank3'} + $Pra_count{'Rank4'} + $Pra_count;
+	$Summary_count{'Prb'}     = $Prb_count{'Rank1'} + $Prb_count{'Rank2'} + $Prb_count{'Rank3'} + $Prb_count{'Rank4'} + $Prb_count;
+	$Summary_count{'Spp'}     = $Spp_count{'Rank1'} + $Spp_count{'Rank2'} + $Spp_count{'Rank3'} + $Spp_count{'Rank4'} + $Spp_count;
+	$Summary_count{'Tpp'}     = $Tpp_count{'Rank1'} + $Tpp_count{'Rank2'} + $Tpp_count{'Rank3'} + $Tpp_count{'Rank4'} + $Tpp_count;
+	$Summary_count{'Vpa'}     = $Vpa_count{'Rank1'} + $Vpa_count{'Rank2'} + $Vpa_count{'Rank3'} + $Vpa_count{'Rank4'} + $Vpa_count;
+	$Summary_count{'Vpb'}     = $Vpb_count{'Rank1'} + $Vpb_count{'Rank2'} + $Vpb_count{'Rank3'} + $Vpb_count{'Rank4'} + $Vpb_count;
+	$Summary_count{'Xpp'}     = $Xpp_count{'Rank1'} + $Xpp_count{'Rank2'} + $Xpp_count{'Rank3'} + $Xpp_count{'Rank4'} + $Xpp_count;
+
+	my $Summary_count_R1      = $Cry_count{'Rank1'} + $Cyt_count{'Rank1'} + $Vip_count{'Rank1'} + $others_count{'Rank1'} + $App_count{'Rank1'} + $Gpp_count{'Rank1'} + $Mcf_count{'Rank1'} + $Mpf_count{'Rank1'} + $Mpp_count{'Rank1'} + $Mtx_count{'Rank1'} + $Pra_count{'Rank1'} + $Prb_count{'Rank1'} + $Spp_count{'Rank1'} + $Tpp_count{'Rank1'} + $Vpa_count{'Rank1'} + $Vpb_count{'Rank1'} + $Xpp_count{'Rank1'};
+	my $Summary_count_R2      = $Cry_count{'Rank2'} + $Cyt_count{'Rank2'} + $Vip_count{'Rank2'} + $others_count{'Rank2'} + $App_count{'Rank2'} + $Gpp_count{'Rank2'} + $Mcf_count{'Rank2'} + $Mpf_count{'Rank2'} + $Mpp_count{'Rank2'} + $Mtx_count{'Rank2'} + $Pra_count{'Rank2'} + $Prb_count{'Rank2'} + $Spp_count{'Rank2'} + $Tpp_count{'Rank2'} + $Vpa_count{'Rank2'} + $Vpb_count{'Rank2'} + $Xpp_count{'Rank2'};
+	my $Summary_count_R3      = $Cry_count{'Rank3'} + $Cyt_count{'Rank3'} + $Vip_count{'Rank3'} + $others_count{'Rank3'} + $App_count{'Rank3'} + $Gpp_count{'Rank3'} + $Mcf_count{'Rank3'} + $Mpf_count{'Rank3'} + $Mpp_count{'Rank3'} + $Mtx_count{'Rank3'} + $Pra_count{'Rank3'} + $Prb_count{'Rank3'} + $Spp_count{'Rank3'} + $Tpp_count{'Rank3'} + $Vpa_count{'Rank3'} + $Vpb_count{'Rank3'} + $Xpp_count{'Rank3'};
+	my $Summary_count_R4      = $Cry_count{'Rank4'} + $Cyt_count{'Rank4'} + $Vip_count{'Rank4'} + $others_count{'Rank4'} + $App_count{'Rank4'} + $Gpp_count{'Rank4'} + $Mcf_count{'Rank4'} + $Mpf_count{'Rank4'} + $Mpp_count{'Rank4'} + $Mtx_count{'Rank4'} + $Pra_count{'Rank4'} + $Prb_count{'Rank4'} + $Spp_count{'Rank4'} + $Tpp_count{'Rank4'} + $Vpa_count{'Rank4'} + $Vpb_count{'Rank4'} + $Xpp_count{'Rank4'};
+	my $Summary_count_HMMSVM  = $Cyt_count + $Vip_count + $App_count + $Gpp_count + $Mcf_count + $Mpf_count + $Mpp_count + $Mtx_count + $Pra_count + $Prb_count + $Spp_count + $Tpp_count + $Vpa_count + $Vpb_count + $Xpp_count;
+	$Summary_count{'Summary'} = $Summary_count{'Cry'} + $Summary_count{'Cyt'} + $Summary_count{'Vip'} + $Summary_count{'others'} + $Summary_count{'App'} + $Summary_count{'Gpp'} + $Summary_count{'Mcf'} + $Summary_count{'Mpf'} + $Summary_count{'Mpp'} + $Summary_count{'Mtx'} + $Summary_count{'Pra'} + $Summary_count{'Prb'} + $Summary_count{'Spp'} + $Summary_count{'Tpp'} + $Summary_count{'Vpa'} + $Summary_count{'Vpb'} + $Summary_count{'Xpp'};
 
 	#Print Overview of prediction
 	print MYHAND "Overview of prediction \t Sequence type: $seq_type\n";
-	print MYHAND "Name\tCry\tCyt\tVip\tOthers\tSummary\n";
-	print MYHAND "Rank1\t", $Cry_count{'Rank1'}, "\t$Cyt_count{'Rank1'}", "\t$Vip_count{'Rank1'}", "\t$others_count{'Rank1'}", "\t$Summary_count_R1", "\n";
-	print MYHAND "Rank2\t", $Cry_count{'Rank2'}, "\t$Cyt_count{'Rank2'}", "\t$Vip_count{'Rank2'}", "\t$others_count{'Rank2'}", "\t$Summary_count_R2", "\n";
-	print MYHAND "Rank3\t", $Cry_count{'Rank3'}, "\t$Cyt_count{'Rank3'}", "\t$Vip_count{'Rank3'}", "\t$others_count{'Rank3'}", "\t$Summary_count_R3", "\n";
-	print MYHAND "Rank4\t", $Cry_count{'Rank4'}, "\t$Cyt_count{'Rank4'}", "\t$Vip_count{'Rank4'}", "\t$others_count{'Rank4'}", "\t$Summary_count_R4", "\n";
-	print MYHAND "HMM_SVM\t", "0", "\t$Cyt_count", "\t$Vip_count\t", $Summary_count_HMMSVM, "\n";
-	print MYHAND "Summary\t", $Summary_count{'Cry'}, "\t", $Summary_count{'Cyt'}, "\t", $Summary_count{'Vip'}, "\t", $Summary_count{'others'}, "\t", $Summary_count{'Summary'}, "\n";
+	print MYHAND "Name\tCry\tCyt\tVip\tOthers\tApp\tGpp\tMcf\tMpf\tMpp\tMtx\tPra\tPrb\tSpp\tTpp\tVpa\tVpb\tXpp\tSummary\n";
+	print MYHAND "Rank1\t", $Cry_count{'Rank1'}, "\t$Cyt_count{'Rank1'}", "\t$Vip_count{'Rank1'}", "\t$others_count{'Rank1'}", "\t$App_count{'Rank1'}", "\t$Gpp_count{'Rank1'}", "\t$Mcf_count{'Rank1'}", "\t$Mpf_count{'Rank1'}", "\t$Mpp_count{'Rank1'}", "\t$Mtx_count{'Rank1'}", "\t$Pra_count{'Rank1'}", "\t$Prb_count{'Rank1'}", "\t$Spp_count{'Rank1'}", "\t$Tpp_count{'Rank1'}", "\t$Vpa_count{'Rank1'}", "\t$Vpb_count{'Rank1'}", "\t$Xpp_count{'Rank1'}", "\t$Summary_count_R1", "\n";
+	print MYHAND "Rank2\t", $Cry_count{'Rank2'}, "\t$Cyt_count{'Rank2'}", "\t$Vip_count{'Rank2'}", "\t$others_count{'Rank2'}", "\t$App_count{'Rank2'}", "\t$Gpp_count{'Rank2'}", "\t$Mcf_count{'Rank2'}", "\t$Mpf_count{'Rank2'}", "\t$Mpp_count{'Rank2'}", "\t$Mtx_count{'Rank2'}", "\t$Pra_count{'Rank2'}", "\t$Prb_count{'Rank2'}", "\t$Spp_count{'Rank2'}", "\t$Tpp_count{'Rank2'}", "\t$Vpa_count{'Rank2'}", "\t$Vpb_count{'Rank2'}", "\t$Xpp_count{'Rank2'}", "\t$Summary_count_R2", "\n";
+	print MYHAND "Rank3\t", $Cry_count{'Rank3'}, "\t$Cyt_count{'Rank3'}", "\t$Vip_count{'Rank3'}", "\t$others_count{'Rank3'}", "\t$App_count{'Rank3'}", "\t$Gpp_count{'Rank3'}", "\t$Mcf_count{'Rank3'}", "\t$Mpf_count{'Rank3'}", "\t$Mpp_count{'Rank3'}", "\t$Mtx_count{'Rank3'}", "\t$Pra_count{'Rank3'}", "\t$Prb_count{'Rank3'}", "\t$Spp_count{'Rank3'}", "\t$Tpp_count{'Rank3'}", "\t$Vpa_count{'Rank3'}", "\t$Vpb_count{'Rank3'}", "\t$Xpp_count{'Rank3'}", "\t$Summary_count_R3", "\n";
+	print MYHAND "Rank4\t", $Cry_count{'Rank4'}, "\t$Cyt_count{'Rank4'}", "\t$Vip_count{'Rank4'}", "\t$others_count{'Rank4'}", "\t$App_count{'Rank4'}", "\t$Gpp_count{'Rank4'}", "\t$Mcf_count{'Rank4'}", "\t$Mpf_count{'Rank4'}", "\t$Mpp_count{'Rank4'}", "\t$Mtx_count{'Rank4'}", "\t$Pra_count{'Rank4'}", "\t$Prb_count{'Rank4'}", "\t$Spp_count{'Rank4'}", "\t$Tpp_count{'Rank4'}", "\t$Vpa_count{'Rank4'}", "\t$Vpb_count{'Rank4'}", "\t$Xpp_count{'Rank4'}", "\t$Summary_count_R4", "\n";
+	print MYHAND "HMM_SVM\t", "0", "\t$Cyt_count", "\t$Vip_count\t", "\t$App_count", "\t$Gpp_count", "\t$Mcf_count", "\t$Mpf_count", "\t$Mpp_count", "\t$Mtx_count", "\t$Pra_count", "\t$Prb_count", "\t$Spp_count", "\t$Tpp_count", "\t$Vpa_count", "\t$Vpb_count", "\t$Xpp_count", "\t$Summary_count_HMMSVM", "\n";
+	print MYHAND "Summary\t", $Summary_count{'Cry'}, "\t", $Summary_count{'Cyt'}, "\t", $Summary_count{'Vip'}, "\t", $Summary_count{'others'}, "\t$Summary_count{'App'}", "\t$Summary_count{'Gpp'}", "\t$Summary_count{'Mcf'}", "\t$Summary_count{'Mpf'}", "\t$Summary_count{'Mpp'}", "\t$Summary_count{'Mtx'}", "\t$Summary_count{'Pra'}", "\t$Summary_count{'Prb'}", "\t$Summary_count{'Spp'}", "\t$Summary_count{'Tpp'}", "\t$Summary_count{'Vpa'}", "\t$Summary_count{'Vpb'}", "\t$Summary_count{'Xpp'}", "\t$Summary_count{'Summary'}", "\n";
 	print MYHAND "//\n\n\n";
 
 	my $ID = 1;
@@ -1586,6 +3339,58 @@ sub Writer  {
 	print MYHAND "Toxin type: Other toxins\n";
 	print_toxin2($ID, %others); #print_toxin
 
+	$ID = 1;
+	print MYHAND "Toxin type: App protein\n";
+	print_toxin2($ID, %app); 
+
+	$ID = 1;
+	print MYHAND "Toxin type: Gpp protein\n";
+	print_toxin2($ID, %gpp); 
+
+	$ID = 1;
+	print MYHAND "Toxin type: Mcf protein\n";
+	print_toxin2($ID, %mcf); 
+
+	$ID = 1;
+	print MYHAND "Toxin type: Mpf protein\n";
+	print_toxin2($ID, %mpf); 
+
+	$ID = 1;
+	print MYHAND "Toxin type: Mpp protein\n";
+	print_toxin2($ID, %mpp); 
+
+	$ID = 1;
+	print MYHAND "Toxin type: Mtx protein\n";
+	print_toxin2($ID, %mtx); 
+
+	$ID = 1;
+	print MYHAND "Toxin type: Pra protein\n";
+	print_toxin2($ID, %pra); 
+
+	$ID = 1;
+	print MYHAND "Toxin type: Prb protein\n";
+	print_toxin2($ID, %prb); 
+
+	$ID = 1;
+	print MYHAND "Toxin type: Spp protein\n";
+	print_toxin2($ID, %spp); 
+
+	$ID = 1;
+	print MYHAND "Toxin type: Tpp protein\n";
+	print_toxin2($ID, %tpp); 
+
+	$ID = 1;
+	print MYHAND "Toxin type: Vpa protein\n";
+	print_toxin2($ID, %vpa); 
+
+	$ID = 1;
+	print MYHAND "Toxin type: Vpb protein\n";
+	print_toxin2($ID, %vpb); 
+
+	$ID = 1;
+	print MYHAND "Toxin type: Xpp protein\n";
+	print_toxin2($ID, %xpp); 
+
 	my %toxin_info;
 	foreach (keys %cry)  {
 		$toxin_info{$_} = $cry{$_};
@@ -1599,6 +3404,47 @@ sub Writer  {
 	foreach (keys %others)  {
 		$toxin_info{$_} = $others{$_};
 	}
+
+	foreach (keys %app)  {
+		$toxin_info{$_} = $app{$_};
+	}
+	foreach (keys %gpp)  {
+		$toxin_info{$_} = $gpp{$_};
+	}
+	foreach (keys %mcf)  {
+		$toxin_info{$_} = $mcf{$_};
+	}
+	foreach (keys %mpf)  {
+		$toxin_info{$_} = $mpf{$_};
+	}
+	foreach (keys %mpp)  {
+		$toxin_info{$_} = $mpp{$_};
+	}
+	foreach (keys %mtx)  {
+		$toxin_info{$_} = $mtx{$_};
+	}
+	foreach (keys %pra)  {
+		$toxin_info{$_} = $pra{$_};
+	}
+	foreach (keys %prb)  {
+		$toxin_info{$_} = $prb{$_};
+	}
+	foreach (keys %spp)  {
+		$toxin_info{$_} = $spp{$_};
+	}
+	foreach (keys %tpp)  {
+		$toxin_info{$_} = $tpp{$_};
+	}
+	foreach (keys %vpa)  {
+		$toxin_info{$_} = $vpa{$_};
+	}
+	foreach (keys %vpb)  {
+		$toxin_info{$_} = $vpb{$_};
+	}
+	foreach (keys %xpp)  {
+		$toxin_info{$_} = $xpp{$_};
+	}
+
 
 	my $in1 = Bio::SeqIO->new(-file=> "$seqin", -format=> "fasta");
 	my $out = Bio::SeqIO->new(-file=> ">$seqout", -format=> "genbank");
@@ -1747,8 +3593,8 @@ sub print_toxin2  {
 		print MYHAND $toxin{$_}->{'protein_len'}, "\t";
 		print MYHAND $toxin{$_}->{'rank'}, "\t";
 		print MYHAND $toxin{$_}->{'blast_prediction'}, "\t";
-		print  MYHAND $toxin{$_}->{'best_hit'}, "\t";
-		print  MYHAND $toxin{$_}->{'hit_length'}, "\t";
+		print MYHAND $toxin{$_}->{'best_hit'}, "\t";
+		print MYHAND $toxin{$_}->{'hit_length'}, "\t";
 		printf MYHAND ($toxin{$_}->{'coverage'}=~ /\d+/)? ("%0.2f\t", $toxin{$_}->{'coverage'}) : "$toxin{$_}->{'coverage'}\t";
 		printf MYHAND ($toxin{$_}->{'Percent_identity'} =~ /\d+/)? ("%0.2f\t", $toxin{$_}->{'Percent_identity'}):"$toxin{$_}->{'Percent_identity'}\t";
 		print MYHAND $toxin{$_}->{'svm_prediction'}, "\t";###Use of uninitialized value in print

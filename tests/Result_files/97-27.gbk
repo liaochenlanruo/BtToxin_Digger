@@ -1,0 +1,466 @@
+LOCUS       NZ_CP010088.1_01394      5235838 bp    dna     linear   UNK 
+ACCESSION   NZ_CP010088.1_01394
+FEATURES             Location/Qualifiers
+     Segment         complement(1751135..1753546)
+                     /ETX_MTX2="NO"
+                     /Endotoxin_C="NO"
+                     /Endotoxin_M="NO"
+                     /Endotoxin_N="NO"
+                     /Endotoxin_mid="NO"
+                     /Rank="Rank4"
+                     /Segment_name="NZ_CP010088.1_01394"
+                     /Toxin_10="NO"
+                     /blast_detail="Query_desc:-1 1751135-1753546 len=804
+                     Query_Length:804	Query_Start-End:6-804	Hit_id:InhA2-other
+                     Hit_desc:AAL16094.1	Hit_length:799	Hit_Start-End:1-799
+                     Aln_length:799	Percent_identity:96.1201501877347
+                     E-value:0.0"
+                     /blast_prediction="YES"
+                     /hmm_detail=""
+                     /hmm_prediction="NA"
+                     /locus_tag="NZ_CP010088.1_01394"
+                     /protein_desc="-1 1751135-1753546 len=804"
+                     /protein_id="NZ_CP010088.1_01394"
+                     /protein_len="804"
+                     /svm_prediction="NO"
+                     /translation="KERNRMRRKAPLKVLSSLAIAAIIGCTSVMSAPLAYAETPAKEK
+                     ENVSTTPIDYNLIQEDRLAEALKERGTINPASSKEETKKAVEKYIEKKQGDQANKEIL
+                     PADTAKEASDFVKKVKEKKMEEKEKVKKPEKNVSPEQKPEPNKKQLNGQVPTSKAKQA
+                     PYKGSVRTDKVLVLLVEFSDYKHNNIDQTPGYMYSNDFSREHYQKMLFGNEPYTLFDG
+                     SKVKTFKQYYEEQSGGSYTTDGYVTEWLTVPGKASDYGADGSSGHDNKGPKGARDLVK
+                     EALHAAAEKGLDLSQFDQFDRYDTNSDGNQNEPDGVIDHLMVIHAGVGQEAGGGKLGD
+                     DAIWSHRSKLAIDPVAIEGTKSKVDYFGGKVAAHDYTIEPEDGAVGVFAHEFGHDLGL
+                     PDEYDTKYTGAGSPVEAWSLMSGGSWTGKIAGTEPTSFSPQNKDFLQKNMGGNWAKIL
+                     EVDYDQIKRGVGVPTYIDQSVTKSNRPGVVRVNLPGKSVETIKPEFGKHAYYSTRGDD
+                     MHTTLETPFFDLTKGTNAKFDYKANYELEAECDFVEVHAVTEDGTKTLIDRLGEKVVQ
+                     GDKDTTDGKWIDKSYDLSQFKGKKVKLQFDYITDPAVTYKGFAMDHVNVTVDGQVVFS
+                     DDAEGQSKMNVNGFVVSDGTEKKAHYYYLEWRNYAGSDNGLKAGKGPVYNTGLVVWYA
+                     DDSFKDNWVGVHPGEGFLGVVDSHPEAFVGNLNGKPTYGNTGMQIADAAFSFDQTPAW
+                     SVNSLTRGQFNYSGLQGVTTFDDSKVYSNNQIADAGRKVPNLGLKFQVVGQADDKSAG
+                     AVWIKR"
+ORIGIN      
+     #Nucleotide Sequences were deleted to keep a small file size for upload to GitHub
+//
+LOCUS       NZ_CP010088.1_03882      5235838 bp    dna     linear   UNK 
+ACCESSION   NZ_CP010088.1_03882
+FEATURES             Location/Qualifiers
+     Segment         complement(5229675..5232356)
+                     /ETX_MTX2="NO"
+                     /Endotoxin_C="NO"
+                     /Endotoxin_M="NO"
+                     /Endotoxin_N="NO"
+                     /Endotoxin_mid="NO"
+                     /Rank="Rank3"
+                     /Segment_name="NZ_CP010088.1_03882"
+                     /Toxin_10="NO"
+                     /blast_detail="Query_desc:-3 5229675-5232356 len=894
+                     Query_Length:894	Query_Start-End:5-894	Hit_id:Bmp1-other
+                     Hit_desc:AFZ77001.1	Hit_length:893	Hit_Start-End:1-893
+                     Aln_length:893	Percent_identity:81.5229563269877
+                     E-value:0.0"
+                     /blast_prediction="YES"
+                     /hmm_detail=""
+                     /hmm_prediction="NA"
+                     /locus_tag="NZ_CP010088.1_03882"
+                     /protein_desc="-3 5229675-5232356 len=894"
+                     /protein_id="NZ_CP010088.1_03882"
+                     /protein_len="894"
+                     /svm_prediction="NO"
+                     /translation="EGNNMKNKKEIAIVALTTGLALTSVTPYGIGYAEETDQMQVDIQ
+                     EDSFRTGELTKPSKKTPESVVKDALKEKTEHVLSPKQVSGDKGVDYKVLQKRGSYDGT
+                     TLLRLQQIYEGKEVYGHQLTAHVDKKGVIKSVSGDSAQNLAKEDLKNPINLSNEEAKQ
+                     YIYTKYGNDIKFISEPEVKEVIFVDENRGQPTNAYQVTFAAATPNYVSGTYLVDAHSG
+                     DMLKNMVQESSLKVSEEHLESLKESKKSNSISLTGTGKDDLGITRSFGISEQSNGKYA
+                     LADYTRGQGIETYDVNYRDINFEEKYYPGILATSTSTTFNDPRAVSAHFLATKVYDFY
+                     KDKYKRNSFDNKGKKVVSVVHAWHSGETDDPKNWGNAFSANINNVSMLIYGDPMVRAF
+                     DIAGHEFTHAVTSSESNLEFFGESGAINEALSDIMGTAIEKYVNNGEFNWTIGEQSGS
+                     VLRNMKNPSSVKFFNGVPYPDDYSKFSDLNGEDNEGVHFNSSIINKVAYLIAQGGTHN
+                     GVTVNGIGEDKMFDIFYYANTDELNMTSNFSELRLACLKVATNRYGVNSIEVEAVQKA
+                     FDAAKIKGTVKENEKTAENQVPELTVPLTITLRVGDTFDPMSNVKAIDKEDGDLSNRV
+                     EHKGDVDTSKPGKYIVEYSVVDSQGGNATATQTVIVEGNRETLDLNPTLTVPTEMTIH
+                     VGDSFDPMAKVLAMDKEDGDLTSKVKVNGEVNTSKSGTYVVTYTVTDSQGHEVTAKQT
+                     VTVKVREEVENELPILKVPATTTITKGDQFNPMAGVSVTDKEDGDLTSKVAYVGTIDT
+                     SKSGTFEIIYSVRDSVGNEVHTIQKVFVKDKDTRKANDLANNSNIPNNSNSDKNESTY
+                     KELPNTGASTTNSTIMGLWMVIVGTVLTLARKFRKVQK"
+ORIGIN      
+     #Nucleotide Sequences were deleted to keep a small file size for upload to GitHub
+//
+LOCUS       NZ_CP010088.1_05132      5235838 bp    dna     linear   UNK 
+ACCESSION   NZ_CP010088.1_05132
+FEATURES             Location/Qualifiers
+     Segment         complement(2029812..2030810)
+                     /ETX_MTX2="NO"
+                     /Endotoxin_C="NO"
+                     /Endotoxin_M="NO"
+                     /Endotoxin_N="NO"
+                     /Endotoxin_mid="NO"
+                     /Rank="Rank1"
+                     /Segment_name="NZ_CP010088.1_05132"
+                     /Toxin_10="NO"
+                     /blast_detail="Query_desc:-3 2029812-2030810 len=333
+                     Query_Length:333	Query_Start-End:44-325	Hit_id:Zwa6-other
+                     Hit_desc:AAZ67350.1 	Hit_length:310	Hit_Start-End:35-302
+                     Aln_length:287	Percent_identity:30.3135888501742
+                     E-value:2e-35"
+                     /blast_prediction="YES"
+                     /hmm_detail=""
+                     /hmm_prediction="NA"
+                     /locus_tag="NZ_CP010088.1_05132"
+                     /protein_desc="-3 2029812-2030810 len=333"
+                     /protein_id="NZ_CP010088.1_05132"
+                     /protein_len="333"
+                     /svm_prediction="NO"
+                     /translation="SMLMTRPNLKGRSFLAEKDFTPEELLYFLDLAAELKEKKKNGIP
+                     HHYLEGKNVALLFEKTSTRTRCAFTVACTDLGANPEYLGKGDIQLGKKESVEDTAKVL
+                     GRMFDGIEFRGFNHETVESLAQNSGVPVWNGLTDMWHPTQTLADLLTIREHVGKLKNV
+                     KLVYVGDGRNNVANSLLVGGAIVGMDVRICTPESLWPAQEVIDLAKKYNEQVMITSNV
+                     EEAVASADVIYTDVWVSMGEEEKFAERVELLKPYQVNMKMIKETGNKNVIFLHCLPAF
+                     HDVETMYGEEVYEKYGLKEMEVTDEVFRSKHSKVFDQAENRMHTIKAVMAATLGNME"
+ORIGIN      
+     #Nucleotide Sequences were deleted to keep a small file size for upload to GitHub
+//
+LOCUS       NZ_CP010088.1_05457      5235838 bp    dna     linear   UNK 
+ACCESSION   NZ_CP010088.1_05457
+FEATURES             Location/Qualifiers
+     Segment         complement(1167930..1170317)
+                     /ETX_MTX2="NO"
+                     /Endotoxin_C="NO"
+                     /Endotoxin_M="NO"
+                     /Endotoxin_N="NO"
+                     /Endotoxin_mid="NO"
+                     /Rank="Rank3"
+                     /Segment_name="NZ_CP010088.1_05457"
+                     /Toxin_10="NO"
+                     /blast_detail="Query_desc:-3 1167930-1170317 len=796
+                     Query_Length:796	Query_Start-End:2-796	Hit_id:InhA1-other
+                     Hit_desc:AIE32640.1	Hit_length:796	Hit_Start-End:1-796
+                     Aln_length:796	Percent_identity:94.8492462311558
+                     E-value:0.0"
+                     /blast_prediction="YES"
+                     /hmm_detail=""
+                     /hmm_prediction="NA"
+                     /locus_tag="NZ_CP010088.1_05457"
+                     /protein_desc="-3 1167930-1170317 len=796"
+                     /protein_id="NZ_CP010088.1_05457"
+                     /protein_len="796"
+                     /svm_prediction="NO"
+                     /translation="GMNKKPFKVLSSIALTAVLGLSFGAGGQSVYAETPVNKTATSPV
+                     DDHLIPEERLADALKKRGVIDSKASEKETKKAVEKYVENKKGENPGKEVTNGDPLTKE
+                     ASDFLKKVKDAKADTKEKLDKPATGTPAATGPVRGGLNGKVPTSPAKQKAYNGDVRKD
+                     KVLVLLVEYADFKHNNIDKEPGYMYSEDFNKEHYEKMLFGDEPFTLDDGSKIETFKQY
+                     YEEQSGGSYTVDGTVTKWLTVPGKAADYGADAATGHDNKGPKGPRDLVKDALKAAVDS
+                     GLDLSEFDQFDQYDVNGDGNKNQPDGLIDHLMIIHAGVGQEAGGGKLGDDAIWSHRWT
+                     VGPKPFPIEGTQAKVPYWGGKMAAFDYTIEPEDGAVGVFAHEYGHDLGLPDEYDTQYS
+                     GHGEPVQAWSIMSGGSWAGKIAGTTPTSFSPQNKEFFQKTIGGNWANIVEVDYEKLNK
+                     GIGLATYLDQSVTKTNRPGMIRVNLPDKDIKTIDPAFGKQYYYSTKGDDLHTKLETPL
+                     FDLTNATTAKFDFKSLYEIEAEYDFLEVHAVTEDGQQTLIERLGEKANNGNADSTNGK
+                     WIDKSYDLSQFKGKKVKLTFDYITDGGLALNGFLLDNASLTVDGKVVFSDDAEGTPQF
+                     KLDGFAVSNGTEKKSHNYYVEWRNYAGSDNALKFARGPEYNTGMVVWYADSAYTDNWV
+                     GVHPGHGFLGVVDSHPEAIVGTLNGKPTVESSTRFQIADAAFSFDKTPAWKVVSPTRG
+                     TYTYNGLAGVPKFDDSKTYINQQIPDAGRILPNLGLKFEVVGQADDNSAGAVRLYR"
+ORIGIN      
+     #Nucleotide Sequences were deleted to keep a small file size for upload to GitHub
+//
+LOCUS       NZ_CP010088.1_05642      5235838 bp    dna     linear   UNK 
+ACCESSION   NZ_CP010088.1_05642
+FEATURES             Location/Qualifiers
+     Segment         complement(677013..677942)
+                     /ETX_MTX2="NO"
+                     /Endotoxin_C="NO"
+                     /Endotoxin_M="NO"
+                     /Endotoxin_N="NO"
+                     /Endotoxin_mid="NO"
+                     /Rank="Rank1"
+                     /Segment_name="NZ_CP010088.1_05642"
+                     /Toxin_10="NO"
+                     /blast_detail="Query_desc:-3 677013-677942 len=310
+                     Query_Length:310	Query_Start-End:6-305	Hit_id:Zwa5A-other
+                     Hit_desc:AAZ67351.1	Hit_length:325	Hit_Start-End:2-301
+                     Aln_length:309	Percent_identity:29.4498381877023
+                     E-value:2e-32"
+                     /blast_prediction="YES"
+                     /hmm_detail=""
+                     /hmm_prediction="NA"
+                     /locus_tag="NZ_CP010088.1_05642"
+                     /protein_desc="-3 677013-677942 len=310"
+                     /protein_id="NZ_CP010088.1_05642"
+                     /protein_len="310"
+                     /svm_prediction="NO"
+                     /translation="NRGCAMKLCENVTELIGDTPVVRLSKFIPEDAADVYVKLEMFNP
+                     SRSVKDRAAYNLLHVAEENGLIKPGDTIIEPTSGNTGIGLAMNAAAKGYKAILIMPDN
+                     MSKERINLLKAYGAEVVLTPAEQRMPGAIAKALELQKQIPNSFIPQQFENPANPNIHR
+                     YTTALEIYEQMDGELDAFVATAGTGGTITGTGETLKEKLPNLYIAVVEPKGSPVLSGG
+                     VPGPHKLVGTSPGFIPKNLNTEVYNEIIQIADEEALTTMRNLARQEGLLVGPSSGASV
+                     YAAIMIAKRLGTGKKVLCVAPDTGERYLSMGLFE"
+ORIGIN      
+     #Nucleotide Sequences were deleted to keep a small file size for upload to GitHub
+//
+LOCUS       NZ_CP010088.1_07831      5235838 bp    dna     linear   UNK 
+ACCESSION   NZ_CP010088.1_07831
+FEATURES             Location/Qualifiers
+     Segment         5081194..5082990
+                     /ETX_MTX2="NO"
+                     /Endotoxin_C="NO"
+                     /Endotoxin_M="NO"
+                     /Endotoxin_N="NO"
+                     /Endotoxin_mid="NO"
+                     /Rank="Rank3"
+                     /Segment_name="NZ_CP010088.1_07831"
+                     /Toxin_10="NO"
+                     /blast_detail="Query_desc:+1 5081194-5082990 len=599
+                     Query_Length:599	Query_Start-End:33-598	Hit_id:Bmp1-other
+                     Hit_desc:AFZ77001.1	Hit_length:893	Hit_Start-End:1-568
+                     Aln_length:568	Percent_identity:79.4014084507042
+                     E-value:0.0"
+                     /blast_prediction="YES"
+                     /hmm_detail=""
+                     /hmm_prediction="NA"
+                     /locus_tag="NZ_CP010088.1_07831"
+                     /protein_desc="+1 5081194-5082990 len=599"
+                     /protein_id="NZ_CP010088.1_07831"
+                     /protein_len="599"
+                     /svm_prediction="NO"
+                     /translation="CYINCVFSLFFDRNSKYTLYKLSISKIIRGEKMKNKKTLTKVAL
+                     TTGLALTAVTPYGVGHAEETDQLQVQIQEESFRSGELTQPSQKAPENVVKDALKEKTE
+                     QALSPKQVNGETGVDYKVLQKRGSYDGTTLVRIQQTYEGKEVYGHQLTAHVDNSGVIK
+                     SVSGDSAQNLKQEELKKTINLSKDEATQYIYTKYGNDINFISEPEVKEVIFVDENNGQ
+                     ASNAYQVTFEAATPNYVSGTYLINAQNGDMLKNMVQESNLKASEKLVGALKKSKKSSL
+                     TSLTGTGKDDLGISRSFGISKQSNGKYALADYTRGQGIETYDVNYRDITKEESYYPGT
+                     LATSTSTTFNDPKAVSAHYLATKVFDFYKDKYNRNSFDNQGQKVVSVVHAWDSGDTND
+                     PKNWQNALSANNGSMLVYGDPIVKAYDVAGHEFTHAVTSSESNLEYYGESGAINEALS
+                     DIMGTSIEKYVNNGSFNWTMGEQTGSVFRDMENPASVPSSLGVPYPDDYSEFNDFNGW
+                     DQGGVHFNSSIINKVAYLIAKGGTHNGVTVKGIGEDKMFDIFYYANTDELNMTSNFKE
+                     LRSACIRVATNKYGANSAEVQAVQKAFDAAKIK"
+ORIGIN      
+     #Nucleotide Sequences were deleted to keep a small file size for upload to GitHub
+//
+LOCUS       NZ_CP010088.1_09548      5235838 bp    dna     linear   UNK 
+ACCESSION   NZ_CP010088.1_09548
+FEATURES             Location/Qualifiers
+     Segment         4424213..4426438
+                     /ETX_MTX2="NO"
+                     /Endotoxin_C="NO"
+                     /Endotoxin_M="NO"
+                     /Endotoxin_N="NO"
+                     /Endotoxin_mid="NO"
+                     /Rank="Rank4"
+                     /Segment_name="NZ_CP010088.1_09548"
+                     /Toxin_10="NO"
+                     /blast_detail="Query_desc:+2 4424213-4426438 len=742
+                     Query_Length:742	Query_Start-End:1-742
+                     Hit_id:Enhancin-other	Hit_desc:WP_000826223.1
+                     Hit_length:742	Hit_Start-End:1-742	Aln_length:742
+                     Percent_identity:95.0134770889488	E-value:0.0"
+                     /blast_prediction="YES"
+                     /hmm_detail=""
+                     /hmm_prediction="NA"
+                     /locus_tag="NZ_CP010088.1_09548"
+                     /protein_desc="+2 4424213-4426438 len=742"
+                     /protein_id="NZ_CP010088.1_09548"
+                     /protein_len="742"
+                     /svm_prediction="NO"
+                     /translation="MKRLLVIGIMYTMFFLIGNIHLHADERTNVKEITSLEEPTWIFQ
+                     AGISKGKYHDRQDLGFILQRNTPLKVRQTNPNFKDKLTVRLLSNDSKNEKSIQVGNEW
+                     VMIQGDTPLVPFIDTPYGEEPALLEYQVGNESATKPLPIYKQQGSVSQFFSTWDQFDG
+                     EYALIQGESFQLFIPKKDKELVRSLKDFQSLDELIAYYEDIFAMYDSIIGLDGSTVEN
+                     KKSQNRYFLKADISGAGGAYYGANWTANSTDSTKMWLDKLSWGTLHEIAHGYQAGFDN
+                     QGIFTGEVSNNLFGVQYQYSKYGKKADQVGWLFNFGKKEQVERNLYNALMKENKNYDD
+                     LDLRQKLILLTIAKQKAGNEAFAKMYQGYRKLASNAAFKKGDHSLPDLMNQYYSENVQ
+                     VDFTPVFERWGFKLNHKQIEMNRAKGYPAVTSLAYIVPESQLAKARALVDPDIPINSN
+                     FEIVTNQQIASLGLKGNLHIHLNTNEIDTLKGGKIKLKEGNTVIQEKTIETADINLQD
+                     VPNGVYTVEISGKKTDRMYHFRSYYAYVKEKDNSLTIDINEMKVSKLVNETIQFLGLG
+                     DDQFAELNTDLEQKRAVFTVTTKTPHSYYAGEKYASIELFNEKGEKIYTKEMEGTNVT
+                     VVKDIIPLKEGYRIKIYHDEVKKRLTSKAAIINPMNKTNEFIMTKWGLKNTYLQNNPE
+                     TNLIQRIDEEMEAIISNPFLKEIPMQKLEMKKNVWMAINMLSEPQKIMYMNKYKDSLY
+                     NE"
+ORIGIN      
+     #Nucleotide Sequences were deleted to keep a small file size for upload to GitHub
+//
+LOCUS       NZ_CP010088.1_09575      5235838 bp    dna     linear   UNK 
+ACCESSION   NZ_CP010088.1_09575
+FEATURES             Location/Qualifiers
+     Segment         4502591..4504138
+                     /ETX_MTX2="NO"
+                     /Endotoxin_C="NO"
+                     /Endotoxin_M="NO"
+                     /Endotoxin_N="NO"
+                     /Endotoxin_mid="NO"
+                     /Rank="Rank3"
+                     /Segment_name="NZ_CP010088.1_09575"
+                     /Toxin_10="NO"
+                     /blast_detail="Query_desc:+2 4502591-4504138 len=516
+                     Query_Length:516	Query_Start-End:15-514	Hit_id:Spp1Aa1
+                     Hit_desc:	Hit_length:506	Hit_Start-End:5-505
+                     Aln_length:502	Percent_identity:79.2828685258964
+                     E-value:0.0"
+                     /blast_prediction="YES"
+                     /hmm_detail="Hit_desc:+2 4502591-4504138 len=516
+                     Hmm_name:Spp.hmm	Hmm_len:506	E-value:1.2e-289"
+                     /hmm_prediction="YES"
+                     /locus_tag="NZ_CP010088.1_09575"
+                     /protein_desc="+2 4502591-4504138 len=516"
+                     /protein_id="NZ_CP010088.1_09575"
+                     /protein_len="516"
+                     /svm_prediction="NO"
+                     /translation="KKNGVIFLNIKKNGKRRKFLTCVLVSLCTLNYSSTSFAETQAGH
+                     ATDITKNASSIDTGIGNLTYNNQEVLAVNGDKVESFVPKESINSNGKFVVVEREKKSL
+                     TTSPVDISIIDSVANRTYPGAVQLANKAFADNQPSLLVAKRKPLNISIDLPGMRKENT
+                     ITVQNPTYGNVAGAVDDLVSTWNEKYSETHTLPARMQYTESMVYSKSQIASALNVNAK
+                     YLDNSLNIDFNAVANGEKKVMVAAYKQIFYTVSAELPNNPSDLFDNSVTFDELTRKGV
+                     SNSAPPVMVSNVAYGRTVYVKLETTSKSKDVQAAFKALLKNNSVETSGQYKDIFEEST
+                     FTAVVLGGDAKEHNKVVTKDFNEIRNIIKDNAELSFKNPAYPISYTSTFLKDNATAAV
+                     HNNTDYIETTTTEYSSAKMTLDHYGAYVAQFDVSWDEFTFDQNGKEVLTHKTWEGSGK
+                     DKTAHYSTVIPLPPNSKNIKIVARECTGLAWEWWRTIINEQNVPLTNEIKVSIGGTTL
+                     YPTASISH"
+ORIGIN      
+     #Nucleotide Sequences were deleted to keep a small file size for upload to GitHub
+//
+LOCUS       NZ_CP010088.1_10576      5235838 bp    dna     linear   UNK 
+ACCESSION   NZ_CP010088.1_10576
+FEATURES             Location/Qualifiers
+     Segment         2001603..2003705
+                     /ETX_MTX2="NO"
+                     /Endotoxin_C="NO"
+                     /Endotoxin_M="NO"
+                     /Endotoxin_N="NO"
+                     /Endotoxin_mid="NO"
+                     /Rank="Rank3"
+                     /Segment_name="NZ_CP010088.1_10576"
+                     /Toxin_10="NO"
+                     /blast_detail="Query_desc:+3 2001603-2003705 len=701
+                     Query_Length:701	Query_Start-End:14-701
+                     Hit_id:ChitinaseC-other	Hit_desc:EEL57917.1
+                     Hit_length:688	Hit_Start-End:1-688	Aln_length:688
+                     Percent_identity:93.8953488372093	E-value:0.0"
+                     /blast_prediction="YES"
+                     /hmm_detail=""
+                     /hmm_prediction="NA"
+                     /locus_tag="NZ_CP010088.1_10576"
+                     /protein_desc="+3 2001603-2003705 len=701"
+                     /protein_id="NZ_CP010088.1_10576"
+                     /protein_len="701"
+                     /svm_prediction="NO"
+                     /translation="MIYTSKFILIYWRMPLNISFILKGEMAMKSKKFTLLLLSLLLFL
+                     PLFLTNFITPNVVLADSQKQDQKIVGYFPSWGIYGRNYQVADIDASKLTHLNYAFADI
+                     CWNGKHGNPSTHPDNPNKQTWNCKESGVPLQNKEVPNGTLVLGEPWADVTKSYPGSGT
+                     TWEDCDKYARCGNFGELKRLKAKYPHLKTIISVGGWTWSNRFSDMAADEKTRKVFADS
+                     TVDFLREYGFDGVDLDWEYPGVETIPGGSYRPEDKQNFTLLLQDVRNALTKAGAEDGK
+                     KYLLTIASGASQRYADHTELKKISQILDWINIMTYDFHGGWEATSNHNAALYKDPNDP
+                     AADTKFYVDGAIDIYTNEGVPADKLVLGVPFYGRGWKSCGKENNGQYQPCKPGSDGKL
+                     ASKGTWDDYSTGDTGVYDYGDLAANYVNKNGFVRGWNDVAKVPYLYNATTGTFISYDD
+                     NESMKYKTDYIKTKGLSGAMFWELSGDCRTSPKYSCSGPKLLDTLVKELLGGPITQKD
+                     IEPPTNVKNIAVTNKNSNSVQLNWTASTDNVGVTEYEITAGEEKWSTTTNSIAIKNLK
+                     PNTEYTFSILAKDAAGNKSQPTSILVKTDDANTTPPGGNSNATFSVTSNWGSGYNFSI
+                     VIKNSGTTPIKNWKLEFDYNGNLTQVWDSKISSKINNHYVITNAGWNGEIPPGGSITI
+                     GGAGTGTPAELVNASISEN"
+ORIGIN      
+     #Nucleotide Sequences were deleted to keep a small file size for upload to GitHub
+//
+LOCUS       NZ_CP010088.1_11147      5235838 bp    dna     linear   UNK 
+ACCESSION   NZ_CP010088.1_11147
+FEATURES             Location/Qualifiers
+     Segment         3499434..3500441
+                     /ETX_MTX2="NO"
+                     /Endotoxin_C="NO"
+                     /Endotoxin_M="NO"
+                     /Endotoxin_N="NO"
+                     /Endotoxin_mid="NO"
+                     /Rank="Rank1"
+                     /Segment_name="NZ_CP010088.1_11147"
+                     /Toxin_10="NO"
+                     /blast_detail="Query_desc:+3 3499434-3500441 len=336
+                     Query_Length:336	Query_Start-End:36-328
+                     Hit_id:Zwa5A-other	Hit_desc:AAZ67351.1	Hit_length:325
+                     Hit_Start-End:8-301	Aln_length:300
+                     Percent_identity:29.6666666666667	E-value:7e-40"
+                     /blast_prediction="YES"
+                     /hmm_detail=""
+                     /hmm_prediction="NA"
+                     /locus_tag="NZ_CP010088.1_11147"
+                     /protein_desc="+3 3499434-3500441 len=336"
+                     /protein_id="NZ_CP010088.1_11147"
+                     /protein_len="336"
+                     /svm_prediction="NO"
+                     /translation="SNVTKRQLSHIKKIHTVAFSLLANKGENTMNVYRGVHELIGHTP
+                     IVEITRFSLPEGVRLFAKLEFYNPGGSVKDRLGRELIEDALEKGLVTEGGTIIEPTAG
+                     NTGIGLALAALQHDLRVIVCVPEKFSIEKQELMKALGATVVHTPTEQGMTGAIAKAKE
+                     LVNEIPNSYSPSQFANEANPRAYFKTLGPELWSALNGEINIFVAGAGTGGTFMGTASY
+                     LKEKNIDIKTVIVEPEGSILNGGKAGSHETEGIGLEFIPPFLKTSYFDEIHTISDRNA
+                     FLRVKELAQKEGLLVGSSSGAAFHASLLEAEKAAPGTNIVTIFPDSSERYLSKDIYKG
+                     WE"
+ORIGIN      
+     #Nucleotide Sequences were deleted to keep a small file size for upload to GitHub
+//
+LOCUS       NZ_CP010088.1_11229      5235838 bp    dna     linear   UNK 
+ACCESSION   NZ_CP010088.1_11229
+FEATURES             Location/Qualifiers
+     Segment         3710862..3711821
+                     /ETX_MTX2="NO"
+                     /Endotoxin_C="NO"
+                     /Endotoxin_M="NO"
+                     /Endotoxin_N="NO"
+                     /Endotoxin_mid="NO"
+                     /Rank="Rank1"
+                     /Segment_name="NZ_CP010088.1_11229"
+                     /Toxin_10="NO"
+                     /blast_detail="Query_desc:+3 3710862-3711821 len=320
+                     Query_Length:320	Query_Start-End:16-309	Hit_id:Zwa6-other
+                     Hit_desc:AAZ67350.1 	Hit_length:310	Hit_Start-End:5-302
+                     Aln_length:299	Percent_identity:34.1137123745819
+                     E-value:2e-58"
+                     /blast_prediction="YES"
+                     /hmm_detail=""
+                     /hmm_prediction="NA"
+                     /locus_tag="NZ_CP010088.1_11229"
+                     /protein_desc="+3 3710862-3711821 len=320"
+                     /protein_id="NZ_CP010088.1_11229"
+                     /protein_len="320"
+                     /svm_prediction="NO"
+                     /translation="GGSFMSTVQVPKLNTKDLLTLEELTKEEIISLIEFAIHLKKNKQ
+                     EPLLQGKILGLIFDKHSTRTRVSFEAGMVQLGGHGMFLSGKEMQMGRGETVSDTAKVL
+                     SQYIDGIMIRTFSHADVEELAKESSIPVINGLTDDHHPCQALADLMTIYEETNTFKGI
+                     KLAYVGDGNNVCHSLLLASAKVGMHMTVATPVGYEPNEEIVKKALAIAKETGAEIEVL
+                     HDPELAVNEADFIYTDVWMSMGQEGEEEKYTLFQPYQINKELVTHAKQTYRFLHCLPA
+                     HREEEVTGEIIDGPQSIVFEQAGNRLHAQKALLVSLFKSVEELS"
+ORIGIN      
+     #Nucleotide Sequences were deleted to keep a small file size for upload to GitHub
+//
+LOCUS       NZ_CP010088.1_11479      5235838 bp    dna     linear   UNK 
+ACCESSION   NZ_CP010088.1_11479
+FEATURES             Location/Qualifiers
+     Segment         4426584..4428290
+                     /ETX_MTX2="NO"
+                     /Endotoxin_C="NO"
+                     /Endotoxin_M="NO"
+                     /Endotoxin_N="NO"
+                     /Endotoxin_mid="NO"
+                     /Rank="Rank2"
+                     /Segment_name="NZ_CP010088.1_11479"
+                     /Toxin_10="NO"
+                     /blast_detail="Query_desc:+3 4426584-4428290 len=569
+                     Query_Length:569	Query_Start-End:4-569	Hit_id:Bmp1-other
+                     Hit_desc:AFZ77001.1	Hit_length:893	Hit_Start-End:3-568
+                     Aln_length:575	Percent_identity:60.695652173913
+                     E-value:0.0"
+                     /blast_prediction="YES"
+                     /hmm_detail=""
+                     /hmm_prediction="NA"
+                     /locus_tag="NZ_CP010088.1_11479"
+                     /protein_desc="+3 4426584-4428290 len=569"
+                     /protein_id="NZ_CP010088.1_11479"
+                     /protein_len="569"
+                     /svm_prediction="NO"
+                     /translation="RSKNMNNFVKLGLTTGVVLSAIMPYGGVHAATEDLKVETKEDTF
+                     RTGNLTAPSQKSAENVVKDALKGKTEQALSSKQVNTESKVNYNVTQSRKSYDGTTLVR
+                     LQQTYEGRDVYGYQLTAHINDDGVLTSISGDSAQDLQQQEDLKQPITLSEEDAKKQLF
+                     KIYGDNLTFVEEPEIKQVVYVDENTNKATNAYQITFSASTPEYVSGTVLIDAFVGDLL
+                     KELVQKLGIQVDSSIVQSATANKSQDPSKLIGTGKDDLGMNRTFGISQRSDGTYTLAD
+                     YSRGKGIETYTANYKDYNNYRRNVWGYLDDLVTSNSTNFTDPKAVSAHYLATKVYDFY
+                     QEKYSRNSFDNNGQKVISVVHGWNTNGKNIGNPKQWFNAFSNGAMLVYGDPIVRAFDV
+                     AGHEFTHAVTRNESGLEYAGEAGAINEALSDILGVAVEKYANNGKFNWTMGEQSGRIF
+                     RDMKNPSSISSRYPEDYRHYNNLPIDADHDYGGVHTNSSIINKVAYLIASGGNHNGVN
+                     VQGIGEDKMFDIFYYANTDELNMTSDFKELKEACIRVATNLYGKDSSEVQAVQQAFKA
+                     AYI"
+ORIGIN      
+     #Nucleotide Sequences were deleted to keep a small file size for upload to GitHub
+//
