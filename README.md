@@ -497,6 +497,7 @@ Please report any issues about usage of the software to the [issues page](https:
   - More HMM models are added.
   - The filter length of amino acid sequence was reduced from 115 aa to 75 aa.
   - Solved a problem: BioPerl reported an error when the length of the sequence in the input file was inconsistent.
+  - A light version of PGCGAP was added to the BtToxin_Digger repo to simplify software installation.
 
 ## References
 
