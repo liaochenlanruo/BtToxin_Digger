@@ -172,7 +172,8 @@
 	  source ~/.bashrc
 	  ```
 	- Test the installation
-    Download the test data from the [tests](https://github.com/liaochenlanruo/BtToxin_Digger/tree/master/tests) directory in the GitHub repo  and change to the tests directory in the terminal. Run the following commands:
+    
+	  Download the test data from the [tests](https://github.com/liaochenlanruo/BtToxin_Digger/tree/master/tests) directory in the GitHub repo  and change to the tests directory in the terminal. Run the following commands:
 	  ```bash
 	  BtToxin_Digger --SeqPath ./ --SequenceType nucl --Scaf_suffix .fna
 	  ```
@@ -206,7 +207,8 @@
     conda install bttoxin_digger
     ```
   - Test the installation
-    Download the test data from the [tests](https://github.com/liaochenlanruo/BtToxin_Digger/tree/master/tests) directory in the GitHub repo  and change to the tests directory in the terminal. Run the following commands:
+    
+	Download the test data from the [tests](https://github.com/liaochenlanruo/BtToxin_Digger/tree/master/tests) directory in the GitHub repo  and change to the tests directory in the terminal. Run the following commands:
 	```bash
 	conda activate toxin
 	
