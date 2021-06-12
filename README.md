@@ -28,12 +28,12 @@
 
 - **What is BtToxin_Digger?**
 
-    BtToxin_Digger is a high-throughput, automatic gene mining tool that can mine toxin genes, such as Cry, Cyt and Vip, etc, from _Bacillus thuringiensis_. The pipeline accepts multiple forms of input data including Reads, assembled genomes, CDSs, and protein sequences and can output rich and useful results. It is derived from the re-design of the tool [BtToxin_Digger](https://bcam.hzau.edu.cn/BtToxin_Digger/) we developed previously. Compared with BtToxin_Digger, BtToxin_Digger has many improvements, as follows:
+    BtToxin_Digger is a high-throughput, automatic gene mining tool that can mine toxin genes, such as Cry, Cyt and Vip, etc, from _Bacillus thuringiensis_. The pipeline accepts multiple forms of input data including Reads, assembled genomes, CDSs, and protein sequences and can output rich and useful results. It is derived from the re-design of the tool [BtToxin_scanner](https://bcam.hzau.edu.cn/BtToxin_scanner/) we developed previously. Compared with BtToxin_scanner, BtToxin_Digger has many improvements, as follows:
   - Can be run in batches, suitable for large-scale genome analysis.
   - Added genome assembly functions, including second-generation short-reads assembly, third-generation long-reads assembly, and hybrid assembly of short-reads and long-reads, to realize the full-automatic mining of genes from Reads to virulence factors. The previous three input files (assembled genomes, ORFs and protein sequences) are still supported, and genome assembly can be used independently.
   - Fixed a bug where BtToxin_Digger often reported errors when processing assembled genomes.
   - Added support for CDSs and not limited to ORFs.
-  - The database has been updated, adding support for __App, Gpp, Mcf, Mpf, Mpp, Mtx, Pra, Prb, Spp, Tpp, Cyt, Vip, Vpa, Vpb, Xpp and other virulence factors including Sip (Donovan, et al., 2006), Chitinase (Zhang, et al., 2014), InhA (Dalhammar and Steiner, 1984), Bmp1 (Luo, et al., 2013), Bel enhancin (Fang, et al., 2009), ZwA (He, et al., 1994)__.
+  - The database has been updated, adding support for __App, Gpp, Mcf, Mpf, Mpp, Mtx, Pra, Prb, Spp, Tpp, Cyt, Vip, Vpa, Vpb, Xpp (Crickmore, et al., 2020) and other virulence factors including Sip (Donovan, et al., 2006), Chitinase (Zhang, et al., 2014), InhA (Dalhammar and Steiner, 1984), Bmp1 (Luo, et al., 2013), Bel enhancin (Fang, et al., 2009), ZwA (He, et al., 1994)__.
   - BtToxin_Digger generates comprehensive and readable outputs including toxin list and sequence for each input; a matrix of all strains and the virulence factors it contains (behavior strain names, listed as virulence factor names), which can be used as virulence factors contained in the strain Database; and a file writes the information and sequences of all toxins (Table 1) to facilitate centralized processing and downstream analysis and experiment designs.
   - Added multi-thread support, greatly improving the running speed of the pipeline.
 
@@ -497,3 +497,19 @@ Please report any issues about usage of the software to the [issues page](https:
   - More HMM models are added.
   - The filter length of amino acid sequence was reduced from 115 aa to 75 aa.
   - Solved a problem: BioPerl reported an error when the length of the sequence in the input file was inconsistent.
+
+## References
+
+- Crickmore, N., et al. A structure-based nomenclature for _Bacillus thuringiensis_ and other bacteria-derived pesticidal proteins. Journal of Invertebrate Pathology 2020:107438.
+
+- Donovan, W.P., et al. Discovery and characterization of Sip1A: A novel secreted protein from _Bacillus thuringiensis_ with activity against coleopteran larvae. Appl. Microbiol. Biotechnol. 2006;72(4):713-719.
+
+- Zhang, L.L., et al. Biological Activity of _Bacillus thuringiensis_ (Bacillales: Bacillaceae) Chitinase Against _Caenorhabditis elegans_ (Rhabditida: Rhabditidae). J. Econ. Entomol. 2014;107(2):551-558.
+
+- Dalhammar, G. and Steiner, H. Characterization of inhibitor A, a protease from _Bacillus thuringiensis_ which degrades attacins and cecropins, two classes of antibacterial proteins in insects. Eur. J. Biochem. 1984;139(2):247-252.
+
+- Luo, X., et al. _Bacillus thuringiensis_ Metalloproteinase Bmp1 Functions as a Nematicidal Virulence Factor. Appl. Environ. Microbiol. 2013;79(2):460.
+
+- Fang, S., et al. _Bacillus thuringiensis_ bel protein enhances the toxicity of Cry1Ac protein to _Helicoverpa armigera_ larvae by degrading insect intestinal mucin. Appl. Environ. Microbiol. 2009;75(16):5237-5243.
+
+- He, H., et al. Zwittermicin A, an antifungal and plant protection agent from _Bacillus cereus_. Tetrahedron Lett. 1994;35(16):2499-2502.
