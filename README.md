@@ -157,12 +157,15 @@
 	  ```
     - Rename the main program and move affiliate scripts to the path of the main program
       ```bash
+	  # Rename BtToxin_Digger.pl to BtToxin_Digger
 	  mv BtToxin_Digger/BtToxin_Digger.pl BtToxin_Digger/BtToxin_Digger
 	  
+	  # Move the attachment scripts to the directory where the main program is located
 	  mv BtToxin_Digger/Scripts/*.pl BtToxin_Digger/
 	  
 	  mv BtToxin_Digger/pgcgap/* BtToxin_Digger/
 	  
+	  # Give the scripts executable permission
 	  chmod +x BtToxin_Digger/*
 	  ```
 	- Add the path to the environment variable 
