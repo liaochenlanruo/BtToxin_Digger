@@ -2695,7 +2695,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /other/i) {
 					$others{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -2735,7 +2735,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /app/i) {
 					$app{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -2775,7 +2775,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /gpp/i) {
 					$gpp{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -2815,7 +2815,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /mcf/i) {
 					$mcf{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -2855,7 +2855,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /mpf/i) {
 					$mpf{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -2895,7 +2895,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /mpp/i) {
 					$mpp{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -2935,7 +2935,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /mtx/i) {
 					$mtx{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -2975,7 +2975,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /pra/i) {
 					$pra{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -3015,7 +3015,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /prb/i) {
 					$prb{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -3055,7 +3055,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /spp/i) {
 					$spp{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -3095,7 +3095,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /tpp/i) {
 					$tpp{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -3135,7 +3135,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /xpp/i) {
 					$xpp{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
