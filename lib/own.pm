@@ -124,6 +124,7 @@ sub Step1  {
 						$dir . "/BTTCMP_models/hmm_models/Vpa.hmm",
 						$dir . "/BTTCMP_models/hmm_models/Vpb.hmm",
 						$dir . "/BTTCMP_models/hmm_models/Xpp.hmm",
+						#$dir . "/BTTCMP_models/hmm_models/Peptidase_M6.hmm",
 					);
 
 	#Combine all sequence files into seperate file
@@ -1296,12 +1297,12 @@ sub Writer  {
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
 							'hmm_detail'         => $$hmm{$_},
-							'Endotoxin_N'        => 'NO',#2020/4/7
-							'Endotoxin_M'        => 'NO',#2020/4/7
-							'Endotoxin_C'        => 'NO',#2020/4/7
-							'Endotoxin_mid'        => 'NO',#2020/4/8
-							'ETX_MTX2'           => 'NO',#2020/4/7
-							'Toxin_10'           => 'NO',#2020/4/7
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
 							};
 				if(exists $$svm{$_})  {
 					$cyt{$_}->{'svm_prediction'} = 'YES';
@@ -1331,20 +1332,20 @@ sub Writer  {
 							  'protein_len'        => $seq_info{$_}->{'seq_length'},
 							  'rank'               => 'ND',
 							  'hmm_prediction'     => 'YES',
-							  'blast_prediction'   => 'ND',
-							  'best_hit'           => 'ND',
-							  'hit_length'         => 'ND',
-							  'coverage'           => 'ND',
-							  'Percent_identity'   => 'ND',
-							  'e-value'            => 'ND',
-							  'blast_detail'       => 'ND',
+							  'blast_prediction'   => 'NO',
+							  'best_hit'           => 'NO',
+							  'hit_length'         => 'NO',
+							  'coverage'           => 'NO',
+							  'Percent_identity'   => 'NO',
+							  'e-value'            => 'NO',
+							  'blast_detail'       => 'NO',
 							  'hmm_detail'         => $$hmm{$_},
-							  'Endotoxin_N'        => 'NO',#2020/4/7
-							  'Endotoxin_M'        => 'NO',#2020/4/7
-							  'Endotoxin_C'        => 'NO',#2020/4/7
-							  'Endotoxin_mid'        => 'NO',#2020/4/8
-							  'ETX_MTX2'           => 'NO',#2020/4/7
-							  'Toxin_10'           => 'NO',#2020/4/7
+							  'Endotoxin_N'        => $EN,#2020/4/7
+							  'Endotoxin_M'        => $EM,#2020/4/7
+							  'Endotoxin_C'        => $EC,#2020/4/7
+							  'Endotoxin_mid'        => $EMID,#2020/4/8
+							  'ETX_MTX2'           => $MTX,#2020/4/7
+							  'Toxin_10'           => $TOXIN,#2020/4/7
 							};
 				if(exists $$svm{$_})  {
 						$cyt{$_}->{'svm_prediction'} = 'YES';
@@ -1365,20 +1366,20 @@ sub Writer  {
 							'protein_len'        => $seq_info{$_}->{'seq_length'},
 							'rank'               => 'ND',
 							'hmm_prediction'     => 'YES',
-							'blast_prediction'   => 'ND',
-							'best_hit'           => 'ND',
-							'hit_length'         => 'ND',
-							'coverage'           => 'ND',
-							'Percent_identity'   => 'ND',
-							'e-value'            => 'ND',
-							'blast_detail'       => 'ND',
+							'blast_prediction'   => 'NO',
+							'best_hit'           => 'NO',
+							'hit_length'         => 'NO',
+							'coverage'           => 'NO',
+							'Percent_identity'   => 'NO',
+							'e-value'            => 'NO',
+							'blast_detail'       => 'NO',
 							'hmm_detail'         => $$hmm{$_},
-							'Endotoxin_N'        => 'NO',#2020/4/7
-							'Endotoxin_M'        => 'NO',#2020/4/7
-							'Endotoxin_C'        => 'NO',#2020/4/7
-							'Endotoxin_mid'        => 'NO',#2020/4/8
-							'ETX_MTX2'           => 'NO',#2020/4/7
-							'Toxin_10'           => 'NO',#2020/4/7
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
 							};
 				if(exists $$svm{$_})  {
 					$vip{$_}->{'svm_prediction'} = 'YES';
@@ -1407,12 +1408,12 @@ sub Writer  {
 							'e-value'            => $temp{'E-value'},
 							'blast_detail'       => $$blast{$_},
 							'hmm_detail'         => $$hmm{$_},
-							'Endotoxin_N'        => 'NO',#2020/4/7
-							'Endotoxin_M'        => 'NO',#2020/4/7
-							'Endotoxin_C'        => 'NO',#2020/4/7
-							'Endotoxin_mid'        => 'NO',#2020/4/8
-							'ETX_MTX2'           => 'NO',#2020/4/7
-							'Toxin_10'           => 'NO',#2020/4/7
+							'Endotoxin_N'        => $EN,#2020/4/7
+							'Endotoxin_M'        => $EM,#2020/4/7
+							'Endotoxin_C'        => $EC,#2020/4/7
+							'Endotoxin_mid'        => $EMID,#2020/4/8
+							'ETX_MTX2'           => $MTX,#2020/4/7
+							'Toxin_10'           => $TOXIN,#2020/4/7
 							};
 				if(exists $$svm{$_})  {
 					$vip{$_}->{'svm_prediction'} = 'YES';
@@ -1447,13 +1448,13 @@ sub Writer  {
 							'protein_len'        => $seq_info{$_}->{'seq_length'},
 							'rank'               => 'ND',
 							'hmm_prediction'     => 'YES',
-							'blast_prediction'   => 'ND',
-							'best_hit'           => 'ND',
-							'hit_length'         => 'ND',
-							'coverage'           => 'ND',
-							'Percent_identity'   => 'ND',
-							'e-value'            => 'ND',
-							'blast_detail'       => 'ND',
+							'blast_prediction'   => 'NO',
+							'best_hit'           => 'NO',
+							'hit_length'         => 'NO',
+							'coverage'           => 'NO',
+							'Percent_identity'   => 'NO',
+							'e-value'            => 'NO',
+							'blast_detail'       => 'NO',
 							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
@@ -1528,13 +1529,13 @@ sub Writer  {
 							'protein_len'        => $seq_info{$_}->{'seq_length'},
 							'rank'               => 'ND',
 							'hmm_prediction'     => 'YES',
-							'blast_prediction'   => 'ND',
-							'best_hit'           => 'ND',
-							'hit_length'         => 'ND',
-							'coverage'           => 'ND',
-							'Percent_identity'   => 'ND',
-							'e-value'            => 'ND',
-							'blast_detail'       => 'ND',
+							'blast_prediction'   => 'NO',
+							'best_hit'           => 'NO',
+							'hit_length'         => 'NO',
+							'coverage'           => 'NO',
+							'Percent_identity'   => 'NO',
+							'e-value'            => 'NO',
+							'blast_detail'       => 'NO',
 							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
@@ -1609,13 +1610,13 @@ sub Writer  {
 							'protein_len'        => $seq_info{$_}->{'seq_length'},
 							'rank'               => 'ND',
 							'hmm_prediction'     => 'YES',
-							'blast_prediction'   => 'ND',
-							'best_hit'           => 'ND',
-							'hit_length'         => 'ND',
-							'coverage'           => 'ND',
-							'Percent_identity'   => 'ND',
-							'e-value'            => 'ND',
-							'blast_detail'       => 'ND',
+							'blast_prediction'   => 'NO',
+							'best_hit'           => 'NO',
+							'hit_length'         => 'NO',
+							'coverage'           => 'NO',
+							'Percent_identity'   => 'NO',
+							'e-value'            => 'NO',
+							'blast_detail'       => 'NO',
 							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
@@ -1690,13 +1691,13 @@ sub Writer  {
 							'protein_len'        => $seq_info{$_}->{'seq_length'},
 							'rank'               => 'ND',
 							'hmm_prediction'     => 'YES',
-							'blast_prediction'   => 'ND',
-							'best_hit'           => 'ND',
-							'hit_length'         => 'ND',
-							'coverage'           => 'ND',
-							'Percent_identity'   => 'ND',
-							'e-value'            => 'ND',
-							'blast_detail'       => 'ND',
+							'blast_prediction'   => 'NO',
+							'best_hit'           => 'NO',
+							'hit_length'         => 'NO',
+							'coverage'           => 'NO',
+							'Percent_identity'   => 'NO',
+							'e-value'            => 'NO',
+							'blast_detail'       => 'NO',
 							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
@@ -1771,13 +1772,13 @@ sub Writer  {
 							'protein_len'        => $seq_info{$_}->{'seq_length'},
 							'rank'               => 'ND',
 							'hmm_prediction'     => 'YES',
-							'blast_prediction'   => 'ND',
-							'best_hit'           => 'ND',
-							'hit_length'         => 'ND',
-							'coverage'           => 'ND',
-							'Percent_identity'   => 'ND',
-							'e-value'            => 'ND',
-							'blast_detail'       => 'ND',
+							'blast_prediction'   => 'NO',
+							'best_hit'           => 'NO',
+							'hit_length'         => 'NO',
+							'coverage'           => 'NO',
+							'Percent_identity'   => 'NO',
+							'e-value'            => 'NO',
+							'blast_detail'       => 'NO',
 							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
@@ -1852,13 +1853,13 @@ sub Writer  {
 							'protein_len'        => $seq_info{$_}->{'seq_length'},
 							'rank'               => 'ND',
 							'hmm_prediction'     => 'YES',
-							'blast_prediction'   => 'ND',
-							'best_hit'           => 'ND',
-							'hit_length'         => 'ND',
-							'coverage'           => 'ND',
-							'Percent_identity'   => 'ND',
-							'e-value'            => 'ND',
-							'blast_detail'       => 'ND',
+							'blast_prediction'   => 'NO',
+							'best_hit'           => 'NO',
+							'hit_length'         => 'NO',
+							'coverage'           => 'NO',
+							'Percent_identity'   => 'NO',
+							'e-value'            => 'NO',
+							'blast_detail'       => 'NO',
 							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
@@ -1933,13 +1934,13 @@ sub Writer  {
 							'protein_len'        => $seq_info{$_}->{'seq_length'},
 							'rank'               => 'ND',
 							'hmm_prediction'     => 'YES',
-							'blast_prediction'   => 'ND',
-							'best_hit'           => 'ND',
-							'hit_length'         => 'ND',
-							'coverage'           => 'ND',
-							'Percent_identity'   => 'ND',
-							'e-value'            => 'ND',
-							'blast_detail'       => 'ND',
+							'blast_prediction'   => 'NO',
+							'best_hit'           => 'NO',
+							'hit_length'         => 'NO',
+							'coverage'           => 'NO',
+							'Percent_identity'   => 'NO',
+							'e-value'            => 'NO',
+							'blast_detail'       => 'NO',
 							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
@@ -2014,13 +2015,13 @@ sub Writer  {
 							'protein_len'        => $seq_info{$_}->{'seq_length'},
 							'rank'               => 'ND',
 							'hmm_prediction'     => 'YES',
-							'blast_prediction'   => 'ND',
-							'best_hit'           => 'ND',
-							'hit_length'         => 'ND',
-							'coverage'           => 'ND',
-							'Percent_identity'   => 'ND',
-							'e-value'            => 'ND',
-							'blast_detail'       => 'ND',
+							'blast_prediction'   => 'NO',
+							'best_hit'           => 'NO',
+							'hit_length'         => 'NO',
+							'coverage'           => 'NO',
+							'Percent_identity'   => 'NO',
+							'e-value'            => 'NO',
+							'blast_detail'       => 'NO',
 							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
@@ -2095,13 +2096,13 @@ sub Writer  {
 							'protein_len'        => $seq_info{$_}->{'seq_length'},
 							'rank'               => 'ND',
 							'hmm_prediction'     => 'YES',
-							'blast_prediction'   => 'ND',
-							'best_hit'           => 'ND',
-							'hit_length'         => 'ND',
-							'coverage'           => 'ND',
-							'Percent_identity'   => 'ND',
-							'e-value'            => 'ND',
-							'blast_detail'       => 'ND',
+							'blast_prediction'   => 'NO',
+							'best_hit'           => 'NO',
+							'hit_length'         => 'NO',
+							'coverage'           => 'NO',
+							'Percent_identity'   => 'NO',
+							'e-value'            => 'NO',
+							'blast_detail'       => 'NO',
 							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
@@ -2176,13 +2177,13 @@ sub Writer  {
 							'protein_len'        => $seq_info{$_}->{'seq_length'},
 							'rank'               => 'ND',
 							'hmm_prediction'     => 'YES',
-							'blast_prediction'   => 'ND',
-							'best_hit'           => 'ND',
-							'hit_length'         => 'ND',
-							'coverage'           => 'ND',
-							'Percent_identity'   => 'ND',
-							'e-value'            => 'ND',
-							'blast_detail'       => 'ND',
+							'blast_prediction'   => 'NO',
+							'best_hit'           => 'NO',
+							'hit_length'         => 'NO',
+							'coverage'           => 'NO',
+							'Percent_identity'   => 'NO',
+							'e-value'            => 'NO',
+							'blast_detail'       => 'NO',
 							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
@@ -2257,13 +2258,13 @@ sub Writer  {
 							'protein_len'        => $seq_info{$_}->{'seq_length'},
 							'rank'               => 'ND',
 							'hmm_prediction'     => 'YES',
-							'blast_prediction'   => 'ND',
-							'best_hit'           => 'ND',
-							'hit_length'         => 'ND',
-							'coverage'           => 'ND',
-							'Percent_identity'   => 'ND',
-							'e-value'            => 'ND',
-							'blast_detail'       => 'ND',
+							'blast_prediction'   => 'NO',
+							'best_hit'           => 'NO',
+							'hit_length'         => 'NO',
+							'coverage'           => 'NO',
+							'Percent_identity'   => 'NO',
+							'e-value'            => 'NO',
+							'blast_detail'       => 'NO',
 							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
@@ -2338,13 +2339,13 @@ sub Writer  {
 							'protein_len'        => $seq_info{$_}->{'seq_length'},
 							'rank'               => 'ND',
 							'hmm_prediction'     => 'YES',
-							'blast_prediction'   => 'ND',
-							'best_hit'           => 'ND',
-							'hit_length'         => 'ND',
-							'coverage'           => 'ND',
-							'Percent_identity'   => 'ND',
-							'e-value'            => 'ND',
-							'blast_detail'       => 'ND',
+							'blast_prediction'   => 'NO',
+							'best_hit'           => 'NO',
+							'hit_length'         => 'NO',
+							'coverage'           => 'NO',
+							'Percent_identity'   => 'NO',
+							'e-value'            => 'NO',
+							'blast_detail'       => 'NO',
 							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
@@ -2419,13 +2420,13 @@ sub Writer  {
 							'protein_len'        => $seq_info{$_}->{'seq_length'},
 							'rank'               => 'ND',
 							'hmm_prediction'     => 'YES',
-							'blast_prediction'   => 'ND',
-							'best_hit'           => 'ND',
-							'hit_length'         => 'ND',
-							'coverage'           => 'ND',
-							'Percent_identity'   => 'ND',
-							'e-value'            => 'ND',
-							'blast_detail'       => 'ND',
+							'blast_prediction'   => 'NO',
+							'best_hit'           => 'NO',
+							'hit_length'         => 'NO',
+							'coverage'           => 'NO',
+							'Percent_identity'   => 'NO',
+							'e-value'            => 'NO',
+							'blast_detail'       => 'NO',
 							'hmm_detail'         => $$hmm{$_},
 							'Endotoxin_N'        => $EN,#2020/4/7
 							'Endotoxin_M'        => $EM,#2020/4/7
@@ -2546,12 +2547,12 @@ sub Writer  {
 								'Percent_identity'   => $temp{'Percent_identity'},
 								'e-value'            => $temp{'E-value'},
 								'blast_detail'       => $$blast{$_},
-								'Endotoxin_N'        => 'NO',#2020/4/7
-								'Endotoxin_M'        => 'NO',#2020/4/7
-								'Endotoxin_C'        => 'NO',#2020/4/7
-								'Endotoxin_mid'        => 'NO',#2020/4/8
-								'ETX_MTX2'           => 'NO',#2020/4/7
-								'Toxin_10'           => 'NO',#2020/4/7
+								'Endotoxin_N'        => $EN,#2020/4/7
+								'Endotoxin_M'        => $EM,#2020/4/7
+								'Endotoxin_C'        => $EC,#2020/4/7
+								'Endotoxin_mid'        => $EMID,#2020/4/8
+								'ETX_MTX2'           => $MTX,#2020/4/7
+								'Toxin_10'           => $TOXIN,#2020/4/7
 								};
 					if(exists $$svm{$_})  {
 						$vip{$_}->{'svm_prediction'} = 'YES';
@@ -2586,12 +2587,12 @@ sub Writer  {
 								'Percent_identity'   => $temp{'Percent_identity'},
 								'e-value'            => $temp{'E-value'},
 								'blast_detail'       => $$blast{$_},
-								'Endotoxin_N'        => 'NO',#2020/4/7
-								'Endotoxin_M'        => 'NO',#2020/4/7
-								'Endotoxin_C'        => 'NO',#2020/4/7
-								'Endotoxin_mid'        => 'NO',#2020/4/8
-								'ETX_MTX2'           => 'NO',#2020/4/7
-								'Toxin_10'           => 'NO',#2020/4/7
+								'Endotoxin_N'        => $EN,#2020/4/7
+								'Endotoxin_M'        => $EM,#2020/4/7
+								'Endotoxin_C'        => $EC,#2020/4/7
+								'Endotoxin_mid'        => $EMID,#2020/4/8
+								'ETX_MTX2'           => $MTX,#2020/4/7
+								'Toxin_10'           => $TOXIN,#2020/4/7
 								};
 					if(exists $$svm{$_})  {
 						$vpa{$_}->{'svm_prediction'} = 'YES';
@@ -2626,12 +2627,12 @@ sub Writer  {
 								'Percent_identity'   => $temp{'Percent_identity'},
 								'e-value'            => $temp{'E-value'},
 								'blast_detail'       => $$blast{$_},
-								'Endotoxin_N'        => 'NO',#2020/4/7
-								'Endotoxin_M'        => 'NO',#2020/4/7
-								'Endotoxin_C'        => 'NO',#2020/4/7
-								'Endotoxin_mid'        => 'NO',#2020/4/8
-								'ETX_MTX2'           => 'NO',#2020/4/7
-								'Toxin_10'           => 'NO',#2020/4/7
+								'Endotoxin_N'        => $EN,#2020/4/7
+								'Endotoxin_M'        => $EM,#2020/4/7
+								'Endotoxin_C'        => $EC,#2020/4/7
+								'Endotoxin_mid'        => $EMID,#2020/4/8
+								'ETX_MTX2'           => $MTX,#2020/4/7
+								'Toxin_10'           => $TOXIN,#2020/4/7
 								};
 					if(exists $$svm{$_})  {
 						$vpb{$_}->{'svm_prediction'} = 'YES';
@@ -2666,12 +2667,12 @@ sub Writer  {
 								'Percent_identity'   => $temp{'Percent_identity'},
 								'e-value'            => $temp{'E-value'},
 								'blast_detail'       => $$blast{$_},
-								'Endotoxin_N'        => 'NO',#2020/4/7
-								'Endotoxin_M'        => 'NO',#2020/4/7
-								'Endotoxin_C'        => 'NO',#2020/4/7
-								'Endotoxin_mid'        => 'NO',#2020/4/8
-								'ETX_MTX2'           => 'NO',#2020/4/7
-								'Toxin_10'           => 'NO',#2020/4/7
+								'Endotoxin_N'        => $EN,#2020/4/7
+								'Endotoxin_M'        => $EM,#2020/4/7
+								'Endotoxin_C'        => $EC,#2020/4/7
+								'Endotoxin_mid'        => $EMID,#2020/4/8
+								'ETX_MTX2'           => $MTX,#2020/4/7
+								'Toxin_10'           => $TOXIN,#2020/4/7
 								};
 					if(exists $$svm{$_})  {
 						$cyt{$_}->{'svm_prediction'} = 'YES';
@@ -2695,7 +2696,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /other/i) {
 					$others{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -2735,7 +2736,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /app/i) {
 					$app{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -2775,7 +2776,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /gpp/i) {
 					$gpp{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -2815,7 +2816,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /mcf/i) {
 					$mcf{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -2855,7 +2856,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /mpf/i) {
 					$mpf{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -2895,7 +2896,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /mpp/i) {
 					$mpp{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -2935,7 +2936,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /mtx/i) {
 					$mtx{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -2975,7 +2976,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /pra/i) {
 					$pra{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -3015,7 +3016,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /prb/i) {
 					$prb{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -3055,7 +3056,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /spp/i) {
 					$spp{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -3095,7 +3096,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /tpp/i) {
 					$tpp{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
@@ -3135,7 +3136,7 @@ sub Writer  {
 					delete $cry{$_};
 				}elsif ($temp{'Hit_id'} =~ /xpp/i) {
 					$xpp{$_} = {
-								'hmm_prediction'     => 'NA',
+								'hmm_prediction'     => 'NO',
 								'protein_id'         => $_,
 								'protein_desc'       => $temp{'Query_desc'},
 								'protein_len'        => $temp{'Query_Length'},
