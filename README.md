@@ -512,9 +512,9 @@ Please report any issues about usage of the software to the [issues page](https:
   - Solved a problem: BioPerl reported an error when the length of the sequence in the input file was inconsistent.
   - A light version of PGCGAP was added to the BtToxin_Digger repo to simplify software installation.
  
-  - v1.0.10
-    - Users can use the command "**BtToxin_Digger --update-db**" to update their local database.
-    - The toxin database was updated to 2021.08.02.
+- v1.0.10
+  - Users can use the command "**BtToxin_Digger --update-db**" to update their local database.
+  - The toxin database was updated to 2021.08.02.
 
 ## References
 
