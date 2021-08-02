@@ -245,7 +245,7 @@ Options:
 
     [--threads (INT)]             Number of threads to be used ( Default 4 )
 	
-    [--update-db]		    Update the toxin database
+    [--update-db]		      Update the toxin database
 	
     [--SeqPath (PATH)]            [Required] The path of input sequences ( Default "the current directory" )
 
