@@ -1,7 +1,7 @@
 # High-throughput _Bacillus thuringiensis_ toxin mining pipeline
 
-![Platform](https://badgen.net/badge/platform/WSL,Linux,macOS,Docker?list=|)
-![License](https://badgen.net/github/license/liaochenlanruo/BtToxin_Digger)
+![](https://img.shields.io/badge/Platform-WSL%2FLinux%2FmacOS-green)
+[![GitHub license](https://img.shields.io/github/license/liaochenlanruo/BtToxin_Digger)](https://github.com/liaochenlanruo/BtToxin_Digger/blob/master/LICENSE)
 [![Version](https://anaconda.org/bioconda/bttoxin_digger/badges/version.svg)](https://anaconda.org/bioconda/bttoxin_digger)
 ![Downloads conda](https://img.shields.io/conda/dn/bioconda/bttoxin_digger.svg?style=flat)
 [![install with bioconda](https://img.shields.io/badge/install%20with-bioconda-brightgreen.svg?style=flat)](http://bioconda.github.io/recipes/bttoxin_digger/README.html)
@@ -22,7 +22,7 @@
 
 ## Contents
 
- | [Introduction](#introduction) | [Installation](#installation) | [Usage](#usage) | [Examples](#examples) | [Outputs](#outputs) | [License](#license) | [Feedback](#feedback) | [Citation](#citation) | [FAQs](#faqs) | [Updates](#updates) |
+ | [Introduction](#introduction) | [Installation](#installation) |  [Database](#database) |[Usage](#usage) | [Examples](#examples) | [Outputs](#outputs) | [License](#license) | [Feedback](#feedback) | [Citation](#citation) | [FAQs](#faqs) | [Updates](#updates) |
 
 ## Introduction
 
@@ -224,6 +224,14 @@
   ```
   (See [bttoxin_digger/tags](https://quay.io/repository/biocontainers/bttoxin_digger?tab=tags) for valid values for \<tag\>)
 
+## Database
+### Update the database
+```
+BtToxin_Digger --update-db
+```
+### Update history
+- **2021.08.02**: Added Vip1Ea1, Vip1Ea2, Vip2Ah1, Vip2Ah2, Vip3Cb1, Cry1Ia37, Cry8Ba2, and Mpp82Aa1
+
 ## Usage
 ```bash
 BtToxin_Digger [Options]
@@ -236,7 +244,9 @@ Options:
     [--version]                   Show version number of BtToxin_Digger and exit
 
     [--threads (INT)]             Number of threads to be used ( Default 4 )
-
+	
+    [--update-db]		      Update the toxin database
+	
     [--SeqPath (PATH)]            [Required] The path of input sequences ( Default "the current directory" )
 
     [--SequenceType (STRING)]     [Required] Sequence type for inputs. "reads", "nucl", "orfs", and "prot" avaliable ( Default nucl )
@@ -466,7 +476,9 @@ Please report any issues about usage of the software to the [issues page](https:
 
 ## Citation
 
+
 - If you use this software please cite: Liu H, Zheng J, Yu Y, Ye W, Peng D, Sun M. BtToxin_Digger: a comprehensive and high-throughput pipeline for mining toxin protein genes from _Bacillus thuringiensis_. _Bioinformatics_, 2021. DOI: [10.1093/bioinformatics/btab506](https://doi.org/10.1093/bioinformatics/btab506).
+
 
 - If you used the genome assembly function, please also cite: Liu H, Xin B, Zheng J, Zhong H, Yu Y, Peng D, Sun M. Build a bioinformatics analysis platform and apply it to routine analysis of microbial genomics and comparative genomics. _Protocol exchange_, 2020. DOI: [10.21203/rs.2.21224/v5](https://dx.doi.org/10.21203/rs.2.21224/v5).
 
@@ -501,6 +513,10 @@ Please report any issues about usage of the software to the [issues page](https:
   - The filter length of amino acid sequence was reduced from 115 aa to 75 aa.
   - Solved a problem: BioPerl reported an error when the length of the sequence in the input file was inconsistent.
   - A light version of PGCGAP was added to the BtToxin_Digger repo to simplify software installation.
+ 
+- v1.0.10
+  - Users can use the command "**BtToxin_Digger --update-db**" to update their local database.
+  - The toxin database was updated to 2021.08.02.
 
 ## References
 
