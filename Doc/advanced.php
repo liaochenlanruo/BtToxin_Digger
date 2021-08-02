@@ -50,13 +50,14 @@
 				<ul>
 					<li><p><a href="#introduction">Introduction</a></p></li>
 					<li><p><a href="#installation">Installation</a></p></li>
+					<li><p><a href="#database">Database</a></p></li>
 					<li><p><a href="#usage">Usage</a></p></li>
 					<li><p><a href="#examples">Examples</a></p></li>
 					<li><p><a href="#outputs">Outputs</a></p></li>
 					<!--<li><p><a href="#license">License</a></p></li>-->
 					<li><p><a href="#feedback">Feedback</a></p></li>
 					<li><p><a href="#citation">Citation</a></p></li>
-					<li><p><a href="#faqs">FAQs</a></p></li>
+					<!--<li><p><a href="#faqs">FAQs</a></p></li>-->
 					<li><p><a href="#updates">Updates</a></p></li>
 				</ul>
 			</div>
@@ -122,6 +123,12 @@
 			</li>
 			</ul>
 
+			<h3 id="database">Database</h3>
+			<h4>Update the database</h4>
+			<pre style="color:black;background-color:#eeeeee;line-height: 22px;font-size: 14px;overflow-x:scroll;padding-left: 5px;padding-right: 5px;"><code>BtToxin_Digger --update-db</code></pre>
+			<h4>Update history</h4>
+			<ul><li><b>2021.08.02</b>: Added Vip1Ea1, Vip1Ea2, Vip2Ah1, Vip2Ah2, Vip3Cb1, Cry1Ia37, Cry8Ba2, and Mpp82Aa1</li></ul>
+
 			<h3 id="usage">Usage</h3>
 
 			<ul>
@@ -130,7 +137,7 @@
 
 			<p>Options:</p>
 
-			<pre style="color:black;background-color:#eeeeee;line-height: 22px;font-size: 14px;overflow-x:scroll;padding-left: 5px;padding-right: 5px;"><code>[--help]                      Print the help message and exit<br/>[--version]                   Show version number of BtToxin_Digger and exit<br/>[--threads (INT)]             Number of threads to be used ( Default 4 )<br/>[--SeqPath (PATH)]            [Required] The path of input sequences ( Default "the current directory" )<br/>[--SequenceType (STRING)]     [Required] Sequence type for inputs. "reads", "nucl", "orfs", and "prot" avaliable ( Default nucl )<br/>[--platform (STRING)]         [Required] Sequencing Platform, "illumina", "pacbio", "oxford" and "hybrid" available ( Default illumina )<br/>[--assemble_only (STRING)]    Only perform genome assembly without predicting toxins.<br/>[--reads1 (STRING)]           [Required by "reads"] The suffix name of reads 1 ( for example: if the name of reads 1 is "YBT-1520_L1_I050.R1.clean.fastq.gz", "YBT-1520" is the strain same, so the suffix name should be ".R1.clean.fastq.gz" )<br/>[--reads2 (STRING)]           [Required by "reads"] The suffix name of reads 2( not required by "oxford" and "pacbio". For example: if the name of reads 2 is "YBT-1520_2.fq", the suffix name should be _2.fq" )<br/>[--suffix_len (INT)]          [Required by "reads"] (Strongly recommended) The suffix length of the reads file, that is the length of the reads name minus the length of the strain name. For example the --suffix_len of "YBT-1520_L1_I050.R1.clean.fastq.gz" is 26 ( "YBT-1520" is the strain name ) ( Default 0 )<br/>[--short1 (STRING)]           [Required] FASTQ file of first short reads in each pair. Needed by hybrid assembly ( Default Unset )<br/>[--short2 (STRING)]           [Required] FASTQ file of second short reads in each pair. Needed by hybrid assembly ( Default Unset )<br/>[--long (STRING)]             [Required] FASTQ or FASTA file of long reads. Needed by hybrid assembly ( Default Unset )<br/>[--hout (STRING)]             [Required] Output directory for hybrid assembly ( Default "../../Results/Assembles/Hybrid" )<br/>[--genomeSize (STRING)]       [Required] An estimate of the size of the genome. Common suffixes are allowed, for example, 3.7m or 2.8g. Needed by PacBio data and Oxford data ( Default 6.07m )<br/>[--Scaf_suffix (STRING)]      The suffix of scaffolds or genomes ( Default ".filtered.fas" )<br/>[--orfs_suffix (STRING)]      The suffix of orfs files ( Default ".ffn" )<br/>[--prot_suffix (STRING)]      The suffix of protein files ( Default ".faa" )</code></pre>
+			<pre style="color:black;background-color:#eeeeee;line-height: 22px;font-size: 14px;overflow-x:scroll;padding-left: 5px;padding-right: 5px;"><code>[--help]                      Print the help message and exit<br/>[--version]                   Show version number of BtToxin_Digger and exit<br/>[--threads (INT)]             Number of threads to be used ( Default 4 )<br/>[--update-db]             Update the toxin database<br/>[--SeqPath (PATH)]            [Required] The path of input sequences ( Default "the current directory" )<br/>[--SequenceType (STRING)]     [Required] Sequence type for inputs. "reads", "nucl", "orfs", and "prot" avaliable ( Default nucl )<br/>[--platform (STRING)]         [Required] Sequencing Platform, "illumina", "pacbio", "oxford" and "hybrid" available ( Default illumina )<br/>[--assemble_only (STRING)]    Only perform genome assembly without predicting toxins.<br/>[--reads1 (STRING)]           [Required by "reads"] The suffix name of reads 1 ( for example: if the name of reads 1 is "YBT-1520_L1_I050.R1.clean.fastq.gz", "YBT-1520" is the strain same, so the suffix name should be ".R1.clean.fastq.gz" )<br/>[--reads2 (STRING)]           [Required by "reads"] The suffix name of reads 2( not required by "oxford" and "pacbio". For example: if the name of reads 2 is "YBT-1520_2.fq", the suffix name should be _2.fq" )<br/>[--suffix_len (INT)]          [Required by "reads"] (Strongly recommended) The suffix length of the reads file, that is the length of the reads name minus the length of the strain name. For example the --suffix_len of "YBT-1520_L1_I050.R1.clean.fastq.gz" is 26 ( "YBT-1520" is the strain name ) ( Default 0 )<br/>[--short1 (STRING)]           [Required] FASTQ file of first short reads in each pair. Needed by hybrid assembly ( Default Unset )<br/>[--short2 (STRING)]           [Required] FASTQ file of second short reads in each pair. Needed by hybrid assembly ( Default Unset )<br/>[--long (STRING)]             [Required] FASTQ or FASTA file of long reads. Needed by hybrid assembly ( Default Unset )<br/>[--hout (STRING)]             [Required] Output directory for hybrid assembly ( Default "../../Results/Assembles/Hybrid" )<br/>[--genomeSize (STRING)]       [Required] An estimate of the size of the genome. Common suffixes are allowed, for example, 3.7m or 2.8g. Needed by PacBio data and Oxford data ( Default 6.07m )<br/>[--Scaf_suffix (STRING)]      The suffix of scaffolds or genomes ( Default ".filtered.fas" )<br/>[--orfs_suffix (STRING)]      The suffix of orfs files ( Default ".ffn" )<br/>[--prot_suffix (STRING)]      The suffix of protein files ( Default ".faa" )</code></pre>
 			</ul>
 
 			<h3 id="examples">Examples</h3>
@@ -553,6 +560,9 @@
 			The filter length of amino acid sequence was reduced from 115 to 75.<br/>
 			Solved a problem: BioPerl reported an error when the length of the sequence in the input file was inconsistent.</p></li>
 			
+			<li><p>v1.0.10</p>
+			<p>Users can use the command "BtToxin_Digger --update-db" to update their local database.<br/>
+			The toxin database was updated to 2021.08.02.</p></li>
 			</ul>
 
          </div>

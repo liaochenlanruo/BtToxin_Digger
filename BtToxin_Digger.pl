@@ -51,6 +51,18 @@ $options{'threads=i'} = \( my $opt_threads = 4 );
 
 =over 30
 
+=item B<[--update-db]>
+
+Update the toxin database.
+
+=back
+
+=cut
+
+$options{'update-db'} = \( my $opt_update_db = 0 );
+
+=over 30
+
 =item B<[--SeqPath (PATH)]>
 
 I<[Required]> The path of input sequences ( Default "the current directory" )
@@ -270,7 +282,7 @@ $options{'prot_suffix=s'} = \( my $opt_prot_suffix = ".faa" );
 GetOptions(%options) or pod2usage("Try '$0 --help' for more information.");
 
 if($opt_version){
-	print "version: 1.0.9\n";
+	print "version: 1.0.10\n";
 	exit 0;
 }
 
@@ -280,116 +292,130 @@ if ($opt_help) {
 	exit 0;
 }
 
-# toxin prediction
-if ($opt_SequenceType eq "nucl") {
-	tee STDOUT, ">>BtToxin_Digger.log";
-	system("pgcgap --ACC --Assess --filter_length 225 --scafPath $opt_SeqPath --Scaf_suffix $opt_Scaf_suffix");
-	my @scaf = glob("$opt_SeqPath/Filtered/*.filtered.fas");
-	foreach  (@scaf) {
-		$_=~/$opt_SeqPath\/Filtered\/(\S+).filtered.fas/;
-		my $out = $1;
-		system("coreprocess.pl $_ $out nucl");
+if ($opt_update_db) {
+	my $bin_dir;
+	my $bin = `which BtToxin_Digger`;
+	if ($bin=~/(.+)\/BtToxin_Digger/) {
+		$bin_dir = $1;
 	}
-	chdir "Results/Toxins";
-	system("get_all_info_nucl.pl");
-	chdir "../../";
-}elsif ($opt_SequenceType eq "orfs") {
-	tee STDOUT, ">>BtToxin_Digger.log";
-	my @orfs = glob("$opt_SeqPath/*$opt_orfs_suffix");
-	foreach  (@orfs) {
-		$_=~/$opt_SeqPath\/(\S+)$opt_orfs_suffix/;
-		my $outs = $1;
-		my $str = $1 . ".formated";
-		my $in = Bio::SeqIO->new(-file=>"$_", -format=>"fasta");
-		my $out = Bio::SeqIO->new(-file=>">$str", -format=>"fasta");
-		while ( my $seq = $in->next_seq) {
-			$out->write_seq($seq);
+	my $db_dir = $bin_dir . "/BTTCMP_db/bt_toxin/db";
+	system("rm -f $db_dir/bt_toxin.*");
+	system("wget https://bcam.hzau.edu.cn/BtToxin_Digger/db_update.tar.gz");
+	system("tar zxvf db_update.tar.gz");
+	system("rm -f db_update.tar.gz");
+	system("mv bt_toxin.* $db_dir");
+}else {
+	# toxin prediction
+	if ($opt_SequenceType eq "nucl") {
+		tee STDOUT, ">>BtToxin_Digger.log";
+		system("pgcgap --ACC --Assess --filter_length 225 --scafPath $opt_SeqPath --Scaf_suffix $opt_Scaf_suffix");
+		my @scaf = glob("$opt_SeqPath/Filtered/*.filtered.fas");
+		foreach  (@scaf) {
+			$_=~/$opt_SeqPath\/Filtered\/(\S+).filtered.fas/;
+			my $out = $1;
+			system("coreprocess.pl $_ $out nucl");
 		}
-		system("coreprocess.pl $str $outs orfs");
-	}
-	chdir "Results/Toxins";
-	system("get_all_info_orfs.pl");
-	chdir "../../";
-}elsif ($opt_SequenceType eq "prot") {
-	tee STDOUT, ">>BtToxin_Digger.log";
-	my @prot = glob("$opt_SeqPath/*$opt_prot_suffix");
-	foreach  (@prot) {
-		$_=~/$opt_SeqPath\/(\S+)$opt_prot_suffix/;
-		my $outs = $1;
-		my $str = $1 . ".formated";
-		my $in = Bio::SeqIO->new(-file=>"$_", -format=>"fasta");
-		my $out = Bio::SeqIO->new(-file=>">$str", -format=>"fasta");
-		while ( my $seq = $in->next_seq) {
-			$out->write_seq($seq);
-		}
-		system("coreprocess.pl $str $outs prot");
-	}
-	chdir "Results/Toxins";
-	system("get_all_info_prot.pl");
-	chdir "../../";
-}elsif ($opt_SequenceType eq "reads") {
-	tee STDOUT, ">>BtToxin_Digger.log";
-	if ($opt_platform eq "illumina") {
-		system("pgcgap --Assemble --platform illumina --assembler auto --filter_length 200 --ReadsPath $opt_SeqPath --reads1 $opt_reads1 --reads2 $opt_reads2 --kmmer 81 --threads $opt_threads --suffix_len $opt_suffix_len");
-		if (! $opt_assemble_only) {
-			my @scaf = glob("Results/Assembles/Scaf/Illumina/*.filtered.fas");
-			foreach  (@scaf) {
-				$_=~/Results\/Assembles\/Scaf\/Illumina\/(\S+).filtered.fas/;
-				my $out = $1;
-				system("coreprocess.pl $_ $out nucl");
+		chdir "Results/Toxins";
+		system("get_all_info_nucl.pl");
+		chdir "../../";
+	}elsif ($opt_SequenceType eq "orfs") {
+		tee STDOUT, ">>BtToxin_Digger.log";
+		my @orfs = glob("$opt_SeqPath/*$opt_orfs_suffix");
+		foreach  (@orfs) {
+			$_=~/$opt_SeqPath\/(\S+)$opt_orfs_suffix/;
+			my $outs = $1;
+			my $str = $1 . ".formated";
+			my $in = Bio::SeqIO->new(-file=>"$_", -format=>"fasta");
+			my $out = Bio::SeqIO->new(-file=>">$str", -format=>"fasta");
+			while ( my $seq = $in->next_seq) {
+				$out->write_seq($seq);
 			}
-			chdir "Results/Toxins";
-			system("get_all_info_nucl.pl");
-			chdir "../../";
+			system("coreprocess.pl $str $outs orfs");
 		}
-	}elsif ($opt_platform eq "oxford") {
-		system("pgcgap --Assemble --platform oxford --filter_length 200 --ReadsPath $opt_SeqPath --reads1 $opt_reads1 --genomeSize 4.8m --threads $opt_threads --suffix_len $opt_suffix_len");
-		if (! $opt_assemble_only) {
-			my @scaf = glob("Results/Assembles/Scaf/Oxford/*.filtered.fas");
-			foreach  (@scaf) {
-				$_=~/Results\/Assembles\/Scaf\/Oxford\/(\S+).filtered.fas/;
-				my $out = $1;
-				system("coreprocess.pl $_ $out nucl");
+		chdir "Results/Toxins";
+		system("get_all_info_orfs.pl");
+		chdir "../../";
+	}elsif ($opt_SequenceType eq "prot") {
+		tee STDOUT, ">>BtToxin_Digger.log";
+		my @prot = glob("$opt_SeqPath/*$opt_prot_suffix");
+		foreach  (@prot) {
+			$_=~/$opt_SeqPath\/(\S+)$opt_prot_suffix/;
+			my $outs = $1;
+			my $str = $1 . ".formated";
+			my $in = Bio::SeqIO->new(-file=>"$_", -format=>"fasta");
+			my $out = Bio::SeqIO->new(-file=>">$str", -format=>"fasta");
+			while ( my $seq = $in->next_seq) {
+				$out->write_seq($seq);
 			}
-			chdir "Results/Toxins";
-			system("get_all_info_nucl.pl");
-			chdir "../../";
+			system("coreprocess.pl $str $outs prot");
 		}
-	}elsif ($opt_platform eq "pacbio") {
-		system("pgcgap --Assemble --platform pacbio --filter_length 200 --ReadsPath $opt_SeqPath --reads1 $opt_reads1 --genomeSize 4.8m --threads $opt_threads --suffix_len $opt_suffix_len");
+		chdir "Results/Toxins";
+		system("get_all_info_prot.pl");
+		chdir "../../";
+	}elsif ($opt_SequenceType eq "reads") {
+		tee STDOUT, ">>BtToxin_Digger.log";
+		if ($opt_platform eq "illumina") {
+			system("pgcgap --Assemble --platform illumina --assembler auto --filter_length 200 --ReadsPath $opt_SeqPath --reads1 $opt_reads1 --reads2 $opt_reads2 --kmmer 81 --threads $opt_threads --suffix_len $opt_suffix_len");
 			if (! $opt_assemble_only) {
-			my @scaf = glob("Results/Assembles/Scaf/PacBio/*.filtered.fas");
-			foreach  (@scaf) {
-				$_=~/Results\/Assembles\/Scaf\/PacBio\/(\S+).filtered.fas/;
-				my $out = $1;
-				system("coreprocess.pl $_ $out nucl");
+				my @scaf = glob("Results/Assembles/Scaf/Illumina/*.filtered.fas");
+				foreach  (@scaf) {
+					$_=~/Results\/Assembles\/Scaf\/Illumina\/(\S+).filtered.fas/;
+					my $out = $1;
+					system("coreprocess.pl $_ $out nucl");
+				}
+				chdir "Results/Toxins";
+				system("get_all_info_nucl.pl");
+				chdir "../../";
 			}
-			chdir "Results/Toxins";
-			system("get_all_info_nucl.pl");
-			chdir "../../";
-		}
-	}elsif ($opt_platform eq "hybrid") {
-		system("pgcgap --Assemble --platform hybrid --ReadsPath $opt_SeqPath --short1 $opt_short1 --short2 $opt_short2 --long $opt_long --hout $opt_hout --threads $opt_threads");
-		print $opt_hout . "\n";
-		if (! $opt_assemble_only) {
-			my @scaf = glob("$opt_hout/*.fasta");
-			foreach  (@scaf) {
-				$_=~/.+\/(\S+).fasta/;
-				#$_=~/Results\/Assembles\/Hybrid\/(\S+).fasta/;
-				my $out = $1;
-				system("coreprocess.pl $_ $out nucl");
+		}elsif ($opt_platform eq "oxford") {
+			system("pgcgap --Assemble --platform oxford --filter_length 200 --ReadsPath $opt_SeqPath --reads1 $opt_reads1 --genomeSize 4.8m --threads $opt_threads --suffix_len $opt_suffix_len");
+			if (! $opt_assemble_only) {
+				my @scaf = glob("Results/Assembles/Scaf/Oxford/*.filtered.fas");
+				foreach  (@scaf) {
+					$_=~/Results\/Assembles\/Scaf\/Oxford\/(\S+).filtered.fas/;
+					my $out = $1;
+					system("coreprocess.pl $_ $out nucl");
+				}
+				chdir "Results/Toxins";
+				system("get_all_info_nucl.pl");
+				chdir "../../";
 			}
-			chdir "Results/Toxins";
-			system("get_all_info_nucl.pl");
-			chdir "../../";
+		}elsif ($opt_platform eq "pacbio") {
+			system("pgcgap --Assemble --platform pacbio --filter_length 200 --ReadsPath $opt_SeqPath --reads1 $opt_reads1 --genomeSize 4.8m --threads $opt_threads --suffix_len $opt_suffix_len");
+				if (! $opt_assemble_only) {
+				my @scaf = glob("Results/Assembles/Scaf/PacBio/*.filtered.fas");
+				foreach  (@scaf) {
+					$_=~/Results\/Assembles\/Scaf\/PacBio\/(\S+).filtered.fas/;
+					my $out = $1;
+					system("coreprocess.pl $_ $out nucl");
+				}
+				chdir "Results/Toxins";
+				system("get_all_info_nucl.pl");
+				chdir "../../";
+			}
+		}elsif ($opt_platform eq "hybrid") {
+			system("pgcgap --Assemble --platform hybrid --ReadsPath $opt_SeqPath --short1 $opt_short1 --short2 $opt_short2 --long $opt_long --hout $opt_hout --threads $opt_threads");
+			print $opt_hout . "\n";
+			if (! $opt_assemble_only) {
+				my @scaf = glob("$opt_hout/*.fasta");
+				foreach  (@scaf) {
+					$_=~/.+\/(\S+).fasta/;
+					#$_=~/Results\/Assembles\/Hybrid\/(\S+).fasta/;
+					my $out = $1;
+					system("coreprocess.pl $_ $out nucl");
+				}
+				chdir "Results/Toxins";
+				system("get_all_info_nucl.pl");
+				chdir "../../";
+			}
 		}
 	}
-}
 
-# get toxin tables
-if (! $opt_assemble_only) {
-	tee STDOUT, ">>BtToxin_Digger.log";
-	chdir "Results/Toxins";
-	system("get_genes_table.pl");
-	chdir "../../";
+	# get toxin tables
+	if (! $opt_assemble_only) {
+		tee STDOUT, ">>BtToxin_Digger.log";
+		chdir "Results/Toxins";
+		system("get_genes_table.pl");
+		chdir "../../";
+	}
 }
