@@ -1,0 +1,6 @@
+https://camtech-bpp.ifas.ufl.edu/category_form
+BtToxin_Digger database 12个额外的序列
+s/^[a-zA-Z *!]+//g
+
+2021.08.02更新：Vip1Ea1, Vip1Ea2, Vip2Ah1, Vip2Ah2, Vip3Cb1, Cry1Ia37, Cry8Ba2, Mpp82Aa1
+2021.10.11更新：Cry1Ac40, Cry1Be6, Vpb1Ea1, Vpb1Ea2, Vpb4Aa2
