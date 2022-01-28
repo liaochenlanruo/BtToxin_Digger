@@ -1,0 +1,8 @@
+/usr/local/bin/miniconda3/envs/toxin/bin/BTTCMP_db/bt_toxin/db
+/home/wwwroot/default/BtToxin_Digger/db_update.tar.gz
+
+SSL：
+sudo certbot renew
+sudo lnmp restart
+
+
