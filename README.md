@@ -231,6 +231,10 @@ BtToxin_Digger --update-db
 ```
 ### Update history
 - **2021.08.02**: Added Vip1Ea1, Vip1Ea2, Vip2Ah1, Vip2Ah2, Vip3Cb1, Cry1Ia37, Cry8Ba2, and Mpp82Aa1
+- **2021.10.11**: Added Cry1Ac40, Cry1Be6, Vpb1Ea1, Vpb1Ea2, Vpb4Aa2
+- **2021.12.27**: Added Cry1Ca16, Cry1Ia44, Cry3Aa13, Tpp80Ab1
+- **2022.01.28**: Added Cry1Da6, Cry3Aa14
+- **2022.06.09**: Added Cry1Ca17, Cyt8Aa1, Mcf1Ac1, Mpp75Ab1, Mpp75Ab2, Xpp84Aa1, Xpp85Aa1
 
 ## Usage
 ```bash
