@@ -1,0 +1,22 @@
+{
+  "version": "1.2",
+  "dbname": "bt_toxin",
+  "dbtype": "Protein",
+  "db-version": 5,
+  "description": "bt_toxin20221208.fas",
+  "number-of-letters": 930320,
+  "number-of-sequences": 1101,
+  "last-updated": "2022-12-08T09:17:00",
+  "number-of-volumes": 1,
+  "bytes-total": 1073567,
+  "bytes-to-cache": 940334,
+  "files": [
+    "bt_toxin.pdb",
+    "bt_toxin.phr",
+    "bt_toxin.pin",
+    "bt_toxin.pot",
+    "bt_toxin.psq",
+    "bt_toxin.ptf",
+    "bt_toxin.pto"
+  ]
+}

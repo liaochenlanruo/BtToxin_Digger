@@ -4,7 +4,7 @@ use warnings;
 
 my %hash;
 local $/ = ">";
-open IN, "bt_toxin20220128.fas" || die;# BtToxin_Digger database
+open IN, "bt_toxin20220609.fas" || die;# BtToxin_Digger database
 <IN>;
 while (<IN>) {
 	chomp;
