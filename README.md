@@ -236,6 +236,7 @@ BtToxin_Digger --update-db
 - **2022.01.28**: Added Cry1Da6, Cry3Aa14
 - **2022.06.09**: Added Cry1Ca17, Cyt8Aa1, Mcf1Ac1, Mpp75Ab1, Mpp75Ab2, Xpp84Aa1, Xpp85Aa1
 - **2022.12.08**: Added Cry1Bk1, Cry1Ia42, Cry1Ia43, Cry2Ab41, Cry9Ea12, Mpp51Aa4, Mpp83Aa1, Vip3Aa86, Vpb1Ac2, Xpp86Aa1
+- **2025.11.04**: Added App1Da1，App2Ca1，Cry11Aa6, Cry14Ac1, Cry1Aa45, Cry1Ak1, Cry1Ca18, Cry1Cc1, Cry21Ia1, Cry29Ba1, Cry2Aa22, Cry2Aa23, Cry2Aa24, Cry2Ad7, Cry3Ab1, Cry3Ab2, Cry3Bc1, Cry4Aa5, Cry4Ba6, Cry4Ba7, Cry4Ea1, Cry4Fa1, Cry5Fa1, Cry70Ca1, Cry8Ca5, Cry9Aa6, Cry9Aa7, Cry9Ga2, Cyt1Aa10, Cyt1Aa11, Cyt1Aa9, Cyt2Ba17, Mpp5Ac1, Mpp88Aa1, Mpp93Aa1, Mtx1Aa2, Pra1Aa2, Pra1Ab1, Pra1Ab2, Pra1Ac1, Pra1Ca1, Prb1Aa2, Prb1Aa3, Prb1Ab1, Prb1Ca1, Tpp78Ab1, Tpp78Bb1, Tpp78Ca1, Tpp78Da1, Tpp80Aa2, Tpp80Ac1, Tpp80Ad1, Txp1Aa1, Txp1Aa2, Txp1Aa3, Txp1Ab1, Txp1Ba1, Txp1Ba2, Txp1Bb1, Txp1Bb2, Txp1Bb3, Vip3Aa66, Vip3Aa67, Vip3Aa68, Vip3Aa69, Vip3Aa70, Vip3Aa71, Vip3Aa72, Vip3Aa73, Vip3Aa74, Vip3Aa75, Vip3Aa76, Vip3Aa77, Vip3Aa78, Vip3Aa79, Vip3Aa80, Vip3Aa81, Vip3Aa82, Vip3Aa83, Vip3Aa84, Vip3Aa85, Vip3Aa87, Vip3Aa88, Vip3Aa89, Vip3Aa90, Vip3Aa91, Vip3Aa92, Vip3Aa93, Vip3Aa95, Vip3Aa96, Vip3Aa97, Vip3Aa98, Vip3Aa99, Vip3Cc1, Vpa2Ah1, Vpa2Ai1, Vpa2Ai2, Vpb1Ae1
 
 ## Usage
 ```bash
