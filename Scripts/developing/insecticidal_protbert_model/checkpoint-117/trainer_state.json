@@ -1,0 +1,122 @@
+{
+  "best_global_step": 117,
+  "best_metric": 0.2121212121212121,
+  "best_model_checkpoint": "/mnt/e/Github/BtToxin_Digger/Scripts/developing/insecticidal_protbert_model/checkpoint-117",
+  "epoch": 1.0,
+  "eval_steps": 500,
+  "global_step": 117,
+  "is_hyper_param_search": false,
+  "is_local_process_zero": true,
+  "is_world_process_zero": true,
+  "log_history": [
+    {
+      "epoch": 0.08583690987124463,
+      "grad_norm": 0.8748599290847778,
+      "learning_rate": 1.9692307692307696e-05,
+      "loss": 0.7957,
+      "step": 10
+    },
+    {
+      "epoch": 0.17167381974248927,
+      "grad_norm": 2.3874030113220215,
+      "learning_rate": 1.9350427350427353e-05,
+      "loss": 0.7732,
+      "step": 20
+    },
+    {
+      "epoch": 0.2575107296137339,
+      "grad_norm": 0.21789328753948212,
+      "learning_rate": 1.9008547008547008e-05,
+      "loss": 0.4758,
+      "step": 30
+    },
+    {
+      "epoch": 0.34334763948497854,
+      "grad_norm": 5.351993560791016,
+      "learning_rate": 1.866666666666667e-05,
+      "loss": 0.8214,
+      "step": 40
+    },
+    {
+      "epoch": 0.4291845493562232,
+      "grad_norm": 0.9167793989181519,
+      "learning_rate": 1.8324786324786326e-05,
+      "loss": 0.6968,
+      "step": 50
+    },
+    {
+      "epoch": 0.5150214592274678,
+      "grad_norm": 0.3479323387145996,
+      "learning_rate": 1.7982905982905984e-05,
+      "loss": 0.5961,
+      "step": 60
+    },
+    {
+      "epoch": 0.6008583690987125,
+      "grad_norm": 1.4496920108795166,
+      "learning_rate": 1.7641025641025642e-05,
+      "loss": 0.4813,
+      "step": 70
+    },
+    {
+      "epoch": 0.6866952789699571,
+      "grad_norm": 0.9813303351402283,
+      "learning_rate": 1.7299145299145303e-05,
+      "loss": 0.5946,
+      "step": 80
+    },
+    {
+      "epoch": 0.7725321888412017,
+      "grad_norm": 1.3810402154922485,
+      "learning_rate": 1.6957264957264957e-05,
+      "loss": 0.5001,
+      "step": 90
+    },
+    {
+      "epoch": 0.8583690987124464,
+      "grad_norm": 1.8720039129257202,
+      "learning_rate": 1.6615384615384618e-05,
+      "loss": 0.5853,
+      "step": 100
+    },
+    {
+      "epoch": 0.944206008583691,
+      "grad_norm": 0.977236270904541,
+      "learning_rate": 1.6273504273504276e-05,
+      "loss": 0.559,
+      "step": 110
+    },
+    {
+      "epoch": 1.0,
+      "eval_accuracy": 0.8275862068965517,
+      "eval_loss": 0.5116366147994995,
+      "eval_macro_f1": 0.2121212121212121,
+      "eval_micro_f1": 0.8275862068965517,
+      "eval_runtime": 535.0664,
+      "eval_samples_per_second": 0.217,
+      "eval_steps_per_second": 0.054,
+      "step": 117
+    }
+  ],
+  "logging_steps": 10,
+  "max_steps": 585,
+  "num_input_tokens_seen": 0,
+  "num_train_epochs": 5,
+  "save_steps": 500,
+  "stateful_callbacks": {
+    "TrainerControl": {
+      "args": {
+        "should_epoch_stop": false,
+        "should_evaluate": false,
+        "should_log": false,
+        "should_save": true,
+        "should_training_stop": false
+      },
+      "attributes": {}
+    }
+  },
+  "total_flos": 2169979693522944.0,
+  "train_batch_size": 4,
+  "trial_name": null,
+  "trial_params": null
+}
