@@ -38,9 +38,7 @@
 
 使用Python 3.8-3.10版本，通过以下命令安装所需库：
 
-
-
-```python
+```bash
 pip install biopython pandas numpy scikit-learn transformers torch evaluate joblib openpyxl accelerate matplotlib seaborn
 ```
 
@@ -76,8 +74,6 @@ GPU：NVIDIA GTX 1080Ti或更高（8GB显存以上）
 
 **GPU加速设置：**
 
-
-
 ```python
 import torch
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -92,7 +88,6 @@ if device == "cuda":
 ### 3.1 序列长度统计分析
 
 蛋白质序列长度差异较大，需先统计序列长度分布以确定合适的标准化长度：
-
 
 ```python
 from Bio import SeqIO
@@ -109,12 +104,8 @@ import joblib
 import os
 
 path = "/mnt/e/Github/BtToxin_Digger/Scripts/developing"
-```
 
-
-```python
 # 序列长度分位数统计
-
 def calculate_sequence_length_percentiles(fasta_path, standard_aas=None, min_len=50):
     """
     统计FASTA文件中有效氨基酸序列的长度分位数及基础统计量
@@ -217,7 +208,6 @@ if __name__ == "__main__":
 
 ### 3.2 配置全局参数（需根据你的数据调整）
 
-
 ```python
 # 1. 文件路径
 TRAIN_FASTA_PATH = f"{path}/all_app_cry_cyt_gpp_mcf_mpf_mpp_mtx_pra_prb_spp_tpp_txp_vip_vpa_vpb_xpp_fasta_sequences.txt"  # 你的训练FASTA文件
@@ -308,7 +298,6 @@ raw_df = parse_fasta_with_labels(TRAIN_FASTA_PATH, TARGET_LABELS)
 
 统一序列长度至SEQ_MAX_LEN（1024），长序列截断，短序列用X填充（ProtBERT支持的特殊字符）：
 
-
 ```python
 def standardize_sequence_length(seq, max_len):
     """统一序列长度：长序列截断，短序列用'X'填充（'X'为ProtBERT支持的特殊字符）"""
@@ -321,10 +310,7 @@ def standardize_sequence_length(seq, max_len):
 raw_df["sequence_standardized"] = raw_df["sequence"].apply(
     lambda x: standardize_sequence_length(x, SEQ_MAX_LEN)
 )
-```
 
-
-```python
 # 验证长度统一效果
 print(f"标准化后序列长度：{len(raw_df['sequence_standardized'].iloc[0])}")
 print(f"序列长度分布检查：")
@@ -343,7 +329,6 @@ print(f"最大长度：{max([len(seq) for seq in raw_df['sequence_standardized']
 
 将文本标签（如"Cry"）转换为数字（如1），便于模型处理，如App→0, Cry→1：
 
-
 ```python
 # 初始化标签编码器
 le = LabelEncoder()
@@ -357,15 +342,12 @@ print(f"标签编码映射：{dict(zip(le.classes_, range(len(le.classes_))))}")
 
     标签编码映射：{np.str_('App'): 0, np.str_('Cry'): 1, np.str_('Cyt'): 2, np.str_('Gpp'): 3, np.str_('Mcf'): 4, np.str_('Mpf'): 5, np.str_('Mpp'): 6, np.str_('Mtx'): 7, np.str_('Pra'): 8, np.str_('Prb'): 9, np.str_('Spp'): 10, np.str_('Tpp'): 11, np.str_('Txp'): 12, np.str_('Vip'): 13, np.str_('Vpa'): 14, np.str_('Vpb'): 15, np.str_('Xpp'): 16}
 
-
-
 ```python
 # 验证编码正确性
 print("\n编码验证（前5条序列）：")
 for i in range(min(5, len(raw_df))):
     print(f"原始标签：{raw_df.iloc[i]['label']} -> 编码：{raw_df.iloc[i]['label_encoded']}")
 ```
-
     
     编码验证（前5条序列）：
     原始标签：App -> 编码：0
@@ -377,7 +359,6 @@ for i in range(min(5, len(raw_df))):
 
 #### 4.2 分层划分训练集/验证集/测试集（7:1:2）
 保证每类标签在各集中分布均匀，避免类别不平衡影响训练：
-
 
 ```python
 def split_dataset(df, test_size=0.2, val_size=0.5, random_state=42):
@@ -412,7 +393,6 @@ X_test, y_test, header_test = dataset["test"]
 print(f"\n数据集划分完成：")
 print(f"训练集：{len(X_train)}条，验证集：{len(X_val)}条，测试集：{len(X_test)}条")
 ```
-
 
     ---------------------------------------------------------------------------
 
@@ -517,7 +497,6 @@ print(f"训练集：{len(X_train)}条，验证集：{len(X_val)}条，测试集�
 
 将样本数少于5的类别合并为"Other"，解决分层抽样问题：
 
-
 ```python
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -598,8 +577,6 @@ if __name__ == "__main__":
     数据集划分完成：
     训练集：932条，验证集：116条，测试集：117条
 
-
-
 ```python
 # 验证各类别在划分中的分布
 print("\n各类别在训练集中的分布：")
@@ -608,7 +585,6 @@ for label_idx, count in train_label_counts.items():
     label_name = le.inverse_transform([label_idx])[0]
     print(f"  {label_name}: {count}条")
 ```
-
     
     各类别在训练集中的分布：
       App: 9条
@@ -639,7 +615,6 @@ for label_idx, count in train_label_counts.items():
 ### 5.1 蛋白质序列数据集类定义（适配ProtBERT输入格式）
 
 ProtBERT要求氨基酸序列用**空格分隔**（如"A V L P T"），且需生成`input_ids`和`attention_mask`：
-
 
 ```python
 class InsecticidalDataset(Dataset):
@@ -682,7 +657,6 @@ class InsecticidalDataset(Dataset):
 
 使用`Rostlab/prot_bert`（蛋白质序列专用预训练模型，效果优于通用BERT， https://hf-mirror.com/Rostlab/prot_bert/tree/main ）：
 
-
 ```python
 import os
 from transformers import BertTokenizer, BertForSequenceClassification
@@ -715,7 +689,6 @@ test_dataset = InsecticidalDataset(X_test, y_test, tokenizer, SEQ_MAX_LEN)
     You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
 
 
-
 ```python
 # 验证数据集创建
 print(f"训练集样本数：{len(train_dataset)}")
@@ -743,7 +716,6 @@ print(f"标签：{sample['labels']}")
 ### 5.3 计算类别权重（解决类别不平衡）
 
 为样本数少的类别分配更高权重，提升模型对少数类的关注度：
-
 
 ```python
 def compute_class_weights(labels):
@@ -791,11 +763,8 @@ plt.ylabel("权重值")
 plt.tight_layout()
 plt.show()
 ```
-
-
     
-![png](DL_files/DL_31_0.png)
-    
+![png](https://fastly.jsdelivr.net/gh/liaochenlanruo/cdn@master/images/post/ProteinBERT/DL_31_0.png)
 
 
 **类别权重作用：**
@@ -809,7 +778,6 @@ plt.show()
 ### 5.4 定义多分类评估指标（宏F1+准确率+微F1）
 
 多分类重点关注**宏F1**（对少数类公平）和**准确率**（整体表现）：
-
 
 ```python
 from sklearn.metrics import f1_score, accuracy_score  # 新增accuracy_score
@@ -852,7 +820,6 @@ print(test_metrics)
 - 微F1：考虑每个样本的F1，受多数类影响大
 
 ### 5.5 配置训练参数与启动训练
-
 
 ```python
 try:
@@ -985,7 +952,6 @@ best_model_dir = train_model(
 
     
     训练完成！最优模型保存于：/mnt/e/Github/BtToxin_Digger/Scripts/developing/insecticidal_protbert_model/checkpoint-best
-
 
 
 ```python
@@ -1149,13 +1115,9 @@ eval_results = evaluate_model(best_model_dir, test_dataset, le)
     True_Vpb           0         0         0         3         0  
     True_Xpp           0         0         0         0         0  
 
-
-
     
-![png](DL_files/DL_40_3.png)
+![png](https://fastly.jsdelivr.net/gh/liaochenlanruo/cdn@master/images/post/ProteinBERT/DL_40_3.png)
     
-
-
 **性能分析**
 
 1. 优势：  
@@ -1170,7 +1132,6 @@ eval_results = evaluate_model(best_model_dir, test_dataset, le)
 ## 7. 新序列预测与未知类型识别
 
 ### 7.1 加载训练好的模型与组件
-
 
 ```python
 def load_trained_components(best_model_dir, label_encoder_path):
@@ -1293,10 +1254,7 @@ def predict_new_sequences(new_fasta_path, best_model_dir, label_encoder_path,
     print(f"\n预测完成！共处理{len(new_df)}条序列，结果如下：")
     print(result_df["predicted_label"].value_counts())
     return result_df
-```
 
-
-```python
 # 示例：预测新FASTA文件（需替换为你的新序列文件路径）
 if __name__ == "__main__":
     # 预测新序列（替换为你的新FASTA路径）
@@ -1344,7 +1302,6 @@ if __name__ == "__main__":
 
 ### 7.3 预测结果可视化
 
-
 ```python
 def visualize_prediction_results(prediction_df):
     """可视化预测结果分布"""
@@ -1380,10 +1337,8 @@ def visualize_prediction_results(prediction_df):
 # 可视化预测结果
 visualize_prediction_results(prediction_result)
 ```
-
-
     
-![png](DL_files/DL_48_0.png)
+![png](https://fastly.jsdelivr.net/gh/liaochenlanruo/cdn@master/images/post/ProteinBERT/DL_48_0.png)
     
 
 
@@ -1398,8 +1353,6 @@ visualize_prediction_results(prediction_result)
 ### 8.1 数据层面优化
 
 1. **数据增强**：对少数类序列进行随机插入、替换（保持功能域）等操作，增加样本量。
-
-
 
 ```python
 def augment_sequence(sequence, augmentation_rate=0.1):
@@ -1442,7 +1395,6 @@ print(f"生成增强序列：{len(augmented_sequences)}条")
 1. **调整类别权重**：进一步提高少数类权重，或使用动态权重（随训练轮次调整）。
 
 
-
 ```python
 def compute_dynamic_class_weights(labels, current_epoch, total_epochs):
     """计算动态类别权重（随训练轮次调整）"""
@@ -1456,8 +1408,6 @@ def compute_dynamic_class_weights(labels, current_epoch, total_epochs):
 2. **延长训练时间**：增加训练轮次（如10-20轮），并使用学习率衰减策略。
 
 3. **模型微调**：冻结ProtBERT前几层参数，仅训练分类头和顶层参数，避免过拟合。
-
-
 
 ```python
 def freeze_bert_layers(model, num_frozen_layers=8):
@@ -1484,8 +1434,6 @@ model = freeze_bert_layers(model, num_frozen_layers=8)
 
 1. **序列长度调整**：尝试使用95%分位数（1236）作为最大长度，通过滑动窗口分割超长序列后集成预测。
 
-
-
 ```python
 def sliding_window_prediction(sequence, model, tokenizer, window_size=1024, stride=512):
     """对超长序列使用滑动窗口进行预测"""
@@ -1510,7 +1458,6 @@ def sliding_window_prediction(sequence, model, tokenizer, window_size=1024, stri
 2. **特征融合**：结合蛋白质理化性质（如分子量、等电点）作为额外特征，辅助分类。
 
 ### 8.4 集成学习策略
-
 
 ```python
 from sklearn.ensemble import VotingClassifier
