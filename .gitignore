@@ -33,3 +33,6 @@ inc/
 /MANIFEST.bak
 /pm_to_blib
 /*.zip
+
+Scripts/developing/protBERT/pytorch_model.bin
+insecticidal_protbert_model
