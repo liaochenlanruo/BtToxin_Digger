@@ -226,9 +226,33 @@
 
 ## Database
 ### Update the database
-```
-BtToxin_Digger --update-db
-```
+
+- **method 1 (unavailable now)**
+
+  ```bash
+  BtToxin_Digger --update-db
+  ```
+
+- **method 2 (recommend)**
+
+  ```bash
+  bin=$(which BtToxin_Digger)
+
+  bin_dir=$(dirname "$bin")
+
+  db_dir="${bin_dir}/BTTCMP_db/bt_toxin/db"
+
+  rm -f "${db_dir}/bt_toxin.*"
+
+  https://github.com/liaochenlanruo/BtToxin_Digger/blob/master/BTTCMP_db/bt_toxin/db/db_update.tar.gz
+
+  tar zxvf db_update.tar.gz
+
+  mv bt_toxin.* $db_dir
+
+  rm -f db_update.tar.gz
+  ```
+
 ### Update history
 - **2021.08.02**: Added Vip1Ea1, Vip1Ea2, Vip2Ah1, Vip2Ah2, Vip3Cb1, Cry1Ia37, Cry8Ba2, and Mpp82Aa1
 - **2021.10.11**: Added Cry1Ac40, Cry1Be6, Vpb1Ea1, Vpb1Ea2, Vpb4Aa2
