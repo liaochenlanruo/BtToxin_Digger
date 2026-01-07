@@ -244,7 +244,7 @@
 
   rm -f "${db_dir}/bt_toxin.*"
 
-  https://github.com/liaochenlanruo/BtToxin_Digger/blob/master/BTTCMP_db/bt_toxin/db/db_update.tar.gz
+  wget -c https://github.com/liaochenlanruo/BtToxin_Digger/blob/master/BTTCMP_db/bt_toxin/db/db_update.tar.gz
 
   tar zxvf db_update.tar.gz
 
